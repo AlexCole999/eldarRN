@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions, FlatList, ScrollView } from 'react-native';
 
 
 export default function App() {
@@ -18,6 +18,7 @@ export default function App() {
   const [count, setCount] = useState(0);
   const [state, setState] = useState(0);
   const [picture, setPicture] = useState("https://randomfox.ca/images/9.jpg");
+  const [data, setData] = useState([]);
 
   const handlePress = () => {
     fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
@@ -28,9 +29,16 @@ export default function App() {
     fetch(`https://randomfox.ca/floof/`)
       .then(response => response.json())
       .then(json => { console.log(json); setPicture(json.image) })
+
+
+    fetch('http://192.168.1.102:3000/makerqst')
+      .then(response => response.json())
+      .then(data => { console.log(data), setData(data) })
   };
   return (
+
     <View style={styles.container}>
+
       <Text>!!!!!!!!!!!!!!+++++++++++++</Text>
       <Text>Count: {count}</Text>
       <Text>Id: {state?.id}</Text>
@@ -38,17 +46,27 @@ export default function App() {
       <CustomButton title="Increment" onPress={() => setCount(count + 1)} color="red" />
       <Button title="Decrement" onPress={() => setCount(count - 1)} />
       <Button title="Press me" onPress={handlePress} />
+      <Button title="data" onPress={() => { console.log(data) }} />
       <Image
         style={[styles.image, { width: width * 0.9 }]}
         source={{ uri: picture }}
       />
+      <FlatList
+        horizontal
+        data={data}
+        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <Text>{item.id}-----{item.prize}</Text>
+        }
+      />
       <StatusBar style="auto" />
     </View>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    paddingTop: 50,
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',

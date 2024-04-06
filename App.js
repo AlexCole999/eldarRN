@@ -31,15 +31,16 @@ export default function App() {
       .then(json => { console.log(json); setPicture(json.image) })
 
 
-    fetch('http://192.168.1.102:3000/makerqst')
-      .then(response => response.json())
-      .then(data => { console.log(data), setData(data) })
+    fetch('http://192.168.1.102:3000/users')
+      .then((x) => x.json())
+      .then((data) => {
+        setData(data)
+      })
   };
   return (
 
     <View style={styles.container}>
 
-      <Text>!!!!!!!!!!!!!!+++++++++++++</Text>
       <Text>Count: {count}</Text>
       <Text>Id: {state?.id}</Text>
       <Text>Title: {state?.title}</Text>
@@ -52,10 +53,14 @@ export default function App() {
         source={{ uri: picture }}
       />
       <FlatList
-        horizontal
+        style={styles.horiz}
         data={data}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <Text>{item.id}-----{item.prize}</Text>
+        renderItem={({ item }) =>
+          <View style={styles.text2}>
+            <Text>{item.email}</Text>
+            <Text>{item.name}</Text>
+          </View>
         }
       />
       <StatusBar style="auto" />
@@ -87,8 +92,17 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 350,
+    height: 300,
     resizeMode: 'cover',
     borderRadius: 20,
   },
+  horiz: {
+    padding: 25,
+    display: 'flex'
+  },
+  text2: {
+    flexDirection: 'column',
+    rowGap: 15,
+    marginLeft: 15
+  }
 });

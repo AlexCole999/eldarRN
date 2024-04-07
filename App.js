@@ -1,75 +1,52 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions, FlatList, ScrollView } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import AdsensesScreen from './screens/AdsensesScreen'
+import { Ionicons } from '@expo/vector-icons';
+import CustomTabBar from './CustomTabBar';
 
+const Tab = createBottomTabNavigator();
 
 export default function App() {
 
-  const { width } = Dimensions.get('window');
-
-  const CustomButton = ({ title, onPress, color }) => {
-    return (
-      <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={onPress}>
-        <Text style={styles.text}>{title}</Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const [count, setCount] = useState(0);
-  const [state, setState] = useState(0);
-  const [picture, setPicture] = useState("https://randomfox.ca/images/9.jpg");
-  const [data, setData] = useState([]);
-
-  const handlePress = () => {
-    fetch(`https://jsonplaceholder.typicode.com/todos/${count}`)
-      .then(response => response.json())
-      .then(json => { console.log(json); setState(json) })
-    console.log('fox start');
-
-    fetch(`https://randomfox.ca/floof/`)
-      .then(response => response.json())
-      .then(json => { console.log(json); setPicture(json.image) })
-
-
-    fetch('http://192.168.1.102:3000/users')
-      .then((x) => x.json())
-      .then((data) => {
-        setData(data)
-      })
-  };
   return (
-
-    <View style={styles.container}>
-
-      <Text>Count: {count}</Text>
-      <Text>Id: {state?.id}</Text>
-      <Text>Title: {state?.title}</Text>
-      <CustomButton title="Increment" onPress={() => setCount(count + 1)} color="red" />
-      <Button title="Decrement" onPress={() => setCount(count - 1)} />
-      <Button title="Press me" onPress={handlePress} />
-      <Button title="data" onPress={() => { console.log(data) }} />
-      <Image
-        style={[styles.image, { width: width * 0.9 }]}
-        source={{ uri: picture }}
-      />
-      <FlatList
-        style={styles.horiz}
-        data={data}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) =>
-          <View style={styles.text2}>
-            <Text>{item.email}</Text>
-            <Text>{item.name}</Text>
-          </View>
-        }
-      />
-      <StatusBar style="auto" />
-    </View>
-
+    <NavigationContainer >
+      <Tab.Navigator>
+        <Tab.Screen name="Adsenses" component={AdsensesScreen} />
+        <Tab.Screen name="Screen2" component={AdsensesScreen} />
+        <Tab.Screen name="Screen3" component={Screen3} />
+        <Tab.Screen name="Profile" component={ProfileScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
   );
+
 }
 
+const Screen2 = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Screen 2</Text>
+  </View>
+);
+
+const Screen3 = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Text>Screen 3</Text>
+  </View>
+);
+
+const ProfileScreen = () => (
+  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <Button title="Open Profile Settings" onPress={() => { }} />
+  </View>
+);
 const styles = StyleSheet.create({
+  flatlist: {
+    paddingTop: 55,
+    paddingLeft: 25,
+    paddingRight: 25
+  },
   container: {
     paddingTop: 50,
     flex: 1,

@@ -1,11 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, TouchableOpacity, Image, Dimensions, FlatList, ScrollView } from 'react-native';
+import axios from 'axios';
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, Dimensions, FlatList, ScrollView } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import AdsensesScreen from './screens/AdsensesScreen'
-import { Ionicons } from '@expo/vector-icons';
-import CustomTabBar from './CustomTabBar';
 
 const Tab = createBottomTabNavigator();
 
@@ -30,56 +29,92 @@ const Screen2 = () => (
   </View>
 );
 
-const Screen3 = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Text>Screen 3</Text>
-  </View>
-);
+const Screen3 = () => {
+  const navigation = useNavigation();
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
 
-const ProfileScreen = () => (
-  <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-    <Button title="Open Profile Settings" onPress={() => { }} />
-  </View>
-);
+  const handleAddUser = async () => {
+    if (!name || !email) {
+      alert('Пожалуйста, введите имя и email пользователя');
+      return;
+    }
+
+    try {
+      await axios.post('http://192.168.1.102:3000/users', { name, email });
+      alert('Пользователь успешно добавлен');
+      setName('');
+      setEmail('');
+    } catch (error) {
+      alert('Ошибка при добавлении пользователя');
+    }
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.title}>Добавить пользователя</Text>
+      <TextInput
+        placeholder="Имя"
+        value={name}
+        onChangeText={setName}
+        style={styles.input}
+      />
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.input}
+      />
+      <TouchableOpacity style={styles.button} onPress={handleAddUser}>
+        <Text style={styles.buttonText}>Добавить</Text>
+      </TouchableOpacity>
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  flatlist: {
-    paddingTop: 55,
-    paddingLeft: 25,
-    paddingRight: 25
-  },
   container: {
-    paddingTop: 50,
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 15,
+    width: '100%',
   },
   button: {
-    backgroundColor: 'red',
-    padding: 10,
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
     borderRadius: 5,
-    alignItems: 'center',
-    minWidth: 100,
-    color: "white"
   },
-  text: {
-    color: 'white',
-    fontWeight: '800',
-    textTransform: 'uppercase'
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: 'bold',
   },
-  image: {
-    width: 200,
-    height: 300,
-    resizeMode: 'cover',
-    borderRadius: 20,
-  },
-  horiz: {
-    padding: 25,
-    display: 'flex'
-  },
-  text2: {
-    flexDirection: 'column',
-    rowGap: 15,
-    marginLeft: 15
-  }
 });
+
+const ProfileScreen = () => {
+  const navigation = useNavigation();
+  return (
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Button title="Open Profile Settings" onPress={() => { }} />
+      <Button title="Go to Adsenses" onPress={() => navigation.navigate('Adsenses')} />
+      <Button title="Go to Screen 2" onPress={() => navigation.navigate('Screen2')} />
+      <Button title="Go to Screen 3" onPress={() => navigation.navigate('Screen3')} />
+    </View>
+  );
+
+}

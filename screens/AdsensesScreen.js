@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
+
 
 const AdsensesScreen = () => {
+  const navigation = useNavigation();
   const SearchComponent = () => {
     const [searchText, setSearchText] = useState('');
 
@@ -66,14 +70,23 @@ const AdsensesScreen = () => {
       return <MapComponent />;
     } else {
       return (
-        <View style={styles.itemContainer}>
-          <Text>{item.category}</Text>
-          <Text>{item.city}</Text>
-          <Text>{item.phone}</Text>
-          <Text>{item.address}</Text>
-          <Text>{item.workhours}</Text>
-          <Text>{item.services}</Text>
-        </View>
+        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('AdDetails', { adId: item.id })}>
+          <View style={styles.itemContainer}>
+            <Text>Город: {item.city}</Text>
+            <Text>Категория: {item.category}</Text>
+            <Text>Контактный телефон: {item.phone}</Text>
+            <Text>Адрес: {item.address}</Text>
+            <Text>Часы работы: {item.workhours}</Text>
+            {item.serviceParams.map((x, i) =>
+              < View key={i} style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+                <Text style={{ marginHorizontal: 20 }}>Услуга {i + 1}</Text>
+                <Text style={{ marginHorizontal: 20 }}>Часы {x.hours}</Text>
+                <Text style={{ marginHorizontal: 20 }}>Цена {x.price}</Text>
+              </View>
+            )
+            }
+          </View>
+        </TouchableOpacity >
       );
     }
   };
@@ -85,6 +98,7 @@ const AdsensesScreen = () => {
     fetch(`http://192.168.1.102:3000/adsenses?page=${count}`)
       .then((x) => x.json())
       .then((data) => {
+        console.log(data)
         const objects = data.map((item) => ({
           id: item._id,
           category: item.category,
@@ -92,7 +106,7 @@ const AdsensesScreen = () => {
           phone: item.phone,
           address: item.address,
           workhours: item.workhours,
-          services: item.services,
+          serviceParams: item.serviceParams
         }));
         setData(objects);
       });
@@ -187,6 +201,7 @@ const AdsensesScreen = () => {
           address: item.address,
           workhours: item.workhours,
           services: item.services,
+          serviceParams: item.serviceParams
         }));
         setData(objects);
         setRefreshing(false);

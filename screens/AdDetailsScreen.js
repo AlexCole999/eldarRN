@@ -1,3 +1,6 @@
+import { StyleSheet, Text, View } from 'react-native';
+
+
 const AdDetailsScreen = ({ route }) => {
   const { adId, adCity, adCategory, adPhone, adAddress, adWorkhours, adServiceParams } = route.params;
 
@@ -18,5 +21,15 @@ const AdDetailsScreen = ({ route }) => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    paddingHorizontal: 20,
+  },
+})
 
 export default AdDetailsScreen

@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-
+const Stack = createStackNavigator();
 
 const AdsensesScreen = () => {
   const navigation = useNavigation();
@@ -70,7 +71,10 @@ const AdsensesScreen = () => {
       return <MapComponent />;
     } else {
       return (
-        <TouchableOpacity key={item.id} onPress={() => navigation.navigate('AdDetails', { adId: item.id })}>
+        <TouchableOpacity
+          key={item.id}
+          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.serviceParams })}
+        >
           <View style={styles.itemContainer}>
             <Text>Город: {item.city}</Text>
             <Text>Категория: {item.category}</Text>

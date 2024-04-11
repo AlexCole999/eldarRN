@@ -8,25 +8,37 @@ import AdsensesScreen from './screens/AdsensesScreen'
 import AddAdsenseScreen from './screens/AddAdsenseScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import Screen3 from './screens/Screen3';
+import AdDetailsScreen from './screens/AdDetailsScreen';
 import RNPickerSelect from 'react-native-picker-select';
+import { createStackNavigator } from '@react-navigation/stack';
 
+const Stack = createStackNavigator();
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
-
   return (
-    <NavigationContainer >
-      <Tab.Navigator>
-        <Tab.Screen name="Главная" component={AdsensesScreen} />
-        <Tab.Screen name="Каталог" component={AddAdsenseScreen} />
-        <Tab.Screen name="Мои записи" component={Screen3} />
-        <Tab.Screen name="Профиль" component={ProfileScreen} />
-      </Tab.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
+      </Stack.Navigator>
     </NavigationContainer>
   );
-
 }
+
+const Tabs = () => {
+  return (
+    <Tab.Navigator>
+      <Tab.Screen name="Главная" component={AdsensesScreen} />
+      <Tab.Screen name="Создать" component={AddAdsenseScreen} />
+      <Tab.Screen name="Мои записи" component={Screen3} />
+      <Tab.Screen name="Профиль" component={ProfileScreen} />
+    </Tab.Navigator>
+  );
+};
+
+
 
 const styles = StyleSheet.create({
   container: {

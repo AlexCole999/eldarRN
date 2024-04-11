@@ -1,3 +1,9 @@
+
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+
 const Screen3 = () => {
   const navigation = useNavigation();
   const [name, setName] = useState('');

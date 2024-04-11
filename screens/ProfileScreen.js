@@ -1,9 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
+
 import axios from 'axios';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, Dimensions, FlatList, ScrollView, Alert } from 'react-native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { StyleSheet, Text, View, TouchableOpacity, Alert } from 'react-native';
 
 const ProfileScreen = () => {
   const handleClearDatabase = async () => {

@@ -21,7 +21,7 @@ const Screen3 = () => {
         const manipulatedImage = await manipulateAsync(
           result.assets[0].uri,
           [{ resize: { width: 500 } }],
-          { compress: 0.65, format: SaveFormat.JPEG }
+          { compress: 0.75, format: SaveFormat.JPEG }
         );
         console.log(manipulatedImage.uri)
         await setImage(manipulatedImage.uri)
@@ -51,7 +51,8 @@ const Screen3 = () => {
         },
       });
 
-      Alert.alert('Success', response.data.message);
+      Alert.alert('Success', response.data.message.status);
+      console.log(response.data.message.path)
     } catch (err) {
       console.error('Ошибка при загрузке изображения:', err);
       Alert.alert('Error', 'Ошибка при загрузке изображения');

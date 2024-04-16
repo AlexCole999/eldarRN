@@ -73,9 +73,10 @@ const AdsensesScreen = () => {
       return (
         <TouchableOpacity
           key={item.id}
-          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.serviceParams })}
+          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.serviceParams })}
         >
           <View style={styles.itemContainer}>
+            <Text>Пользователь: {item.user}</Text>
             <Text>Город: {item.city}</Text>
             <Text>Категория: {item.category}</Text>
             <Text>Контактный телефон: {item.phone}</Text>
@@ -104,6 +105,7 @@ const AdsensesScreen = () => {
       .then((data) => {
         console.log(data)
         const objects = data.map((item) => ({
+          user: item.user,
           id: item._id,
           category: item.category,
           city: item.city,
@@ -198,6 +200,7 @@ const AdsensesScreen = () => {
       .then((x) => x.json())
       .then((data) => {
         const objects = data.map((item) => ({
+          user: item.user,
           id: item._id,
           category: item.category,
           city: item.city,

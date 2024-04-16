@@ -2,10 +2,11 @@ import { StyleSheet, Text, View } from 'react-native';
 
 
 const AdDetailsScreen = ({ route }) => {
-  const { adId, adCity, adCategory, adPhone, adAddress, adWorkhours, adServiceParams } = route.params;
+  const { adId, adUser, adCity, adCategory, adPhone, adAddress, adWorkhours, adServiceParams } = route.params;
 
   return (
     <View style={styles.container}>
+      <Text>Пользователь: {adUser}</Text>
       <Text>Город: {adCity}</Text>
       <Text>Категория: {adCategory}</Text>
       <Text>Контактный телефон: {adPhone}</Text>

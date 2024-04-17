@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { StyleSheet, Text, View, Button, Image, Alert, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { SaveFormat, manipulateAsync } from 'expo-image-manipulator';
@@ -89,43 +89,62 @@ const Screen3 = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <ScrollView horizontal style={styles.scrollView}>
+    <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView horizontal style={styles.imageScrollView}>
         {images.map((image, index) => (
           <TouchableOpacity key={index} onPress={() => removeImage(index)}>
             <Image source={{ uri: image }} style={styles.image} />
           </TouchableOpacity>
         ))}
       </ScrollView>
-      <View style={styles.buttonContainer}>
-        <Button title="Выбрать изображения" onPress={selectImage} />
-        <Button title="Загрузить изображения" onPress={uploadImages} disabled={images.length === 0} />
+      <View style={styles.buttonWrapper}>
+        <TouchableOpacity style={styles.button} onPress={selectImage}>
+          <Text style={styles.buttonText}>Добавить фото</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { opacity: images.length === 0 ? 0.5 : 1 }]}
+          onPress={uploadImages}
+          disabled={images.length === 0}
+        >
+          <Text style={styles.buttonText}>Загрузить</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
     paddingHorizontal: 20,
   },
   scrollView: {
-    height: 120,
+    height: 125,
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 125,
+    height: 125,
     borderRadius: 5,
     marginHorizontal: 5,
   },
-  buttonContainer: {
+  buttonWrapper: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+    width: '100%',
     marginTop: 10,
+  },
+  button: {
+    backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 16,
+    textAlign: 'center',
   },
 });
 

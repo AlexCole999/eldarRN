@@ -4,6 +4,7 @@ import { StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView } fr
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { SaveFormat, manipulateAsync } from 'expo-image-manipulator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Screen3 = () => {
 
@@ -56,6 +57,9 @@ const Screen3 = () => {
 
   const uploadImages = async () => {
     try {
+
+      const userData = await AsyncStorage.getItem('userData')
+
       const results = [];
       const paths = [];
 
@@ -64,7 +68,9 @@ const Screen3 = () => {
         let imageName = image.split('/')[imageParsedLength - 1];
 
         let formData = new FormData();
-        formData.append('images', {
+
+        formData.append('user', userData);
+        formData.append('image', {
           uri: image,
           type: 'image/jpeg',
           name: imageName,
@@ -80,12 +86,12 @@ const Screen3 = () => {
         paths.push(response.data.message.paths);
       }
 
+      Alert.alert('Успешно', 'Изображения успешно загружены');
       console.log(paths.join('\n'));
     } catch (err) {
       console.error('Ошибка при загрузке изображения:', err);
       Alert.alert('Error', 'Ошибка при загрузке изображения');
     }
-    Alert.alert('Успешно', 'Изображения успешно загружены');
   };
 
   return (

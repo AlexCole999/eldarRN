@@ -19,7 +19,7 @@ const AddAdsenseScreen = () => {
 
   const [servicesList, setServicesList] = useState([]);
   const [newServiceHours, setNewServiceHours] = useState(null);
-  const [price, setPrice] = useState('');
+  const [newServicePrice, setNewServicePrice] = useState('');
 
   useEffect(() => {
     async function userCheckUp() {
@@ -33,11 +33,11 @@ const AddAdsenseScreen = () => {
 
 
   const addServiceParam = () => {
-    if (newServiceHours && price) {
-      const newServicesList = [...servicesList, { hours: newServiceHours, price }];
+    if (newServiceHours && newServicePrice) {
+      const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice }];
       setServicesList(newServicesList);
       setNewServiceHours(null);
-      setPrice('');
+      setNewServicePrice('');
     }
   };
 
@@ -110,8 +110,8 @@ const AddAdsenseScreen = () => {
         <TextInput
           style={styles.input}
           placeholder="Введите цену"
-          onChangeText={setPrice}
-          value={price}
+          onChangeText={setNewServicePrice}
+          value={newServicePrice}
         />
         <Button title="Добавить параметр" onPress={addServiceParam} />
         <Button title="Add Adsense" onPress={submitAdsense} />

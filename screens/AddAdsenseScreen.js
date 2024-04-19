@@ -42,29 +42,12 @@ const AddAdsenseScreen = () => {
   return (
     <ScrollView>
       < View style={styles.container} >
-
         <SelectorCity city={city} setCity={setCity} />
         <SelectorCategory category={category} setCategory={setCategory} />
-        <SelectorHours
-          workhours={workhours}
-          setWorkhours={setWorkhours}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Контактный телефон"
-          onChangeText={setPhone}
-          value={phone}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder="Адрес"
-          onChangeText={setAddress}
-          value={address}
-        />
-        <SelectorServices
-          servicesList={servicesList}
-          setServicesList={setServicesList}
-        />
+        <SelectorHours workhours={workhours} setWorkhours={setWorkhours} />
+        <TextInput style={styles.input} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+        <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
+        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
           <Text style={styles.sendButtonText}>Добавить объявление</Text>
         </TouchableOpacity>
@@ -75,7 +58,6 @@ const AddAdsenseScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 20,
   },
@@ -86,15 +68,6 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
-  },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginBottom: 10,
-  },
-  separator: {
-    marginHorizontal: 5,
   },
   sendButton: {
     marginTop: 15,

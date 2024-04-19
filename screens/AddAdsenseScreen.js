@@ -41,40 +41,42 @@ const AddAdsenseScreen = () => {
 
   return (
     <ScrollView>
-      < View style={styles.container} >
+
+      <View style={styles.container} >
         <SelectorCity city={city} setCity={setCity} />
         <SelectorCategory category={category} setCategory={setCategory} />
-        <SelectorHours workhours={workhours} setWorkhours={setWorkhours} />
+        <SelectorHours setWorkhours={setWorkhours} />
         <TextInput style={styles.input} placeholder="Телефон" onChangeText={setPhone} value={phone} />
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-        <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
-          <Text style={styles.sendButtonText}>Добавить объявление</Text>
-        </TouchableOpacity>
+
       </View >
+      <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
+        <Text style={styles.sendButtonText}>Добавить объявление</Text>
+      </TouchableOpacity>
+
     </ScrollView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
     paddingHorizontal: 20,
+    display: 'flex',
+    flexDirection: 'column'
   },
   input: {
     height: 40,
     width: '100%',
-    borderColor: 'gray',
+    borderColor: 'grey',
     borderWidth: 1,
     marginBottom: 10,
     paddingHorizontal: 10,
   },
   sendButton: {
-    marginTop: 15,
+    marginTop: 35,
     backgroundColor: 'green',
     paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    paddingHorizontal: 20
   },
   sendButtonText: {
     color: 'white',

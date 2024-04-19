@@ -59,7 +59,7 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
         <>
           <RNPickerSelect
             onValueChange={(value) => setNewServiceHours(value)}
-            placeholder={{ label: 'Выберите количество часов', value: null }}
+            placeholder={{ label: 'Часы новой услуги', value: null }}
             items={[
               { label: '1 час', value: 1 },
               { label: '2 часа', value: 2 },
@@ -78,15 +78,15 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
           />
           <TextInput
             style={styles.input}
-            placeholder="Введите цену"
+            placeholder="Цена новой услуги"
             onChangeText={setNewServicePrice}
             value={newServicePrice}
             keyboardType="numeric"
           />
-          <Button title="Готово" onPress={addNewServiceParam} />
+          <Button title="Добавить услугу" onPress={addNewServiceParam} />
         </>
       )}
-      {!showInputs && <Button title="Добавить новую услугу" onPress={() => setShowInputs(true)} />}
+      {!showInputs && <Button title="Новая услуга +" onPress={() => setShowInputs(true)} />}
     </View>
   );
 };

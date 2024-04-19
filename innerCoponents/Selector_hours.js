@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 const generateTimeItems = () => {
@@ -19,7 +19,7 @@ const SelectorHours = ({ workhours, setWorkhours }) => {
   const [workhoursStart, setWorkhoursStart] = useState('');
   const [workhoursEnd, setWorkhoursEnd] = useState('');
   return (
-    <View>
+    <>
       <RNPickerSelect
         onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}
         placeholder={{ label: 'Начало рабочего дня', value: null }}
@@ -34,7 +34,7 @@ const SelectorHours = ({ workhours, setWorkhours }) => {
         value={workhoursEnd}
         style={pickerSelectStyles}
       />
-    </View>
+    </>
   );
 };
 

@@ -1,10 +1,27 @@
 import React from 'react';
-import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
-const SelectorServices = ({ newServiceHours, setNewServiceHours, setNewServicePrice, addNewServiceParam }) => {
+const SelectorServices = ({ newServiceHours, setNewServiceHours, newServicePrice, setNewServicePrice, servicesList, setServicesList }) => {
+
+  const addNewServiceParam = () => {
+    if (newServiceHours && newServicePrice) {
+      const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice }];
+      setServicesList(newServicesList);
+      setNewServiceHours(null);
+      setNewServicePrice('');
+    }
+  };
+
   return (
-    <View>
+    <View style={{ width: '100%' }}>
+      {
+        servicesList.map((param, index) => (
+          <View key={index} style={styles.serviceParam}>
+            <Text>Часов: {param.hours} Цена: {param.price}</Text>
+          </View>
+        ))
+      }
       <RNPickerSelect
         onValueChange={(value) => setNewServiceHours(value)}
         placeholder={{ label: 'Выберите количество часов', value: null }}
@@ -28,11 +45,45 @@ const SelectorServices = ({ newServiceHours, setNewServiceHours, setNewServicePr
         style={styles.input}
         placeholder="Введите цену"
         onChangeText={setNewServicePrice}
-        value={price}
+        value={newServicePrice}
       />
-      <Button title="Добавить параметр" onPress={addNewServiceParam} />
+      <Button title="Добавить услугу" onPress={addNewServiceParam} />
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  input: {
+    height: 40,
+    width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 10,
+    paddingHorizontal: 10,
+  },
+});
+
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    height: 50,
+    width: '100%',
+    color: 'black',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5, // Радиус закругления углов
+  },
+  inputAndroid: {
+    height: 50,
+    width: '100%',
+    color: 'black',
+    marginBottom: 10,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'gray',
+    borderRadius: 5, // Радиус закругления углов
+  },
+})
 
 export default SelectorServices;

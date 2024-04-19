@@ -32,7 +32,7 @@ const AddAdsenseScreen = () => {
   }, [])
 
 
-  const addServiceParam = () => {
+  const addNewServiceParam = () => {
     if (newServiceHours && newServicePrice) {
       const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice }];
       setServicesList(newServicesList);
@@ -113,7 +113,7 @@ const AddAdsenseScreen = () => {
           onChangeText={setNewServicePrice}
           value={newServicePrice}
         />
-        <Button title="Добавить параметр" onPress={addServiceParam} />
+        <Button title="Добавить параметр" onPress={addNewServiceParam} />
         <Button title="Add Adsense" onPress={submitAdsense} />
       </View >
     </ScrollView>

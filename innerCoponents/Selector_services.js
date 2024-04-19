@@ -1,13 +1,12 @@
 import React from 'react';
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { pickerSelectStyles } from './styles'; // Подключите стили из вашего файла стилей
 
-const SelectorServices = ({ selectedHours, setSelectedHours, setPrice, addServiceParam, submitAdsense }) => {
+const SelectorServices = ({ newServiceHours, setNewServiceHours, setNewServicePrice, addNewServiceParam }) => {
   return (
     <View>
       <RNPickerSelect
-        onValueChange={(value) => setSelectedHours(value)}
+        onValueChange={(value) => setNewServiceHours(value)}
         placeholder={{ label: 'Выберите количество часов', value: null }}
         items={[
           { label: '1 час', value: 1 },
@@ -22,17 +21,16 @@ const SelectorServices = ({ selectedHours, setSelectedHours, setPrice, addServic
           { label: '10 часов', value: 10 },
           { label: '1 день', value: 24 },
         ]}
-        value={selectedHours}
+        value={newServiceHours}
         style={pickerSelectStyles}
       />
       <TextInput
         style={styles.input}
         placeholder="Введите цену"
-        onChangeText={setPrice}
+        onChangeText={setNewServicePrice}
         value={price}
       />
-      <Button title="Добавить параметр" onPress={addServiceParam} />
-      <Button title="Add Adsense" onPress={submitAdsense} />
+      <Button title="Добавить параметр" onPress={addNewServiceParam} />
     </View>
   );
 };

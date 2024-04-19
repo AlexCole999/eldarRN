@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { View, TextInput, ScrollView, Button, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SelectorCity from '../innerCoponents/Selector_city';
@@ -14,13 +13,9 @@ const AddAdsenseScreen = () => {
   const [city, setCity] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
-  const [workhoursStart, setWorkhoursStart] = useState('');
-  const [workhoursEnd, setWorkhoursEnd] = useState('');
   const [workhours, setWorkhours] = useState('');
 
   const [servicesList, setServicesList] = useState([]);
-  const [newServiceHours, setNewServiceHours] = useState(null);
-  const [newServicePrice, setNewServicePrice] = useState('');
 
   useEffect(() => {
     async function userCheckUp() {
@@ -31,16 +26,6 @@ const AddAdsenseScreen = () => {
     }
     userCheckUp()
   }, [])
-
-
-  // const addNewServiceParam = () => {
-  //   if (newServiceHours && newServicePrice) {
-  //     const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice }];
-  //     setServicesList(newServicesList);
-  //     setNewServiceHours(null);
-  //     setNewServicePrice('');
-  //   }
-  // };
 
   const submitAdsense = async () => {
     try {
@@ -61,10 +46,6 @@ const AddAdsenseScreen = () => {
         <SelectorCity city={city} setCity={setCity} />
         <SelectorCategory category={category} setCategory={setCategory} />
         <SelectorHours
-          workhoursStart={workhoursStart}
-          setWorkhoursStart={setWorkhoursStart}
-          workhoursEnd={workhoursEnd}
-          setWorkhoursEnd={setWorkhoursEnd}
           workhours={workhours}
           setWorkhours={setWorkhours}
         />
@@ -81,14 +62,12 @@ const AddAdsenseScreen = () => {
           value={address}
         />
         <SelectorServices
-          newServiceHours={newServiceHours}
-          setNewServiceHours={setNewServiceHours}
-          newServicePrice={newServicePrice}
-          setNewServicePrice={setNewServicePrice}
           servicesList={servicesList}
           setServicesList={setServicesList}
         />
-        <Button title="Add Adsense" onPress={submitAdsense} />
+        <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
+          <Text style={styles.sendButtonText}>Добавить объявление</Text>
+        </TouchableOpacity>
       </View >
     </ScrollView>
   );
@@ -98,7 +77,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     paddingHorizontal: 20,
   },
   input: {
@@ -117,6 +95,20 @@ const styles = StyleSheet.create({
   },
   separator: {
     marginHorizontal: 5,
+  },
+  sendButton: {
+    marginTop: 15,
+    backgroundColor: 'green',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+  },
+  sendButtonText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textTransform: 'uppercase',
   },
 });
 

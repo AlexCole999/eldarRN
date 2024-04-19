@@ -31,7 +31,7 @@ const Tabs = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Главная" component={AdsensesScreen} />
-      <Tab.Screen name="Создать" component={AddAdsenseScreen} />
+      <Tab.Screen name="Добавить объявление" component={AddAdsenseScreen} />
       <Tab.Screen name="Мои записи" component={Screen3} />
       <Tab.Screen name="Профиль" component={ProfileScreen} />
     </Tab.Navigator>

@@ -16,9 +16,9 @@ const AddAdsenseScreen = () => {
   const [workhoursStart, setWorkhoursStart] = useState('');
   const [workhoursEnd, setWorkhoursEnd] = useState('');
   const [workhours, setWorkhours] = useState('');
-  const [services, setServices] = useState('');
+
   const [servicesList, setServicesList] = useState([]);
-  const [selectedHours, setSelectedHours] = useState(null);
+  const [newServiceHours, setNewServiceHours] = useState(null);
   const [price, setPrice] = useState('');
 
   useEffect(() => {
@@ -33,10 +33,10 @@ const AddAdsenseScreen = () => {
 
 
   const addServiceParam = () => {
-    if (selectedHours && price) {
-      const newServiceParams = [...servicesList, { hours: selectedHours, price }];
-      setServicesList(newServiceParams);
-      setSelectedHours(null);
+    if (newServiceHours && price) {
+      const newServicesList = [...servicesList, { hours: newServiceHours, price }];
+      setServicesList(newServicesList);
+      setNewServiceHours(null);
       setPrice('');
     }
   };
@@ -89,7 +89,7 @@ const AddAdsenseScreen = () => {
         }
 
         <RNPickerSelect
-          onValueChange={(value) => setSelectedHours(value)}
+          onValueChange={(value) => setNewServiceHours(value)}
           placeholder={{ label: 'Выберите количество часов', value: null }}
           items={[
             { label: '1 час', value: 1 },
@@ -104,7 +104,7 @@ const AddAdsenseScreen = () => {
             { label: '10 часов', value: 10 },
             { label: '1 день', value: 24 },
           ]}
-          value={selectedHours}
+          value={newServiceHours}
           style={pickerSelectStyles}
         />
         <TextInput

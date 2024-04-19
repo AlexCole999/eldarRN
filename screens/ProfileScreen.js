@@ -51,8 +51,11 @@ const ProfileScreen = () => {
         password
       });
       alert('Регистрация успешно завершена');
-      setUserData({ name, phone });
+      await setUserData({ name, phone });
       await AsyncStorage.setItem('userData', JSON.stringify({ name, phone }));
+      let userDataString = await AsyncStorage.getItem('userData');
+      userDataString = JSON.parse(userDataString)
+      console.log(userDataString)
     } catch (error) {
       alert('Ошибка при регистрации');
     }

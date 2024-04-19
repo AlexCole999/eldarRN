@@ -36,7 +36,6 @@ const AddAdsenseScreen = () => {
       userDataString = JSON.parse(userDataString)
       console.log(userDataString)
       await setUser(userDataString.phone)
-      console.log(user)
     }
     userCheckUp()
   }, [])
@@ -56,7 +55,7 @@ const AddAdsenseScreen = () => {
       await axios.post('http://192.168.1.102:3000/adsenses', {
         user, category, city, phone, address, workhours, serviceParams
       });
-      alert('dome')
+      alert('done')
     } catch (error) {
       console.error(error);
     }
@@ -152,6 +151,8 @@ const AddAdsenseScreen = () => {
           onChangeText={setAddress}
           value={address}
         />
+
+
         {
           serviceParams.map((param, index) => (
             <View key={index} style={styles.serviceParam}>
@@ -159,6 +160,8 @@ const AddAdsenseScreen = () => {
             </View>
           ))
         }
+
+
         <RNPickerSelect
           onValueChange={(value) => setSelectedHours(value)}
           placeholder={{ label: 'Выберите количество часов', value: null }}

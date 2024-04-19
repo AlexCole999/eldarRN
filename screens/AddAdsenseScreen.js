@@ -6,18 +6,6 @@ import axios from 'axios';
 import SelectorCity from '../innerCoponents/Selector_city';
 import SelectorCategory from './../innerCoponents/Selector_category';
 
-const generateTimeItems = () => {
-  let items = [];
-  for (let hour = 0; hour < 24; hour++) {
-    for (let minute = 0; minute < 60; minute += 15) {
-      let label = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-      let value = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
-      items.push({ label, value });
-    }
-  }
-  return items;
-};
-
 const AddAdsenseScreen = () => {
   const [user, setUser] = useState('default');
   const [category, setCategory] = useState('');

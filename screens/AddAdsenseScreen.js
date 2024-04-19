@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import SelectorCity from '../innerCoponents/Selector_city';
 import SelectorCategory from './../innerCoponents/Selector_category';
+import SelectorHours from '../innerCoponents/Selector_hours';
 
 const AddAdsenseScreen = () => {
   const [user, setUser] = useState('default');
@@ -57,20 +58,13 @@ const AddAdsenseScreen = () => {
 
         <SelectorCity city={city} setCity={setCity} />
         <SelectorCategory category={category} setCategory={setCategory} />
-
-        <RNPickerSelect
-          onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}
-          placeholder={{ label: 'Начало рабочего дня', value: null }}
-          items={generateTimeItems()}
-          value={workhoursStart}
-          style={pickerSelectStyles}
-        />
-        <RNPickerSelect
-          onValueChange={(value) => { setWorkhoursEnd(value); setWorkhours(`${workhoursStart}-${value}`) }}
-          placeholder={{ label: 'Конец рабочего дня', value: null }}
-          items={generateTimeItems()}
-          value={workhoursEnd}
-          style={pickerSelectStyles}
+        <SelectorHours
+          workhoursStart={workhoursStart}
+          setWorkhoursStart={setWorkhoursStart}
+          workhoursEnd={workhoursEnd}
+          setWorkhoursEnd={setWorkhoursEnd}
+          workhours={workhours}
+          setWorkhours={setWorkhours}
         />
         <TextInput
           style={styles.input}
@@ -93,7 +87,6 @@ const AddAdsenseScreen = () => {
             </View>
           ))
         }
-
 
         <RNPickerSelect
           onValueChange={(value) => setSelectedHours(value)}

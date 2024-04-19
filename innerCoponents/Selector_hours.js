@@ -14,7 +14,7 @@ const generateTimeItems = () => {
   return items;
 };
 
-const WorkhoursSelector = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWorkhoursEnd, generateTimeItems, pickerSelectStyles }) => {
+const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWorkhoursEnd, workhours, setWorkhours }) => {
   return (
     <>
       <RNPickerSelect
@@ -58,4 +58,4 @@ const pickerSelectStyles = StyleSheet.create({
   },
 })
 
-export default WorkhoursSelector;
+export default SelectorHours;

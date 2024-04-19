@@ -3,6 +3,8 @@ import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-nat
 import RNPickerSelect from 'react-native-picker-select';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import SelectorCity from '../innerCoponents/Selector_city';
+import SelectorCategory from './../innerCoponents/Selector_category';
 
 const generateTimeItems = () => {
   let items = [];
@@ -65,65 +67,8 @@ const AddAdsenseScreen = () => {
     <ScrollView>
       < View style={styles.container} >
 
-        <RNPickerSelect
-          onValueChange={(value) => setCity(value)}
-          placeholder={{ label: 'Выберите город', value: null }}
-          items={[
-            { label: 'Ташкент', value: 'Ташкент' },
-            { label: 'Ташкентская обл', value: 'Ташкентская обл' },
-            { label: 'Самарканд', value: 'Самарканд' },
-            { label: 'Наманган', value: 'Наманган' },
-            { label: 'Андижан', value: 'Андижан' },
-            { label: 'Фергана', value: 'Фергана' },
-            { label: 'Бухара', value: 'Бухара' },
-            { label: 'Хива', value: 'Хива' },
-            { label: 'Ургенч', value: 'Ургенч' },
-            { label: 'Нукус', value: 'Нукус' },
-            { label: 'Карши', value: 'Карши' },
-            { label: 'Гулистан', value: 'Гулистан' },
-            { label: 'Джизак', value: 'Джизак' },
-            { label: 'Термез', value: 'Термез' },
-            { label: 'Шахрисабз', value: 'Шахрисабз' },
-            { label: 'Сырдарья', value: 'Сырдарья' },
-            // Add more cities as needed
-          ]}
-          value={city}
-          style={pickerSelectStyles}
-        />
-        <RNPickerSelect
-          onValueChange={(value) => setCategory(value)}
-          placeholder={{ label: 'Выберите категорию', value: null }}
-          items={[
-            { label: 'Фитнес', value: 'Фитнес' },
-            { label: 'Бани, сауны', value: 'Бани, сауны' },
-            { label: 'Пирсинг', value: 'Пирсинг' },
-            { label: 'Языковая школа', value: 'Языковая школа' },
-            { label: 'Коворкинг', value: 'Коворкинг' },
-            { label: 'Массаж', value: 'Массаж' },
-            { label: 'Психология', value: 'Психология' },
-            { label: 'Парикмахерские услуги', value: 'Парикмахерские услуги' },
-            { label: 'Ногтевой сервис', value: 'Ногтевой сервис' },
-            { label: 'Брови', value: 'Брови' },
-            { label: 'Татуаж, тату', value: 'Татуаж, тату' },
-            { label: 'СПА', value: 'СПА' },
-            { label: 'Подология', value: 'Подология' },
-            { label: 'Депиляция, эпиляция', value: 'Депиляция, эпиляция' },
-            { label: 'Репетитор', value: 'Репетитор' },
-            { label: 'Ресницы', value: 'Ресницы' },
-            { label: 'Курсы', value: 'Курсы' },
-            { label: 'Прочие', value: 'Прочие' },
-            { label: 'Аренда', value: 'Аренда' },
-            { label: 'Косметология, уход', value: 'Косметология, уход' },
-            { label: 'Стоматология', value: 'Стоматология' },
-            { label: 'Ветеринария', value: 'Ветеринария' },
-            { label: 'Визаж', value: 'Визаж' },
-            { label: 'Груминг', value: 'Груминг' },
-            { label: 'Усы, борода', value: 'Усы, борода' },
-            { label: 'Барбершоп', value: 'Барбершоп' },
-          ]}
-          value={category}
-          style={pickerSelectStyles}
-        />
+        <SelectorCity city={city} setCity={setCity} />
+        <SelectorCategory category={category} setCategory={setCategory} />
 
         <RNPickerSelect
           onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}

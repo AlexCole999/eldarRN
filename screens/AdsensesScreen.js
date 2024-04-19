@@ -73,7 +73,7 @@ const AdsensesScreen = () => {
       return (
         <TouchableOpacity
           key={item.id}
-          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.serviceParams })}
+          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList })}
         >
           <View style={styles.itemContainer}>
             <Text>Пользователь: {item.user}</Text>
@@ -82,7 +82,7 @@ const AdsensesScreen = () => {
             <Text>Контактный телефон: {item.phone}</Text>
             <Text>Адрес: {item.address}</Text>
             <Text>Часы работы: {item.workhours}</Text>
-            {item.serviceParams.map((x, i) =>
+            {item.servicesList.map((x, i) =>
               < View key={i} style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
                 <Text style={{ marginHorizontal: 20 }}>Услуга {i + 1}</Text>
                 <Text style={{ marginHorizontal: 20 }}>Часы {x.hours}</Text>
@@ -112,7 +112,7 @@ const AdsensesScreen = () => {
           phone: item.phone,
           address: item.address,
           workhours: item.workhours,
-          serviceParams: item.serviceParams
+          servicesList: item.servicesList
         }));
         setData(objects);
       });
@@ -208,7 +208,7 @@ const AdsensesScreen = () => {
           address: item.address,
           workhours: item.workhours,
           services: item.services,
-          serviceParams: item.serviceParams
+          servicesList: item.servicesList
         }));
         setData(objects);
         setRefreshing(false);

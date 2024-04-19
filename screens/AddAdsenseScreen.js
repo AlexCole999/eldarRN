@@ -17,7 +17,7 @@ const AddAdsenseScreen = () => {
   const [workhoursEnd, setWorkhoursEnd] = useState('');
   const [workhours, setWorkhours] = useState('');
   const [services, setServices] = useState('');
-  const [serviceParams, setServiceParams] = useState([]);
+  const [servicesList, setServicesList] = useState([]);
   const [selectedHours, setSelectedHours] = useState(null);
   const [price, setPrice] = useState('');
 
@@ -34,8 +34,8 @@ const AddAdsenseScreen = () => {
 
   const addServiceParam = () => {
     if (selectedHours && price) {
-      const newServiceParams = [...serviceParams, { hours: selectedHours, price }];
-      setServiceParams(newServiceParams);
+      const newServiceParams = [...servicesList, { hours: selectedHours, price }];
+      setServicesList(newServiceParams);
       setSelectedHours(null);
       setPrice('');
     }
@@ -44,7 +44,7 @@ const AddAdsenseScreen = () => {
   const submitAdsense = async () => {
     try {
       await axios.post('http://192.168.1.102:3000/adsenses', {
-        user, category, city, phone, address, workhours, serviceParams
+        user, category, city, phone, address, workhours, servicesList
       });
       alert('done')
     } catch (error) {
@@ -81,7 +81,7 @@ const AddAdsenseScreen = () => {
 
 
         {
-          serviceParams.map((param, index) => (
+          servicesList.map((param, index) => (
             <View key={index} style={styles.serviceParam}>
               <Text>{param.hours} часа - {param.price}</Text>
             </View>

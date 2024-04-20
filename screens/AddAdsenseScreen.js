@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
@@ -17,7 +17,7 @@ const AddAdsenseScreen = () => {
   const [address, setAddress] = useState('');
   const [workhours, setWorkhours] = useState('');
   const [servicesList, setServicesList] = useState([]);
-  const [images, setImages] = useState([]); // State for selected images
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     async function userCheckUp() {
@@ -30,14 +30,19 @@ const AddAdsenseScreen = () => {
   }, []);
 
   const selectImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 1,
-    });
+    try {
+      let result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0.75, // Качество изображения (от 0 до 1)
+        allowsEditing: true, // Разрешить редактирование изображения перед выбором
+        maxWidth: 650, // Максимальная ширина изображения
+      });
 
-    if (!result.cancelled) {
-      setImages([...images, result.assets[0].uri]); // Add selected image URI to images array
-      console.log(result.assets[0].uri)
+      if (!result.cancelled) {
+        setImages([...images, result.assets[0].uri]);
+      }
+    } catch (error) {
+      console.error('Ошибка при выборе изображения:', error);
     }
   };
 
@@ -72,16 +77,19 @@ const AddAdsenseScreen = () => {
           <Text style={styles.imagePickerButtonText}>Выбрать изображение</Text>
         </TouchableOpacity>
 
-        <View style={styles.imageList}>
-          {images.map((imageUri, index) => (
-            <View key={index} style={styles.imageContainer}>
-              <Image source={{ uri: imageUri }} style={styles.image} />
+        <FlatList
+          horizontal
+          data={images}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => (
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: item }} style={styles.image} />
               <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeImageButton}>
                 <Text style={styles.removeImageButtonText}>Удалить</Text>
               </TouchableOpacity>
             </View>
-          ))}
-        </View>
+          )}
+        />
       </View>
 
       <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
@@ -114,11 +122,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
     fontWeight: 'bold',
-  },
-  imageList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 20,
   },
   imageContainer: {
     margin: 5,

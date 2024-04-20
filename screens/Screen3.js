@@ -1,40 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
+import { StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import * as ImagePicker from 'expo-image-picker';
+import { SaveFormat, manipulateAsync } from 'expo-image-manipulator';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import SelectorCity from '../innerCoponents/Selector_city';
-import SelectorCategory from './../innerCoponents/Selector_category';
-import SelectorHours from '../innerCoponents/Selector_hours';
-import SelectorServices from '../innerCoponents/Selector_services';
+const Screen3 = () => {
 
-const AddAdsenseScreen = () => {
-  const [user, setUser] = useState('default');
-  const [category, setCategory] = useState('');
-  const [city, setCity] = useState('');
-  const [phone, setPhone] = useState('');
-  const [address, setAddress] = useState('');
-  const [workhours, setWorkhours] = useState('');
-  const [servicesList, setServicesList] = useState([]);
   const [images, setImages] = useState([]);
-
-  useEffect(() => {
-    async function userCheckUp() {
-      let userDataString = await AsyncStorage.getItem('userData');
-      userDataString = JSON.parse(userDataString);
-      console.log(userDataString);
-      await setUser(userDataString.phone);
-    }
-    userCheckUp();
-  }, []);
 
   const selectImage = async () => {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
-        multiple: true, // Allow multiple files selection
+        multiple: true, // Разрешаем выбор нескольких файлов
       });
       if (!result.cancelled) {
         for (const photo of result.assets) {
@@ -49,123 +30,128 @@ const AddAdsenseScreen = () => {
     } catch (err) {
       console.error('Ошибка при выборе изображения:', err);
     }
-    console.log('pick');
+    console.log('pick')
   };
 
   const removeImage = (index) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
+    Alert.alert(
+      'Удаление изображения',
+      'Вы уверены, что хотите удалить изображение?',
+      [
+        {
+          text: 'Да',
+          onPress: () => {
+            const newImages = images.filter((image, i) => i !== index);
+            setImages(newImages);
+          }
+        },
+        {
+          text: 'Нет',
+          onPress: () => console.log('Отмена удаления'),
+          style: 'cancel',
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
-  const submitAdsense = async () => {
+  const uploadImages = async () => {
     try {
-      await axios.post('http://192.168.1.102:3000/adsenses', {
-        user, category, city, phone, address, workhours, servicesList, images
-      });
-      alert('done');
-    } catch (error) {
-      console.error(error);
+
+      const userData = await AsyncStorage.getItem('userData')
+
+      const results = [];
+      const paths = [];
+
+      for (const image of images) {
+        let imageParsedLength = image.split('/').length;
+        let imageName = image.split('/')[imageParsedLength - 1];
+
+        let formData = new FormData();
+
+        formData.append('user', userData);
+        formData.append('image', {
+          uri: image,
+          type: 'image/jpeg',
+          name: imageName,
+        });
+
+        let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        results.push(response.data.message.status);
+        paths.push(response.data.message.paths);
+      }
+
+      Alert.alert('Успешно', 'Изображения успешно загружены');
+      console.log(paths.join('\n'));
+    } catch (err) {
+      console.error('Ошибка при загрузке изображения:', err);
+      Alert.alert('Error', 'Ошибка при загрузке изображения');
     }
   };
 
   return (
-    <ScrollView>
-      <View style={styles.container}>
-        <SelectorCity city={city} setCity={setCity} />
-        <SelectorCategory category={category} setCategory={setCategory} />
-        <SelectorHours setWorkhours={setWorkhours} />
-        <TextInput style={styles.input} placeholder="Телефон" onChangeText={setPhone} value={phone} />
-        <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
-        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-
-        <TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
-          <Text style={styles.imagePickerButtonText}>Выбрать изображение</Text>
+    <ScrollView contentContainerStyle={styles.container}>
+      <ScrollView horizontal style={styles.imageScrollView}>
+        {images.map((image, index) => (
+          <TouchableOpacity key={index} onPress={() => removeImage(index)}>
+            <Image source={{ uri: image }} style={styles.image} />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+      <View style={styles.buttonWrapper}>
+        <TouchableOpacity style={styles.button} onPress={selectImage}>
+          <Text style={styles.buttonText}>Добавить фото</Text>
         </TouchableOpacity>
-
-        <View style={styles.imageList}>
-          {images.map((imageUri, index) => (
-            <View key={index} style={styles.imageContainer}>
-              <Image source={{ uri: imageUri }} style={styles.image} />
-              <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeImageButton}>
-                <Text style={styles.removeImageButtonText}>Удалить</Text>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+        <TouchableOpacity
+          style={[styles.button, { opacity: images.length === 0 ? 0.5 : 1 }]}
+          onPress={uploadImages}
+          disabled={images.length === 0}
+        >
+          <Text style={styles.buttonText}>Загрузить</Text>
+        </TouchableOpacity>
       </View>
-
-      <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
-        <Text style={styles.sendButtonText}>Добавить объявление</Text>
-      </TouchableOpacity>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
     paddingHorizontal: 20,
-    display: 'flex',
-    flexDirection: 'column',
   },
-  input: {
-    height: 40,
-    width: '100%',
-    borderColor: 'grey',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-  imagePickerButton: {
-    backgroundColor: 'lightblue',
-    padding: 10,
-    marginBottom: 10,
-  },
-  imagePickerButtonText: {
-    textAlign: 'center',
-    color: 'black',
-    fontWeight: 'bold',
-  },
-  imageList: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    marginBottom: 20,
-  },
-  imageContainer: {
-    margin: 5,
-    position: 'relative',
+  scrollView: {
+    height: 125,
   },
   image: {
-    width: 100,
-    height: 100,
-    resizeMode: 'cover',
+    width: 125,
+    height: 125,
     borderRadius: 5,
+    marginHorizontal: 5,
   },
-  removeImageButton: {
-    position: 'absolute',
-    top: 0,
-    right: 0,
-    backgroundColor: 'red',
-    padding: 5,
-    borderRadius: 5,
+  buttonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%',
+    marginTop: 10,
   },
-  removeImageButtonText: {
-    color: 'white',
-    fontSize: 12,
-  },
-  sendButton: {
-    marginTop: 35,
-    backgroundColor: 'green',
+  button: {
+    backgroundColor: 'blue',
     paddingVertical: 10,
     paddingHorizontal: 20,
+    borderRadius: 5,
   },
-  sendButtonText: {
-    color: 'white',
+  buttonText: {
+    color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
     textAlign: 'center',
-    textTransform: 'uppercase',
   },
 });
 
-export default AddAdsenseScreen;
+export default Screen3;

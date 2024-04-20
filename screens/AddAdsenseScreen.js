@@ -2,12 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { View, Button, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
-import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
 
 import SelectorCity from '../innerCoponents/Selector_city';
 import SelectorCategory from './../innerCoponents/Selector_category';
 import SelectorHours from '../innerCoponents/Selector_hours';
 import SelectorServices from '../innerCoponents/Selector_services';
+import SelectorImages from '../innerCoponents/Selector_images';
+
 
 const AddAdsenseScreen = () => {
   const [user, setUser] = useState('default');
@@ -29,33 +30,12 @@ const AddAdsenseScreen = () => {
     userCheckUp();
   }, []);
 
-  const selectImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0.75, // Качество изображения (от 0 до 1)
-        allowsEditing: true, // Разрешить редактирование изображения перед выбором
-        maxWidth: 650, // Максимальная ширина изображения
-      });
 
-      if (!result.cancelled) {
-        setImages([...images, result.assets[0].uri]);
-      }
-    } catch (error) {
-      console.error('Ошибка при выборе изображения:', error);
-    }
-  };
-
-  const removeImage = (index) => {
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
-  };
 
   const submitAdsense = async () => {
     try {
       await axios.post('http://192.168.1.102:3000/adsenses', {
-        user, category, city, phone, address, workhours, servicesList, images
+        user, category, city, phone, address, workhours, servicesList
       });
       alert('done');
     } catch (error) {
@@ -73,21 +53,7 @@ const AddAdsenseScreen = () => {
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
 
-        <FlatList
-          horizontal
-          data={images}
-          keyExtractor={(item, index) => index.toString()}
-          renderItem={({ item, index }) => (
-            <View style={styles.imageContainer}>
-              <Image source={{ uri: item }} style={styles.image} />
-              <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeImageButton}>
-                <Text style={styles.removeImageButtonText}>Удалить</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
-
-        <Button title="Добавить изображение" onPress={selectImage} />
+        <SelectorImages images={images} setImages={setImages} />
 
 
       </View>

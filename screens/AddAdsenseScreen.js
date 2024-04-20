@@ -35,7 +35,7 @@ const AddAdsenseScreen = () => {
   const submitAdsense = async () => {
     try {
       await axios.post('http://192.168.1.102:3000/adsenses', {
-        user, category, city, phone, address, workhours, servicesList
+        user, category, city, phone, address, workhours, servicesList, images
       });
       alert('done');
     } catch (error) {
@@ -68,6 +68,7 @@ const AddAdsenseScreen = () => {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
+    paddingTop: 15,
     display: 'flex',
     flexDirection: 'column',
   },

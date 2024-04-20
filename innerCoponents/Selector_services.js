@@ -86,7 +86,7 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
           <Button title="Добавить услугу" onPress={addNewServiceParam} />
         </>
       )}
-      {!showInputs && <Button title="Новая услуга +" onPress={() => setShowInputs(true)} />}
+      {!showInputs && <Button title="Добавить услугу" onPress={() => setShowInputs(true)} />}
     </View>
   );
 };

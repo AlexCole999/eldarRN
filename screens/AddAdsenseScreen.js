@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { View, Button, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, FlatList } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
@@ -73,10 +73,6 @@ const AddAdsenseScreen = () => {
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
 
-        <TouchableOpacity style={styles.imagePickerButton} onPress={selectImage}>
-          <Text style={styles.imagePickerButtonText}>Выбрать изображение</Text>
-        </TouchableOpacity>
-
         <FlatList
           horizontal
           data={images}
@@ -90,6 +86,10 @@ const AddAdsenseScreen = () => {
             </View>
           )}
         />
+
+        <Button title="Добавить изображение" onPress={selectImage} />
+
+
       </View>
 
       <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>

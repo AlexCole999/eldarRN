@@ -76,6 +76,10 @@ const Screen3 = () => {
           name: imageName,
         });
 
+
+        console.log(formData)
+
+
         let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',

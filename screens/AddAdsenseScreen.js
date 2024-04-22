@@ -52,12 +52,8 @@ const AddAdsenseScreen = () => {
         <TextInput style={styles.input} placeholder="Телефон" onChangeText={setPhone} value={phone} />
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-
         <SelectorImages images={images} setImages={setImages} />
-
-
       </View>
-
       <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
         <Text style={styles.sendButtonText}>Добавить объявление</Text>
       </TouchableOpacity>

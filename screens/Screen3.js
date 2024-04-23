@@ -55,48 +55,82 @@ const Screen3 = () => {
     );
   };
 
+  // const uploadImages = async () => {
+  //   try {
+
+  //     const userData = await AsyncStorage.getItem('userData')
+
+  //     const results = [];
+  //     const paths = [];
+
+  //     for (const image of images) {
+  //       let imageParsedLength = image.split('/').length;
+  //       let imageName = image.split('/')[imageParsedLength - 1];
+
+  //       let formData = new FormData();
+
+  //       formData.append('user', userData);
+  //       formData.append('image', {
+  //         uri: image,
+  //         type: 'image/jpeg',
+  //         name: imageName,
+  //       });
+
+
+  //       console.log(formData)
+
+
+  //       let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
+  //         headers: {
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       });
+
+  //       results.push(response.data.message.status);
+  //       paths.push(response.data.message.paths);
+  //     }
+
+  //     Alert.alert('Успешно', 'Изображения успешно загружены');
+  //     console.log(paths.join('\n'));
+  //   } catch (err) {
+  //     console.error('Ошибка при загрузке изображения:', err);
+  //     Alert.alert('Error', 'Ошибка при загрузке изображения');
+  //   }
+  // };
+
   const uploadImages = async () => {
     try {
 
-      const userData = await AsyncStorage.getItem('userData')
+      const userData = await AsyncStorage.getItem('userData');
 
-      const results = [];
-      const paths = [];
+      const formData = new FormData();
+      formData.append('user', userData);
 
       for (const image of images) {
         let imageParsedLength = image.split('/').length;
         let imageName = image.split('/')[imageParsedLength - 1];
-
-        let formData = new FormData();
-
-        formData.append('user', userData);
-        formData.append('image', {
+        formData.append('images', {
           uri: image,
           type: 'image/jpeg',
           name: imageName,
         });
-
-
-        console.log(formData)
-
-
-        let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        results.push(response.data.message.status);
-        paths.push(response.data.message.paths);
       }
 
+      let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       Alert.alert('Успешно', 'Изображения успешно загружены');
-      console.log(paths.join('\n'));
+      console.log(response.data.paths);
     } catch (err) {
-      console.error('Ошибка при загрузке изображения:', err);
-      Alert.alert('Error', 'Ошибка при загрузке изображения');
+      if (err.message == 'Network Error') { Alert.alert('Плохой интернет', 'Попробуйте отправить еще раз'); }
+      else Alert.alert('Ошибка', 'Ошибка при загрузке изображения');
+      console.error('Ошибка при загрузке изображения:', err.message);
     }
   };
+
 
   return (
     <ScrollView contentContainerStyle={styles.container}>

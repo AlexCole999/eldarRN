@@ -110,6 +110,9 @@ const Screen3 = () => {
           <Text style={styles.buttonText}>Загрузить</Text>
         </TouchableOpacity>
       </View>
+      <Image style={{ width: 100, height: 100 }} source={{ uri: 'http://192.168.1.102:3000/33333684/23-4-2024-22-7-27-0152-33333684.jpg' }} />
+      <Text >123123
+      </Text >
     </ScrollView>
   );
 };

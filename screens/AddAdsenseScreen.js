@@ -34,10 +34,11 @@ const AddAdsenseScreen = () => {
 
   const submitAdsense = async () => {
     try {
-      await axios.post('http://192.168.1.102:3000/adsenses', {
-        user, category, city, phone, address, workhours, servicesList, images
+      let a = await axios.post('http://192.168.1.102:3000/newAdsense', {
+        user, category, city, phone, address, workhours, servicesList
       });
       alert('done');
+      console.log(a.data.adsenseId)
     } catch (error) {
       console.error(error);
     }

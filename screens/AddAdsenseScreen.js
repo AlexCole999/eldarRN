@@ -44,8 +44,8 @@ const AddAdsenseScreen = () => {
       throw new Error('Вы не зарегистрированы, пройдите регистрацию');
     }
 
-    if (!phone || !city || !address || !workhours) {
-      Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: телефон, город, адрес и часы работы');
+    if (!phone || !city || !address || !workhours || images.length === 0) {
+      Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: телефон, город, адрес, часы работы и минимум одну фотографию');
       return;
     }
 
@@ -64,89 +64,33 @@ const AddAdsenseScreen = () => {
       });
     }
 
-    if (images.length) {
-      axios.post('http://192.168.1.102:3000/upload', formData, {// Загружаем фотографии
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        }
-      })
-        .then((response) => {
-          Alert.alert('Успешно', 'Изображения успешно загружены');
-          setNewAdsenseStages(prevState => ({ ...prevState, imagesUploaded: true }));// показываем статус добавления фотографий
-          let imagesList = response.data.paths;
-          console.log(imagesList)
-          axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
-            user, category, city, phone, address, workhours, servicesList, imagesList
-          })
-            .then((response) => {
+    axios.post('http://192.168.1.102:3000/upload', formData, {// Загружаем фотографии
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    })
+      .then((response) => {
+        Alert.alert('Успешно', 'Изображения успешно загружены');
+        setNewAdsenseStages(prevState => ({ ...prevState, imagesUploaded: true }));// показываем статус добавления фотографий
+        let imagesList = response.data.paths;
+        console.log(imagesList)
+        axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
+          user, category, city, phone, address, workhours, servicesList, imagesList
+        })
+          .then((response) => {
 
-              setNewAdsenseStages(prevState => ({ ...prevState, created: true })); // показываем статус добавления объявления
+            setNewAdsenseStages(prevState => ({ ...prevState, created: true })); // показываем статус добавления объявления
 
-              Alert.alert('Успешно', 'Объявление создано');
+            Alert.alert('Успешно', 'Объявление создано');
 
-              console.log(response.data.adsenseId);
+            console.log(response.data.adsenseId);
 
-            }).catch((error) => {
-              console.error(error);
-            });
-        });
-    }
-    else {
-      axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
-        user, category, city, phone, address, workhours, servicesList
-      })
-        .then((response) => {
-
-          setNewAdsenseStages(prevState => ({ ...prevState, created: true })); // показываем статус добавления объявления
-
-          Alert.alert('Успешно', 'Объявление создано');
-
-          console.log(response.data.adsenseId);
-
-        }).catch((error) => {
-          console.error(error);
-        });
-    }
+          }).catch((error) => {
+            console.error(error);
+          });
+      });
 
   };
-
-  // const uploadImages = async () => {
-  //   try {
-
-  //     const userData = await AsyncStorage.getItem('userData');
-
-  //     if (!userData) {
-  //       Alert.alert('Вы не зарегистрированы', 'Чтобы опубликовать ваше объявление - пройдите регистрацию');
-  //       throw new Error('Вы не зарегистрированы, пройдите регистрацию');
-  //     }
-
-  //     const formData = new FormData();
-  //     formData.append('user', userData);
-
-  //     for (const image of images) {
-  //       let imageParsedLength = image.split('/').length;
-  //       let imageName = image.split('/')[imageParsedLength - 1];
-  //       formData.append('images', {
-  //         uri: image,
-  //         type: 'image/jpeg',
-  //         name: imageName,
-  //       });
-  //     }
-
-  //     let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data',
-  //       },
-  //     });
-
-  //     Alert.alert('Успешно', 'Изображения успешно загружены');
-  //     console.log(response.data.paths);
-  //   } catch (err) {
-  //     if (err.message == 'Network Error') { Alert.alert('Плохой интернет', 'Попробуйте отправить еще раз'); }
-  //     else Alert.alert('Ошибка', 'Ошибка при загрузке изображения');
-  //     console.error('Ошибка при загрузке изображения:', err.message);
-  //   }
-  // };
 
   return (
     <ScrollView>

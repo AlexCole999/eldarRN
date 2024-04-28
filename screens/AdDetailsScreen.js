@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, Image, Text, View } from 'react-native';
 
 
 const AdDetailsScreen = ({ route }) => {
-  const { adId, adUser, adCity, adCategory, adPhone, adAddress, adWorkhours, adServiceParams } = route.params;
+  const { adId, adUser, adCity, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList } = route.params;
 
   return (
     <View style={styles.container}>
@@ -19,6 +19,17 @@ const AdDetailsScreen = ({ route }) => {
           <Text style={{ marginHorizontal: 20 }}>Цена {x.price}</Text>
         </View>
       )}
+      <FlatList
+        data={adImagesList}
+        keyExtractor={(item, index) => index.toString()}
+        horizontal
+        renderItem={({ item }) => (
+
+          <TouchableOpacity onPress={() => console.log(`http://192.168.1.102:3000/${adUser}/${item}`)}>
+            <Image source={{ uri: `http://192.168.1.102:3000/${adUser}/${item}` }} style={{ width: 200, height: 200 }} />
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };

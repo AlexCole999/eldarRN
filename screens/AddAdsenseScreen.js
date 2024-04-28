@@ -20,6 +20,9 @@ const AddAdsenseScreen = () => {
   const [servicesList, setServicesList] = useState([]);
   const [images, setImages] = useState([]);
 
+  const [newAdsenseStatusVisible, setNewAdsenseStatusVisible] = useState(false)
+  const [newAdsenseStages, setNewAdsenseStages] = useState({ created: false, imagesUploaded: false })
+
   useEffect(() => {
     async function userCheckUp() {
       let userDataString = await AsyncStorage.getItem('userData');
@@ -33,54 +36,117 @@ const AddAdsenseScreen = () => {
 
 
   const submitAdsense = async () => {
-    try {
-      let a = await axios.post('http://192.168.1.102:3000/newAdsense', {
-        user, category, city, phone, address, workhours, servicesList
-      });
-      alert('done');
-      console.log(a.data.adsenseId)
-    } catch (error) {
-      console.error(error);
+
+    const userData = await AsyncStorage.getItem('userData'); // Получаем пользователя из AsyncStorage
+
+    if (!userData) {// Если пользователя нет - требуем регистрации
+      Alert.alert('Вы не зарегистрированы', 'Чтобы опубликовать ваше объявление - пройдите регистрацию');
+      throw new Error('Вы не зарегистрированы, пройдите регистрацию');
     }
-  };
 
-  const uploadImages = async () => {
-    try {
+    if (!phone || !city || !address || !workhours) {
+      Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: телефон, город, адрес и часы работы');
+      return;
+    }
 
-      const userData = await AsyncStorage.getItem('userData');
+    setNewAdsenseStatusVisible(true); // Показываем статус отправок
 
-      if (!userData) {
-        Alert.alert('Вы не зарегистрированы', 'Чтобы опубликовать ваше объявление - пройдите регистрацию');
-        throw new Error('Вы не зарегистрированы, пройдите регистрацию');
-      }
+    const formData = new FormData(); // Создаем форму
+    formData.append('user', userData); // Добавляем туда пользователя из AsyncStorage
 
-      const formData = new FormData();
-      formData.append('user', userData);
+    for (const image of images) { // Добавляем картинки в форму
+      let imageParsedLength = image.split('/').length;
+      let imageName = image.split('/')[imageParsedLength - 1];
+      formData.append('images', {
+        uri: image,
+        type: 'image/jpeg',
+        name: imageName,
+      });
+    }
 
-      for (const image of images) {
-        let imageParsedLength = image.split('/').length;
-        let imageName = image.split('/')[imageParsedLength - 1];
-        formData.append('images', {
-          uri: image,
-          type: 'image/jpeg',
-          name: imageName,
-        });
-      }
-
-      let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
+    if (images.length) {
+      axios.post('http://192.168.1.102:3000/upload', formData, {// Загружаем фотографии
         headers: {
           'Content-Type': 'multipart/form-data',
-        },
-      });
+        }
+      })
+        .then((response) => {
+          Alert.alert('Успешно', 'Изображения успешно загружены');
+          setNewAdsenseStages(prevState => ({ ...prevState, imagesUploaded: true }));// показываем статус добавления фотографий
+          let imagesList = response.data.paths;
+          console.log(imagesList)
+          axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
+            user, category, city, phone, address, workhours, servicesList, imagesList
+          })
+            .then((response) => {
 
-      Alert.alert('Успешно', 'Изображения успешно загружены');
-      console.log(response.data.paths);
-    } catch (err) {
-      if (err.message == 'Network Error') { Alert.alert('Плохой интернет', 'Попробуйте отправить еще раз'); }
-      else Alert.alert('Ошибка', 'Ошибка при загрузке изображения');
-      console.error('Ошибка при загрузке изображения:', err.message);
+              setNewAdsenseStages(prevState => ({ ...prevState, created: true })); // показываем статус добавления объявления
+
+              Alert.alert('Успешно', 'Объявление создано');
+
+              console.log(response.data.adsenseId);
+
+            }).catch((error) => {
+              console.error(error);
+            });
+        });
     }
+    else {
+      axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
+        user, category, city, phone, address, workhours, servicesList
+      })
+        .then((response) => {
+
+          setNewAdsenseStages(prevState => ({ ...prevState, created: true })); // показываем статус добавления объявления
+
+          Alert.alert('Успешно', 'Объявление создано');
+
+          console.log(response.data.adsenseId);
+
+        }).catch((error) => {
+          console.error(error);
+        });
+    }
+
   };
+
+  // const uploadImages = async () => {
+  //   try {
+
+  //     const userData = await AsyncStorage.getItem('userData');
+
+  //     if (!userData) {
+  //       Alert.alert('Вы не зарегистрированы', 'Чтобы опубликовать ваше объявление - пройдите регистрацию');
+  //       throw new Error('Вы не зарегистрированы, пройдите регистрацию');
+  //     }
+
+  //     const formData = new FormData();
+  //     formData.append('user', userData);
+
+  //     for (const image of images) {
+  //       let imageParsedLength = image.split('/').length;
+  //       let imageName = image.split('/')[imageParsedLength - 1];
+  //       formData.append('images', {
+  //         uri: image,
+  //         type: 'image/jpeg',
+  //         name: imageName,
+  //       });
+  //     }
+
+  //     let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data',
+  //       },
+  //     });
+
+  //     Alert.alert('Успешно', 'Изображения успешно загружены');
+  //     console.log(response.data.paths);
+  //   } catch (err) {
+  //     if (err.message == 'Network Error') { Alert.alert('Плохой интернет', 'Попробуйте отправить еще раз'); }
+  //     else Alert.alert('Ошибка', 'Ошибка при загрузке изображения');
+  //     console.error('Ошибка при загрузке изображения:', err.message);
+  //   }
+  // };
 
   return (
     <ScrollView>
@@ -92,13 +158,49 @@ const AddAdsenseScreen = () => {
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
-        <TouchableOpacity style={styles.sendButton} onPress={uploadImages}>
+        <TouchableOpacity style={styles.sendButton} onPress={() => console.log('click')}>
           <Text style={styles.sendButtonText}>Custom</Text>
         </TouchableOpacity>
+        {
+          newAdsenseStatusVisible ?
+            <View style={{ paddingTop: 5 }}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: newAdsenseStages.imagesUploaded ? 'rgba(0, 128, 0, 0.5)' : 'rgba(128, 128, 128, 0.5)',
+                  marginRight: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  {newAdsenseStages.imagesUploaded ? <Text style={{ color: 'white' }}>✓</Text> : null}
+                </View>
+                <Text>{newAdsenseStages.imagesUploaded ? 'Фотографии загружены' : 'Фотографии не загружены'}</Text>
+              </View>
+              <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: 5 }}>
+                <View style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 10,
+                  backgroundColor: newAdsenseStages.created ? 'rgba(0, 128, 0, 0.5)' : 'rgba(128, 128, 128, 0.5)',
+                  marginRight: 5,
+                  justifyContent: 'center',
+                  alignItems: 'center'
+                }}>
+                  {newAdsenseStages.created ? <Text style={{ color: 'white' }}>✓</Text> : null}
+                </View>
+                <Text>{newAdsenseStages.created ? 'Объявление добавлено' : 'Объявление не добавлено'}</Text>
+              </View>
+            </View>
+            : null
+        }
       </View>
+
       <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
         <Text style={styles.sendButtonText}>Добавить объявление</Text>
       </TouchableOpacity>
+
     </ScrollView>
   );
 };

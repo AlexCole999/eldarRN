@@ -69,7 +69,7 @@ const AddAdsenseScreen = () => {
       });
     }
 
-    axios.post('http://192.168.1.102:3000/upload', formData, {// Загружаем фотографии
+    axios.post(`${localhosturl}/upload`, formData, {// Загружаем фотографии
       headers: {
         'Content-Type': 'multipart/form-data',
       }
@@ -82,7 +82,7 @@ const AddAdsenseScreen = () => {
         user = JSON.parse(user)
         user = user.phone
         console.log(user)
-        axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
+        axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
           user, category, city, phone, address, workhours, servicesList, imagesList
         })
           .then((response) => {
@@ -117,7 +117,6 @@ const AddAdsenseScreen = () => {
               let some = await AsyncStorage.getItem('userData');
               some = JSON.parse(some)
               console.log(some.phone)
-              console.log(localhosturl)
             }
 
           }>
@@ -126,6 +125,8 @@ const AddAdsenseScreen = () => {
             onPress={async () => {
               const userData = await AsyncStorage.getItem('userData');
               console.log(userData)
+
+              console.log(localhosturl)
             }}>
             Custom
           </Text>

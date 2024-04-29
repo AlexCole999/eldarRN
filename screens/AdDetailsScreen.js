@@ -1,4 +1,5 @@
 import { StyleSheet, FlatList, TouchableOpacity, Image, Text, View } from 'react-native';
+import localhosturl from './../localhoststring';
 
 
 const AdDetailsScreen = ({ route }) => {
@@ -25,8 +26,8 @@ const AdDetailsScreen = ({ route }) => {
         horizontal
         renderItem={({ item }) => (
 
-          <TouchableOpacity onPress={() => console.log(`http://192.168.1.102:3000/${adUser}/${item}`)}>
-            <Image source={{ uri: `http://192.168.1.102:3000/${adUser}/${item}` }} style={{ width: 200, height: 200 }} />
+          <TouchableOpacity onPress={() => console.log(`${localhosturl}/${adUser}/${item}`)}>
+            <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 200, height: 200 }} />
           </TouchableOpacity>
         )}
       />

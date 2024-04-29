@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
+import localhosturl from './../localhoststring';
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
@@ -23,7 +24,7 @@ const ProfileScreen = () => {
           text: 'Очистить',
           onPress: async () => {
             try {
-              await axios.delete('http://192.168.1.102:3000/users');
+              await axios.delete(`${localhosturl}/users`);
               alert('База данных успешно очищена');
             } catch (error) {
               alert('Ошибка при очистке базы данных');
@@ -40,7 +41,7 @@ const ProfileScreen = () => {
     let user = await AsyncStorage.getItem('userData');
     if (user) {
       try {
-        let response = await axios.post('http://192.168.1.102:3000/getUserAdsenses', { user });
+        let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
         console.log(response.data.adsenses);
         setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
       } catch (error) {
@@ -51,7 +52,7 @@ const ProfileScreen = () => {
 
   const handleRegistration = async () => {
     try {
-      await axios.post('http://192.168.1.102:3000/registration', {
+      await axios.post(`${localhosturl}/registration`, {
         name,
         phone,
         password
@@ -121,8 +122,9 @@ const ProfileScreen = () => {
             keyExtractor={(item, index) => index.toString()}
             horizontal
             renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => console.log(`http://192.168.1.102:3000/`)}>
-                <Image source={{ uri: `http://192.168.1.102:3000/${userData?.phone}/${item}` }} style={styles.adImage} />
+              <TouchableOpacity onPress={() => { }
+              }>
+                <Image source={{ uri: `${localhosturl}/${userData?.phone}/${item}` }} style={styles.adImage} />
               </TouchableOpacity>
             )}
           />

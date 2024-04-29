@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, Image, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import localhosturl from './../localhoststring';
 
 const Stack = createStackNavigator();
 
@@ -11,7 +12,7 @@ const AdsensesScreen = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(`http://192.168.1.102:3000/adsenses?page=${count}`)
+    fetch(`${localhosturl}/adsenses?page=${count}`)
       .then((x) => x.json())
       .then((data) => {
         console.log(data)
@@ -100,7 +101,7 @@ const AdsensesScreen = () => {
           onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
         >
           <View style={styles.itemContainer}>
-            {<Image style={{ width: 300, height: 250, borderRadius: 25 }} source={{ uri: `http://192.168.1.102:3000/${item.user}/${item.imagesList[0]}` }} />}
+            {<Image style={{ width: 300, height: 250, borderRadius: 25 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />}
             <Text>Пользователь: {item.user}</Text>
             <Text>Город: {item.city}</Text>
             <Text>Категория: {item.category}</Text>
@@ -129,7 +130,7 @@ const AdsensesScreen = () => {
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetch(`http://192.168.1.102:3000/adsenses?page=${count}`)
+    fetch(`${localhosturl}/adsenses?page=${count}`)
       .then((x) => x.json())
       .then((data) => {
         const objects = data.map((item) => ({

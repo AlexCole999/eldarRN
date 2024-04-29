@@ -8,6 +8,9 @@ import SelectorCategory from './../innerCoponents/Selector_category';
 import SelectorHours from '../innerCoponents/Selector_hours';
 import SelectorServices from '../innerCoponents/Selector_services';
 import SelectorImages from '../innerCoponents/Selector_images';
+import localhosturl from './../localhoststring';
+
+
 
 
 const AddAdsenseScreen = () => {
@@ -114,6 +117,7 @@ const AddAdsenseScreen = () => {
               let some = await AsyncStorage.getItem('userData');
               some = JSON.parse(some)
               console.log(some.phone)
+              console.log(localhosturl)
             }
 
           }>

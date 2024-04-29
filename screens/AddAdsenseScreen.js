@@ -24,13 +24,13 @@ const AddAdsenseScreen = () => {
   const [newAdsenseStages, setNewAdsenseStages] = useState({ created: false, imagesUploaded: false })
 
   useEffect(() => {
-    async function userCheckUp() {
-      let userDataString = await AsyncStorage.getItem('userData');
-      userDataString = JSON.parse(userDataString);
-      console.log(userDataString);
-      await setUser(userDataString?.phone);
-    }
-    userCheckUp();
+    // async function userCheckUp() {
+    //   let userDataString = await AsyncStorage.getItem('userData');
+    //   userDataString = JSON.parse(userDataString);
+    //   console.log(userDataString);
+    //   if (userDataString?.phone){await setUser(userDataString?.phone)};
+    // }
+    // userCheckUp();
   }, []);
 
 
@@ -48,6 +48,8 @@ const AddAdsenseScreen = () => {
       Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: телефон, город, адрес, часы работы и минимум одну фотографию');
       return;
     }
+
+
 
     setNewAdsenseStatusVisible(true); // Показываем статус отправок
 
@@ -69,11 +71,14 @@ const AddAdsenseScreen = () => {
         'Content-Type': 'multipart/form-data',
       }
     })
-      .then((response) => {
+      .then(async (response) => {
         Alert.alert('Успешно', 'Изображения успешно загружены');
         setNewAdsenseStages(prevState => ({ ...prevState, imagesUploaded: true }));// показываем статус добавления фотографий
         let imagesList = response.data.paths;
-        console.log(imagesList)
+        let user = await AsyncStorage.getItem('userData');
+        user = JSON.parse(user)
+        user = user.phone
+        console.log(user)
         axios.post('http://192.168.1.102:3000/newAdsense', { // Создаем новое объявление
           user, category, city, phone, address, workhours, servicesList, imagesList
         })
@@ -102,8 +107,24 @@ const AddAdsenseScreen = () => {
         <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
-        <TouchableOpacity style={styles.sendButton} onPress={() => console.log('click')}>
-          <Text style={styles.sendButtonText}>Custom</Text>
+        <TouchableOpacity
+          style={styles.sendButton}
+          onPress={
+            async () => {
+              let some = await AsyncStorage.getItem('userData');
+              some = JSON.parse(some)
+              console.log(some.phone)
+            }
+
+          }>
+          <Text
+            style={styles.sendButtonText}
+            onPress={async () => {
+              const userData = await AsyncStorage.getItem('userData');
+              console.log(userData)
+            }}>
+            Custom
+          </Text>
         </TouchableOpacity>
         {
           newAdsenseStatusVisible ?

@@ -3,6 +3,7 @@ import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, A
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
+import user2 from '../assets/user2.png'
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
@@ -36,7 +37,7 @@ const ProfileScreen = () => {
     );
   };
 
-  const handleCustom = async () => {
+  const refreshAdsenses = async () => {
 
     let user = await AsyncStorage.getItem('userData');
     if (user) {
@@ -77,15 +78,43 @@ const ProfileScreen = () => {
 
   useEffect(() => {
     loadUserData();
-    handleCustom();
+    refreshAdsenses();
   }, []);
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       {userData ? (
-        <View>
-          <Text style={styles.title}>Имя: {userData?.name}</Text>
-          <Text style={styles.title}>Телефон: {userData?.phone}</Text>
+        <View style={{
+          backgroundColor: 'white',
+          padding: 7,
+          borderRadius: 10,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 5
+        }}>
+          <Image source={{ uri: `http://192.168.1.102:3000/userIcons/user2.png` }}
+            style={{ width: 70, height: 70 }}
+          />
+          <View>
+            <Text style={{
+              textTransform: 'capitalize',
+              fontWeight: '700',
+              letterSpacing: 0.2,
+              fontFamily: 'Roboto',
+              fontSize: 16
+            }}>
+              {userData?.name}
+            </Text>
+            <Text style={{
+              color: 'grey',
+              letterSpacing: 0.2,
+              fontFamily: 'Roboto',
+              fontSize: 14
+            }}>
+              +{userData?.phone}
+            </Text>
+          </View>
         </View>
       ) : (
         <View>
@@ -114,39 +143,132 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         </View>
       )}
-      <Text style={styles.title}>Мои объявления</Text>
-      {adsenses.map(ad => (
-        <View key={ad._id} style={styles.adContainer}>
-          <FlatList
-            data={ad.imagesList}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            renderItem={({ item }) => (
-              <TouchableOpacity onPress={() => { }
-              }>
-                <Image source={{ uri: `${localhosturl}/${userData?.phone}/${item}` }} style={styles.adImage} />
-              </TouchableOpacity>
-            )}
-          />
-          <View style={styles.infoContainer}>
-            <Text style={styles.adText}>Город: {ad.city}</Text>
-            <Text style={styles.adText}>Категория: {ad.category}</Text>
-            <Text style={styles.adText}>Адрес: {ad.address}</Text>
-            <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
-            <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
-            {ad.servicesList.map(service => (
-              <Text key={service.price} style={styles.adText}>
-                Часы: {service.hours}, Цена: {service.price}
-              </Text>
-            ))}
+
+      <View style={{
+        backgroundColor: 'white',
+        marginTop: 20,
+        paddingVertical: 10,
+
+        paddingLeft: 14,
+        borderRadius: 10,
+      }}>
+        <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingBottom: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>
+          Бонусы
+        </Text>
+        <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingVertical: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>Баланс</Text>
+        <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingVertical: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>Скидки</Text>
+        <Text style={{
+          paddingTop: 7,
+          fontSize: 16,
+          fontWeight: 500,
+        }}>Чаты</Text>
+      </View>
+
+      <View style={{
+        backgroundColor: 'white',
+        marginTop: 20,
+        paddingVertical: 10,
+
+        paddingLeft: 14,
+        borderRadius: 10,
+      }}>
+        <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingBottom: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>
+          Поделиться приложением
+        </Text>
+        <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingVertical: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>Язык приложения</Text>
+        <Text style={{
+          paddingTop: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>Служба поддержки</Text>
+      </View>
+
+      <View style={{
+        backgroundColor: 'white',
+        marginTop: 20,
+        paddingVertical: 10,
+
+        paddingLeft: 14,
+        borderRadius: 10,
+      }}>
+        <Text style={{
+          fontWeight: 500,
+          fontSize: 16,
+        }}>
+          Версия приложения 1.0.0
+        </Text>
+      </View>
+
+      <View style={{
+        backgroundColor: 'white',
+        marginTop: 20,
+        paddingTop: 20,
+        borderRadius: 10,
+      }}>
+        <Text style={styles.title}>Мои объявления</Text>
+        {adsenses.map(ad => (
+          <View key={ad._id} style={styles.adContainer}>
+            <FlatList
+              data={ad.imagesList}
+              keyExtractor={(item, index) => index.toString()}
+              horizontal
+              renderItem={({ item }) => (
+                <TouchableOpacity onPress={() => { }
+                }>
+                  <Image source={{ uri: `${localhosturl}/${userData?.phone}/${item}` }} style={styles.adImage} />
+                </TouchableOpacity>
+              )}
+            />
+            <View style={styles.infoContainer}>
+              <Text style={styles.adText}>Город: {ad.city}</Text>
+              <Text style={styles.adText}>Категория: {ad.category}</Text>
+              <Text style={styles.adText}>Адрес: {ad.address}</Text>
+              <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
+              <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
+              {ad.servicesList.map(service => (
+                <Text key={service.price} style={styles.adText}>
+                  Часы: {service.hours}, Цена: {service.price}
+                </Text>
+              ))}
+            </View>
           </View>
-        </View>
-      ))}
+        ))}
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleClearDatabase}>
         <Text style={styles.buttonText}>Очистить базу данных</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleCustom}>
+      <TouchableOpacity style={styles.button} onPress={refreshAdsenses}>
         <Text style={styles.buttonText}>Обновить данные объявлений</Text>
       </TouchableOpacity>
       <TouchableOpacity
@@ -165,9 +287,9 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#f3f2f8',
     paddingHorizontal: 20,
-    paddingTop: 20,
+    paddingTop: 10,
   },
   title: {
     fontSize: 24,
@@ -197,9 +319,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   adContainer: {
-    borderWidth: 1,
-    borderColor: 'lightgray',
-    borderRadius: 10,
     padding: 10,
     marginBottom: 20,
   },

@@ -27,50 +27,39 @@ export default function App() {
   );
 }
 
+const navigationOptions = {
+  headerStyle: {
+    backgroundColor: '#f3f2f8',
+  },
+  headerTintColor: 'black',
+  headerTitleStyle: {
+    fontWeight: 700,
+    fontSize: 14,
+    letterSpacing: 0.2,
+    fontFamily: 'Roboto'
+  },
+  headerTitleAlign: "center"
+};
+
 const Tabs = () => {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Главная" component={AdsensesScreen} />
-      <Tab.Screen name="Добавить объявление" component={AddAdsenseScreen} />
-      <Tab.Screen name="Мои записи" component={Screen3} />
-      <Tab.Screen name="Профиль" component={ProfileScreen} />
+      <Tab.Screen
+        options={navigationOptions} name="Главная"
+        component={AdsensesScreen} />
+      <Tab.Screen
+        options={navigationOptions}
+        name="Добавить объявление"
+        component={AddAdsenseScreen} />
+      <Tab.Screen
+        options={navigationOptions}
+        name="Мои записи"
+        component={Screen3} />
+      <Tab.Screen
+        options={navigationOptions}
+        name="Профиль"
+        component={ProfileScreen} />
     </Tab.Navigator>
   );
 };
-
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    marginBottom: 15,
-    width: '100%',
-  },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
 

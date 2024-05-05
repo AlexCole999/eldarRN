@@ -79,11 +79,29 @@ const AdsensesScreen = () => {
     );
   };
 
+  const data1 = Array.from({ length: 6 }, (_, index) => ({ key: String(index) }));
+
   const MapComponent = () => {
-    return (
-      <View style={styles.componentContainer}>
-        <Text style={styles.componentText}>Custom Map Component</Text>
+    const renderItem = ({ item }) => (
+      <View>
+        <View style={styles.column}>
+          <View style={styles.item}>
+            <Text style={styles.category}>Category1</Text>
+          </View>
+          <View style={styles.item}>
+            <Text style={styles.category}>Category2</Text>
+          </View>
+        </View>
       </View>
+    );
+
+    return (
+      <FlatList
+        data={data1}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.key}
+        horizontal
+      />
     );
   };
 
@@ -101,7 +119,7 @@ const AdsensesScreen = () => {
           onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
         >
           <View style={styles.itemContainer}>
-            {<Image style={{ width: 300, height: 250, borderRadius: 25 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />}
+            {<Image style={{ width: "90%", height: 300, borderRadius: 15 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />}
             <Text>Пользователь: {item.user}</Text>
             <Text>Город: {item.city}</Text>
             <Text>Категория: {item.category}</Text>
@@ -150,11 +168,30 @@ const AdsensesScreen = () => {
       });
   };
 
+
+
   const styles = StyleSheet.create({
     componentContainer: {
       padding: 20,
       borderBottomWidth: 1,
       borderBottomColor: '#ccc',
+    },
+    column: {
+      paddingHorizontal: 5,
+    },
+    item: {
+      width: 250,
+      height: 150,
+      backgroundColor: 'gray',
+      borderRadius: 10,
+      marginBottom: 10,
+      padding: 10,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    category: {
+      textAlign: 'center',
     },
     componentText: {
       fontSize: 16,

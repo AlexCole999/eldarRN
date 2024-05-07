@@ -1,155 +1,208 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { StyleSheet, Text, View, Image, Alert, TouchableOpacity, ScrollView } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
-import { SaveFormat, manipulateAsync } from 'expo-image-manipulator';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as FileSystem from 'expo-file-system';
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
 
 const Screen3 = () => {
+  const [currentScreen, setCurrentScreen] = useState('specialization');
+  const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const [city, setCity] = useState('');
+  const [companyName, setCompanyName] = useState('');
 
-  const [images, setImages] = useState([]);
-
-  const selectImage = async () => {
-    try {
-      let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 1,
-        multiple: true, // Разрешаем выбор нескольких файлов
-      });
-      if (!result.cancelled) {
-        for (const photo of result.assets) {
-          const manipulatedImage = await manipulateAsync(
-            photo.uri,
-            [{ resize: { width: 500 } }],
-            { compress: 0.75, format: SaveFormat.JPEG }
-          );
-          setImages(prevImages => [...prevImages, manipulatedImage.uri]);
-        }
-      }
-    } catch (err) {
-      console.error('Ошибка при выборе изображения:', err);
-    }
-    console.log('pick')
+  const handleSpecializationClick = (specialization) => {
+    setSelectedSpecialization(specialization);
+    setCurrentScreen('information');
   };
 
-  const removeImage = (index) => {
-    Alert.alert(
-      'Удаление изображения',
-      'Вы уверены, что хотите удалить изображение?',
-      [
-        {
-          text: 'Да',
-          onPress: () => {
-            const newImages = images.filter((image, i) => i !== index);
-            setImages(newImages);
-          }
-        },
-        {
-          text: 'Нет',
-          onPress: () => console.log('Отмена удаления'),
-          style: 'cancel',
-        },
-      ],
-      { cancelable: false }
-    );
+  const handleNext = () => {
+    // Можно добавить дополнительную логику, если нужно
+    setCurrentScreen('result');
   };
 
-  const uploadImages = async () => {
-    try {
+  const services = [
+    {
+      name: 'Фитнес',
+      icon: 'fitness.png',
+      description: 'Тренажерные залы, спортивные секции'
+    },
+    {
+      name: 'Бани, сауны',
+      icon: 'baths.png',
+      description: 'Бани, сауны, парные'
+    },
+    {
+      name: 'Пирсинг',
+      icon: 'piercing.png',
+      description: 'Проколы ушей, носа, пупка и других частей тела'
+    },
+    {
+      name: 'Языковая школа',
+      icon: 'language-school.png',
+      description: 'Обучение иностранным языкам'
+    },
+    {
+      name: 'Коворкинг',
+      icon: 'coworking.png',
+      description: 'Общие офисные пространства'
+    },
+    {
+      name: 'Массаж',
+      icon: 'massage.png',
+      description: 'Профессиональные массажные услуги'
+    },
+    {
+      name: 'Психология',
+      icon: 'psychology.png',
+      description: 'Консультации психологов, психотерапия'
+    },
+    {
+      name: 'Татуаж, тату',
+      icon: 'tattoo.png',
+      description: 'Постоянный макияж, татуировки'
+    },
+    {
+      name: 'СПА',
+      icon: 'spa.png',
+      description: 'Спа-процедуры, массаж, уход за телом'
+    },
+    {
+      name: 'Подология',
+      icon: 'podiatry.png',
+      description: 'Лечение заболеваний стопы, уход за ногтями'
+    },
+    {
+      name: 'Депиляция, эпиляция',
+      icon: 'waxing.png',
+      description: 'Удаление волос с помощью воска, сахара или лазера'
+    },
+    {
+      name: 'Репетитор',
+      icon: 'tutoring.png',
+      description: 'Частные уроки, подготовка к экзаменам'
+    },
 
-      const userData = await AsyncStorage.getItem('userData');
+    {
+      name: 'Курсы',
+      icon: 'courses.png',
+      description: 'Обучающие курсы по различным темам'
+    },
+    {
+      name: 'Косметология, уход',
+      icon: 'cosmetology.png',
+      description: 'Процедуры по уходу за кожей лица и тела'
+    },
+    {
+      name: 'Брови',
+      icon: 'eyelashes.png',
+      description: 'Коррекция и окрашивание бровей'
+    },
+    {
+      name: 'Ресницы',
+      icon: 'eyelashes.png',
+      description: 'Наращивание и окрашивание ресниц'
+    },
 
-      const formData = new FormData();
-      formData.append('user', userData);
-
-      for (const image of images) {
-        let imageParsedLength = image.split('/').length;
-        let imageName = image.split('/')[imageParsedLength - 1];
-        formData.append('images', {
-          uri: image,
-          type: 'image/jpeg',
-          name: imageName,
-        });
-      }
-
-      let response = await axios.post('http://192.168.1.102:3000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      Alert.alert('Успешно', 'Изображения успешно загружены');
-      console.log(response.data.paths);
-    } catch (err) {
-      if (err.message == 'Network Error') { Alert.alert('Плохой интернет', 'Попробуйте отправить еще раз'); }
-      else Alert.alert('Ошибка', 'Ошибка при загрузке изображения');
-      console.error('Ошибка при загрузке изображения:', err.message);
-    }
-  };
+    {
+      name: 'Ногтевой сервис',
+      icon: 'nails.png',
+      description: 'Маникюр, педикюр, наращивание ногтей'
+    },
+    {
+      name: 'Стоматология',
+      icon: 'dentistry.png',
+      description: 'Стоматологические услуги, лечение зубов'
+    },
+    {
+      name: 'Ветеринария',
+      icon: 'veterinary.png',
+      description: 'Услуги ветеринарного врача'
+    },
+    {
+      name: 'Визаж',
+      icon: 'makeup.png',
+      description: 'Подготовка к мероприятиям, макияж'
+    },
+    {
+      name: 'Груминг',
+      icon: 'grooming.png',
+      description: 'Уход за животными, стрижка и купание'
+    },
+    {
+      name: 'Парикмахерские услуги',
+      icon: 'haircut.png',
+      description: 'Стрижки, укладки, окрашивание волос'
+    },
+    {
+      name: 'Усы, борода',
+      icon: 'beard.png',
+      description: 'Стрижка, уход и окрашивание усов и бороды'
+    },
+    {
+      name: 'Барбершоп',
+      icon: 'barbershop.png',
+      description: 'Мужская стрижка, бритье, уход за волосами'
+    },
+    {
+      name: 'Прочие',
+      icon: 'other.png',
+      description: 'Прочие услуги, не вошедшие в основные категории'
+    },
+  ];
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <ScrollView horizontal style={styles.imageScrollView}>
-        {images.map((image, index) => (
-          <TouchableOpacity key={index} onPress={() => removeImage(index)}>
-            <Image source={{ uri: image }} style={styles.image} />
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-      <View style={styles.buttonWrapper}>
-        <TouchableOpacity style={styles.button} onPress={selectImage}>
-          <Text style={styles.buttonText}>Добавить фото</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={[styles.button, { opacity: images.length === 0 ? 0.5 : 1 }]}
-          onPress={uploadImages}
-          disabled={images.length === 0}
-        >
-          <Text style={styles.buttonText}>Загрузить</Text>
-        </TouchableOpacity>
-      </View>
-      <Image style={{ width: 100, height: 100 }} source={{ uri: 'http://192.168.1.102:3000/0000/23-4-2024-22-7-27-0152-33333684.jpg' }} />
-      <Text >123123
-      </Text >
+    <ScrollView style={{ paddingHorizontal: 20 }}>
+      <Text style={{ textAlign: 'center', paddingTop: 20, fontSize: 20, fontWeight: 800 }}>Выберите специализацию</Text>
+      {currentScreen === 'specialization' && (
+        <View>
+          <View style={{ marginVertical: 20 }}>
+            {services.map((service, index) => (
+              <View key={index} style={{ marginTop: 20 }}>
+                <TouchableOpacity
+                  style={{
+                    backgroundColor: 'white',
+                    padding: 12,
+                    borderRadius: 10,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 10
+                  }}
+                  onPress={() => handleSpecializationClick(service.name)}>
+                  <Image
+                    source={{ uri: `http://192.168.1.102:3000/categoryIcons/${service.icon}` }}
+                    style={{ width: 40, height: 40 }}
+                  />
+                  <View style={{ maxWidth: '80%' }}>
+                    <Text>{service.name}</Text>
+                    <Text style={{ color: 'grey', fontSize: 12 }}>{service.description}</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            ))}
+          </View>
+
+        </View>
+
+      )}
+      {currentScreen === 'information' && (
+        <View>
+          <Text>Специализация: {selectedSpecialization}</Text>
+          <TextInput
+            placeholder="Город"
+            value={city}
+            onChangeText={setCity}
+          />
+          <TextInput
+            placeholder="Название компании"
+            value={companyName}
+            onChangeText={setCompanyName}
+          />
+          {/* Другие поля ввода */}
+
+          <Button title="Продолжить" onPress={handleNext} />
+        </View>
+      )}
+      {/* Другие экраны */}
     </ScrollView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-    paddingHorizontal: 20,
-  },
-  scrollView: {
-    height: 125,
-  },
-  image: {
-    width: 125,
-    height: 125,
-    borderRadius: 5,
-    marginHorizontal: 5,
-  },
-  buttonWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%',
-    marginTop: 10,
-  },
-  button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    textAlign: 'center',
-  },
-});
 
 export default Screen3;

@@ -268,6 +268,7 @@ const AdsensesScreen = () => {
     } else {
       return (
         <TouchableOpacity
+          style={{ width: 200 }}
           key={item.id}
           onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
         >
@@ -287,7 +288,10 @@ const AdsensesScreen = () => {
               </View>
             )
             }
+
           </View>
+          <Text onPress={() => { console.log(item) }}>123</Text>
+
         </TouchableOpacity >
       );
     }

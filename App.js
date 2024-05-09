@@ -11,6 +11,7 @@ import Screen3 from './screens/Screen3';
 import AdDetailsScreen from './screens/AdDetailsScreen';
 import RNPickerSelect from 'react-native-picker-select';
 import { createStackNavigator } from '@react-navigation/stack';
+import MainScreen from './screens/MainScreen';
 
 const Stack = createStackNavigator();
 
@@ -27,25 +28,15 @@ export default function App() {
   );
 }
 
-const navigationOptions = {
-  headerStyle: {
-    backgroundColor: '#f3f2f8',
-  },
-  headerTintColor: 'black',
-  headerTitleStyle: {
-    fontWeight: 700,
-    fontSize: 14,
-    letterSpacing: 0.2,
-    fontFamily: 'Roboto'
-  },
-  headerTitleAlign: "center"
-};
-
 const Tabs = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
         options={navigationOptions} name="Главная"
+        component={MainScreen} />
+      <Tab.Screen
+        options={navigationOptions}
+        name="Каталог"
         component={AdsensesScreen} />
       <Tab.Screen
         options={navigationOptions}
@@ -61,5 +52,19 @@ const Tabs = () => {
         component={ProfileScreen} />
     </Tab.Navigator>
   );
+};
+
+const navigationOptions = {
+  headerStyle: {
+    backgroundColor: '#f3f2f8',
+  },
+  headerTintColor: 'black',
+  headerTitleStyle: {
+    fontWeight: 700,
+    fontSize: 14,
+    letterSpacing: 0.2,
+    fontFamily: 'Roboto'
+  },
+  headerTitleAlign: "center"
 };
 

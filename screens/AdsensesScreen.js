@@ -33,34 +33,31 @@ const AdsensesScreen = () => {
       });
   }, [count]);
 
-  const navigation = useNavigation();
+  const [refreshing, setRefreshing] = useState(false);
 
-  const SearchComponent = () => {
-    const [searchText, setSearchText] = useState('');
-
-    const handleSearch = () => {
-      // Здесь можно добавить логику для обработки поискового запроса
-      console.log('Search for:', searchText);
-    };
-
-    return (
-      <View style={styles.componentContainer}>
-        <View style={styles.searchContainer}>
-          <TextInput
-            style={styles.searchInput}
-            placeholder="Поиск..."
-            value={searchText}
-            onChangeText={setSearchText}
-          />
-          <TouchableOpacity
-            style={styles.searchButton}
-            onPress={handleSearch}>
-            <Text style={styles.searchButtonText}>Искать</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
+  const onRefresh = () => {
+    setRefreshing(true);
+    fetch(`${localhosturl}/adsenses?page=${count}`)
+      .then((x) => x.json())
+      .then((data) => {
+        const objects = data.map((item) => ({
+          user: item.user,
+          id: item._id,
+          category: item.category,
+          city: item.city,
+          phone: item.phone,
+          address: item.address,
+          workhours: item.workhours,
+          services: item.services,
+          servicesList: item.servicesList,
+          imagesList: item.imagesList
+        }));
+        setData(objects);
+        setRefreshing(false);
+      });
   };
+
+  const navigation = useNavigation();
 
   const Buttons = () => {
     return (
@@ -82,189 +79,9 @@ const AdsensesScreen = () => {
     );
   };
 
-  const categoriesList = [
-    [
-      {
-        name: 'Фитнес',
-        icon: 'fitness.jpg'
-      },
-      {
-        name: 'Бани, сауны',
-        icon: 'baths.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Пирсинг',
-        icon: 'piercing.jpg'
-      },
-      {
-        name: 'Языковая школа',
-        icon: 'language-school.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Коворкинг',
-        icon: 'coworking.jpg'
-      },
-      {
-        name: 'Массаж',
-        icon: 'massage.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Психология',
-        icon: 'psychology.jpg'
-      },
-      {
-        name: 'Татуаж, тату',
-        icon: 'tattoo.jpg'
-      }
-    ],
-    [
-      {
-        name: 'СПА',
-        icon: 'spa.jpg'
-      },
-      {
-        name: 'Подология',
-        icon: 'podiatry.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Депиляция, эпиляция',
-        icon: 'waxing.jpg'
-      },
-      {
-        name: 'Репетитор',
-        icon: 'tutoring.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Курсы',
-        icon: 'courses.jpg'
-      },
-      {
-        name: 'Косметология, уход',
-        icon: 'cosmetology.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Брови',
-        icon: 'brows.jpg'
-      },
-      {
-        name: 'Ресницы',
-        icon: 'eyelashes.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Ногтевой сервис',
-        icon: 'nails.jpg'
-      },
-      {
-        name: 'Стоматология',
-        icon: 'dentistry.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Ветеринария',
-        icon: 'veterinary.jpg'
-      },
-      {
-        name: 'Визаж',
-        icon: 'makeup.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Груминг',
-        icon: 'grooming.jpg'
-      },
-      {
-        name: 'Парикмахерские услуги',
-        icon: 'haircut.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Усы, борода',
-        icon: 'beard.jpg'
-      },
-      {
-        name: 'Барбершоп',
-        icon: 'barbershop.jpg'
-      }
-    ],
-    [
-      {
-        name: 'Прочие',
-        icon: 'other.jpg'
-      }
-    ]
-  ];
-
-
-  const CategoriesComponent = () => {
-    const renderItem = ({ item }) => (
-      <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
-        <TouchableOpacity onPress={() => { console.log(item[0]) }}>
-          <ImageBackground
-            source={{ uri: `${localhosturl}/categoryPhotos/${item[0].icon}` }}
-            style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          >
-            <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-              <Text style={{ color: 'white' }}>{item[0]?.name}</Text>
-            </View>
-          </ImageBackground>
-        </TouchableOpacity>
-        {item[1]?.name
-          ? <TouchableOpacity onPress={() => { console.log(item[1]) }}>
-            <ImageBackground
-              source={{ uri: `${localhosturl}/categoryPhotos/${item[1]?.icon}` }}
-              style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}
-              resizeMode='stretch'
-              imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-            >
-              <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-                <Text style={{ color: 'white' }}>{item[1]?.name}</Text>
-              </View>
-            </ImageBackground>
-          </TouchableOpacity>
-          : null}
-
-      </View>
-    );
-
-    return (
-      <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-        <Text style={{ paddingBottom: 10, fontWeight: 700 }}>Категории</Text>
-        <FlatList
-          data={categoriesList}
-          renderItem={renderItem}
-          keyExtractor={(item) => item[0].name}
-          horizontal
-        />
-      </View>
-    );
-  };
-
   const renderItem = ({ item }) => {
-    if (item.type === 'search') {
-      return <SearchComponent />;
-    } else if (item.type === 'buttons') {
+    if (item.type === 'buttons') {
       return <Buttons />;
-    } else if (item.type === 'map') {
-      return <CategoriesComponent />;
     } else {
       return (
         <TouchableOpacity
@@ -301,29 +118,6 @@ const AdsensesScreen = () => {
 
 
 
-  const [refreshing, setRefreshing] = useState(false);
-
-  const onRefresh = () => {
-    setRefreshing(true);
-    fetch(`${localhosturl}/adsenses?page=${count}`)
-      .then((x) => x.json())
-      .then((data) => {
-        const objects = data.map((item) => ({
-          user: item.user,
-          id: item._id,
-          category: item.category,
-          city: item.city,
-          phone: item.phone,
-          address: item.address,
-          workhours: item.workhours,
-          services: item.services,
-          servicesList: item.servicesList,
-          imagesList: item.imagesList
-        }));
-        setData(objects);
-        setRefreshing(false);
-      });
-  };
 
 
 
@@ -404,11 +198,10 @@ const AdsensesScreen = () => {
     },
   });
 
+
   return (
     <FlatList
       data={[
-        { id: 'search', type: 'search' },
-        { id: 'map', type: 'map' },
         ...data,
         { id: 'buttons', type: 'buttons' },
       ]}
@@ -422,6 +215,11 @@ const AdsensesScreen = () => {
       }
     />
   );
+
+
+
+
+
 };
 
 export default AdsensesScreen;

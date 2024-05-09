@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
+import localhosturl from './../localhoststring';
 
 const Screen3 = () => {
   const [currentScreen, setCurrentScreen] = useState('specialization');
@@ -167,7 +168,7 @@ const Screen3 = () => {
                   }}
                   onPress={() => handleSpecializationClick(service.name)}>
                   <Image
-                    source={{ uri: `http://192.168.1.102:3000/categoryIcons/${service.icon}` }}
+                    source={{ uri: `${localhosturl}/categoryIcons/${service.icon}` }}
                     style={{ width: 40, height: 40 }}
                   />
                   <View style={{ maxWidth: '80%' }}>

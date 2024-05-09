@@ -7,17 +7,16 @@ import localhosturl from './../localhoststring';
 const Stack = createStackNavigator();
 
 const AdsensesScreen = () => {
-
   const screenWidth = Dimensions.get('window').width;
 
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
+  const [numColumns, setNumColumns] = useState(2);
 
   useEffect(() => {
     fetch(`${localhosturl}/adsenses?page=${count}`)
       .then((x) => x.json())
       .then((data) => {
-        console.log(data)
         const objects = data.map((item) => ({
           user: item.user,
           id: item._id,
@@ -59,76 +58,12 @@ const AdsensesScreen = () => {
 
   const navigation = useNavigation();
 
-  const Buttons = () => {
-    return (
-      <View style={styles.componentContainer}>
-        <Text style={styles.componentText}>Страница: {count}</Text>
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setCount(count - 1)}>
-            <Text style={styles.buttonText}>Предыдущие</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => setCount(count + 1)}>
-            <Text style={styles.buttonText}>Следующие</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-
-  const renderItem = ({ item }) => {
-    if (item.type === 'buttons') {
-      return <Buttons />;
-    } else {
-      return (
-        <TouchableOpacity
-          style={{ width: 200 }}
-          key={item.id}
-          onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
-        >
-          <View style={styles.itemContainer}>
-            {<Image style={{ width: "90%", height: 300, borderRadius: 15 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />}
-            <Text>Пользователь: {item.user}</Text>
-            <Text>Город: {item.city}</Text>
-            <Text>Категория: {item.category}</Text>
-            <Text>Контактный телефон: {item.phone}</Text>
-            <Text>Адрес: {item.address}</Text>
-            <Text>Часы работы: {item.workhours}</Text>
-            {item.servicesList.map((x, i) =>
-              < View key={i} style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <Text style={{ marginHorizontal: 20 }}>Услуга {i + 1}</Text>
-                <Text style={{ marginHorizontal: 20 }}>Часы {x.hours}</Text>
-                <Text style={{ marginHorizontal: 20 }}>Цена {x.price}</Text>
-              </View>
-            )
-            }
-
-          </View>
-          <Text onPress={() => { console.log(item) }}>123</Text>
-
-        </TouchableOpacity >
-      );
-    }
-  };
-
-
-
-
-
-
-
-
   const styles = StyleSheet.create({
-    componentContainer: {
-      padding: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
-    column: {
-      paddingHorizontal: 5,
+    itemContainer: {
+      width: (screenWidth - 60) * 0.5,
+      marginLeft: 20,
+      backgroundColor: 'white',
+      borderRadius: 5,
     },
     componentText: {
       fontSize: 16,
@@ -136,13 +71,8 @@ const AdsensesScreen = () => {
       marginBottom: 10,
       textAlign: 'center'
     },
-    itemContainer: {
-      alignItems: 'center',
-      paddingVertical: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
     buttonsContainer: {
+      paddingBottom: -100,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
@@ -160,66 +90,66 @@ const AdsensesScreen = () => {
       textAlign: 'center',
       fontSize: 16,
     },
-    componentContainer: {
-      padding: 20,
-      borderBottomWidth: 1,
-      borderBottomColor: '#ccc',
-    },
-    componentText: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      textAlign: 'center'
-    },
-    searchContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginTop: 10,
-    },
-    searchInput: {
-      flex: 1,
-      borderWidth: 1,
-      borderColor: '#ccc',
-      borderRadius: 5,
-      paddingVertical: 8,
-      paddingHorizontal: 10,
-      marginRight: 10,
-    },
-    searchButton: {
-      backgroundColor: 'blue',
-      paddingVertical: 8,
-      paddingHorizontal: 15,
-      borderRadius: 5,
-    },
-    searchButtonText: {
-      color: 'white',
-      fontWeight: 'bold',
-    },
   });
 
+  const renderItem = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={styles.itemContainer}
+        key={item.id}
+        onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
+      >
+        <View>
+          <Image style={{ width: "100%", height: 160, borderRadius: 5, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />
+          <Text>Пользователь: {item.user}</Text>
+          <Text>Город: {item.city}</Text>
+          <Text>Категория: {item.category}</Text>
+          <Text>Контактный телефон: {item.phone}</Text>
+          <Text>Адрес: {item.address}</Text>
+        </View>
+      </TouchableOpacity>
+    );
+  };
+
+  const Buttons = () => {
+    return (
+      <View style={{}}>
+        <Text style={styles.componentText}>Страница: {count}</Text>
+        <View style={styles.buttonsContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setCount(count - 1)}>
+            <Text style={styles.buttonText}>Предыдущие</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setCount(count + 1)}>
+            <Text style={styles.buttonText}>Следующие</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
 
   return (
-    <FlatList
-      data={[
-        ...data,
-        { id: 'buttons', type: 'buttons' },
-      ]}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id.toString()}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-        />
-      }
-    />
+    <View style={{ flex: 1 }}>
+      <FlatList
+        contentContainerStyle={{ paddingHorizontal: 0, gap: 20 }}
+        data={data}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id.toString()}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+          />
+        }
+        numColumns={numColumns} // Set number of columns
+        key={numColumns}
+      />
+      <Buttons />
+    </View>
   );
-
-
-
-
-
 };
 
 export default AdsensesScreen;

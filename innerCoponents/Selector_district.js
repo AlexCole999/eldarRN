@@ -3,9 +3,9 @@ import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-nat
 
 import RNPickerSelect from 'react-native-picker-select';
 
-const SelectorDistrict = ({ district, setDistrict }) => {
+const SelectorDistrict = ({ city, district, setDistrict }) => {
   return (
-    <View style={{
+    city == 'Ташкент' ? <View style={{
       marginBottom: 10, overflow: 'hidden', borderRadius: 10
     }}>
       <RNPickerSelect
@@ -27,6 +27,7 @@ const SelectorDistrict = ({ district, setDistrict }) => {
         style={{ ...pickerSelectStyles }}
       />
     </View>
+      : null
   );
 };
 

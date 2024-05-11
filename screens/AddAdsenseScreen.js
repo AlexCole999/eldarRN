@@ -103,7 +103,7 @@ const AddAdsenseScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
-        {city == 'Ташкент' ? <SelectorDistrict district={district} setDistrict={setDistrict} /> : null}
+        <SelectorDistrict city={city} district={district} setDistrict={setDistrict} />
         <SelectorCategory category={category} setCategory={setCategory} />
         <SelectorHours setWorkhours={setWorkhours} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, Alert } from 'react-native';
+import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 const SelectorServices = ({ servicesList, setServicesList }) => {
@@ -57,36 +57,62 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
       }
       {showInputs && (
         <>
-          <RNPickerSelect
-            onValueChange={(value) => setNewServiceHours(value)}
-            placeholder={{ label: 'Часы новой услуги', value: null }}
-            items={[
-              { label: '1 час', value: 1 },
-              { label: '2 часа', value: 2 },
-              { label: '3 часа', value: 3 },
-              { label: '4 часа', value: 4 },
-              { label: '5 часов', value: 5 },
-              { label: '6 часов', value: 6 },
-              { label: '7 часов', value: 7 },
-              { label: '8 часов', value: 8 },
-              { label: '9 часов', value: 9 },
-              { label: '10 часов', value: 10 },
-              { label: '1 день', value: 24 },
-            ]}
-            value={newServiceHours}
-            style={pickerSelectStyles}
-          />
+          <View style={{
+            marginBottom: 10, overflow: 'hidden', borderRadius: 10
+          }}>
+            <RNPickerSelect
+              onValueChange={(value) => setNewServiceHours(value)}
+              placeholder={{ label: 'Часы новой услуги', value: null }}
+              items={[
+                { label: '1 час', value: 1 },
+                { label: '2 часа', value: 2 },
+                { label: '3 часа', value: 3 },
+                { label: '4 часа', value: 4 },
+                { label: '5 часов', value: 5 },
+                { label: '6 часов', value: 6 },
+                { label: '7 часов', value: 7 },
+                { label: '8 часов', value: 8 },
+                { label: '9 часов', value: 9 },
+                { label: '10 часов', value: 10 },
+                { label: '1 день', value: 24 },
+              ]}
+              value={newServiceHours}
+              style={pickerSelectStyles}
+            />
+          </View>
           <TextInput
-            style={styles.input}
+            style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
             placeholder="Цена новой услуги"
             onChangeText={setNewServicePrice}
             value={newServicePrice}
             keyboardType="numeric"
           />
-          <Button title="Добавить услугу" onPress={addNewServiceParam} />
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#004d00', // светло-голубой фон
+              padding: 10, // отступы
+              borderRadius: 10, // радиус закругления углов
+              alignItems: 'center', // центрирование по горизонтали
+            }}
+            onPress={addNewServiceParam}
+          >
+            <Text style={{ color: 'white', textTransform: 'uppercase' }}>Завершить добавление услуги</Text>
+          </TouchableOpacity>
         </>
       )}
-      {!showInputs && <Button title="Новая услуга +" onPress={() => setShowInputs(true)} />}
+      {!showInputs && (
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#004d00', // светло-голубой фон
+            padding: 10, // отступы
+            borderRadius: 10, // радиус закругления углов
+            alignItems: 'center', // центрирование по горизонтали
+          }}
+          onPress={() => setShowInputs(true)}
+        >
+          <Text style={{ color: 'white', textTransform: 'uppercase' }}>Новая услуга +</Text>
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -100,7 +126,7 @@ const styles = StyleSheet.create({
   serviceParam: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#E3DDDD',
+    backgroundColor: 'white',
     padding: 15,
     borderRadius: 8
   },
@@ -134,14 +160,8 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 5,
   },
   inputAndroid: {
-    height: 50,
-    width: '100%',
     color: 'black',
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
+    backgroundColor: 'white'
   },
 });
 

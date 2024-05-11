@@ -104,13 +104,14 @@ const AddAdsenseScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
+        <Text>{city == 'Ташкент' ? '111' : '222'}</Text>
         <SelectorCategory category={category} setCategory={setCategory} />
         <SelectorHours setWorkhours={setWorkhours} />
-        <TextInput style={styles.input} placeholder="Телефон" onChangeText={setPhone} value={phone} />
-        <TextInput style={styles.input} placeholder="Адрес" onChangeText={setAddress} value={address} />
+        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
-        <TouchableOpacity
+        {/* <TouchableOpacity
           style={styles.sendButton}
           onPress={
             async () => {
@@ -130,7 +131,7 @@ const AddAdsenseScreen = () => {
             }}>
             Custom
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         {
           newAdsenseStatusVisible ?
             <View style={{ paddingTop: 5 }}>

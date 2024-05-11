@@ -29,7 +29,17 @@ const SelectorImages = ({ images, setImages }) => {
 
   return (
     <View style={styles.container}>
-      <Button title="Добавить изображение" onPress={selectImage} />
+      <TouchableOpacity
+        style={{
+          backgroundColor: '#004d00', // светло-голубой фон
+          padding: 10, // отступы
+          borderRadius: 10, // радиус закругления углов
+          alignItems: 'center', // центрирование по горизонтали
+        }}
+        onPress={selectImage}
+      >
+        <Text style={{ color: 'white', textTransform: 'uppercase' }}>Добавить фотографию</Text>
+      </TouchableOpacity>
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}

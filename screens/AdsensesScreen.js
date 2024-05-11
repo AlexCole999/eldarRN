@@ -101,11 +101,11 @@ const AdsensesScreen = () => {
       >
         <View>
           <Image style={{ width: "100%", height: 160, borderRadius: 5, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />
-          <Text>Пользователь: {item.user}</Text>
-          <Text>Город: {item.city}</Text>
-          <Text>Категория: {item.category}</Text>
-          <Text>Контактный телефон: {item.phone}</Text>
-          <Text>Адрес: {item.address}</Text>
+          {/* <Text>{item.user}</Text> */}
+          <Text>{item.city}</Text>
+          <Text>{item.category}</Text>
+          <Text>{item.address}</Text>
+          <Text>Телефон: {item.phone}</Text>
         </View>
       </TouchableOpacity>
     );

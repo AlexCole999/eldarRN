@@ -20,20 +20,28 @@ const SelectorHours = ({ workhours, setWorkhours }) => {
   const [workhoursEnd, setWorkhoursEnd] = useState('');
   return (
     <>
-      <RNPickerSelect
-        onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}
-        placeholder={{ label: 'Начало рабочего дня', value: null }}
-        items={generateTimeItems()}
-        value={workhoursStart}
-        style={pickerSelectStyles}
-      />
-      <RNPickerSelect
-        onValueChange={(value) => { setWorkhoursEnd(value); setWorkhours(`${workhoursStart}-${value}`) }}
-        placeholder={{ label: 'Конец рабочего дня', value: null }}
-        items={generateTimeItems()}
-        value={workhoursEnd}
-        style={pickerSelectStyles}
-      />
+      <View style={{
+        marginBottom: 10, overflow: 'hidden', borderRadius: 10
+      }}>
+        <RNPickerSelect
+          onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}
+          placeholder={{ label: 'Начало рабочего дня', value: null }}
+          items={generateTimeItems()}
+          value={workhoursStart}
+          style={pickerSelectStyles}
+        />
+      </View>
+      <View style={{
+        marginBottom: 10, overflow: 'hidden', borderRadius: 10
+      }}>
+        <RNPickerSelect
+          onValueChange={(value) => { setWorkhoursEnd(value); setWorkhours(`${workhoursStart}-${value}`) }}
+          placeholder={{ label: 'Конец рабочего дня', value: null }}
+          items={generateTimeItems()}
+          value={workhoursEnd}
+          style={pickerSelectStyles}
+        />
+      </View>
     </>
   );
 };
@@ -50,14 +58,8 @@ const pickerSelectStyles = StyleSheet.create({
     borderRadius: 5, // Радиус закругления углов
   },
   inputAndroid: {
-    height: 50,
-    width: '100%',
     color: 'black',
-    marginBottom: 10,
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5, // Радиус закругления углов
+    backgroundColor: 'white'
   },
 })
 

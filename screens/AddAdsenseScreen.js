@@ -8,15 +8,14 @@ import SelectorCategory from './../innerCoponents/Selector_category';
 import SelectorHours from '../innerCoponents/Selector_hours';
 import SelectorServices from '../innerCoponents/Selector_services';
 import SelectorImages from '../innerCoponents/Selector_images';
+import SelectorDistrict from './../innerCoponents/Selector_district';
 import localhosturl from './../localhoststring';
-
-
-
 
 const AddAdsenseScreen = () => {
   const [user, setUser] = useState('default');
   const [category, setCategory] = useState('');
   const [city, setCity] = useState('');
+  const [district, setDistrict] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [workhours, setWorkhours] = useState('');
@@ -104,7 +103,7 @@ const AddAdsenseScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
-        <Text>{city == 'Ташкент' ? '111' : '222'}</Text>
+        {city == 'Ташкент' ? <SelectorDistrict district={district} setDistrict={setDistrict} /> : null}
         <SelectorCategory category={category} setCategory={setCategory} />
         <SelectorHours setWorkhours={setWorkhours} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />

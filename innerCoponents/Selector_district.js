@@ -3,13 +3,13 @@ import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-nat
 
 import RNPickerSelect from 'react-native-picker-select';
 
-const SelectorDistrict = ({ city, district, setDistrict }) => {
+const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
   return (
     city == 'Ташкент' ? <View style={{
       marginBottom: 10, overflow: 'hidden', borderRadius: 10
     }}>
       <RNPickerSelect
-        onValueChange={(value) => setDistrict(value)}
+        onValueChange={(value) => setCityDistrict(value)}
         placeholder={{ label: 'Выберите район', value: null }}
         items={[
           { label: 'Алмазарский', value: 'Алмазарский' },
@@ -23,7 +23,7 @@ const SelectorDistrict = ({ city, district, setDistrict }) => {
           { label: 'Юнусабадский', value: 'Юнусабадский' },
           { label: 'Яккасарайский', value: 'Яккасарайский' },
         ]}
-        value={district}
+        value={cityDistrict}
         style={{ ...pickerSelectStyles }}
       />
     </View>

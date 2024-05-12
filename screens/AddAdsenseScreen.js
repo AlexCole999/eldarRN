@@ -15,7 +15,7 @@ const AddAdsenseScreen = () => {
   const [user, setUser] = useState('default');
   const [category, setCategory] = useState('');
   const [city, setCity] = useState('');
-  const [district, setDistrict] = useState('');
+  const [cityDistrict, setCityDistrict] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [workhours, setWorkhours] = useState('');
@@ -82,8 +82,10 @@ const AddAdsenseScreen = () => {
         user = JSON.parse(user)
         user = user.phone
         console.log(user)
+        console.log(cityDistrict)
+        let district = city == 'Ташкент' ? cityDistrict : null
         axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
-          user, category, city, phone, address, workhours, servicesList, imagesList, description
+          user, category, city, district, phone, address, workhours, servicesList, imagesList, description
         })
           .then((response) => {
 
@@ -104,14 +106,18 @@ const AddAdsenseScreen = () => {
     <ScrollView>
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
-        <SelectorDistrict city={city} district={district} setDistrict={setDistrict} />
+        <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
         <SelectorCategory category={category} setCategory={setCategory} />
         <SelectorHours setWorkhours={setWorkhours} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
-        <TextInput style={{ borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginTop: 10, marginBottom: 10, fontSize: 16 }} placeholder="Введите описание" onChangeText={setDescription} value={description} />
+        <TextInput
+          style={{
+            textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
+          }}
+          multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
 
         {/* <TouchableOpacity
           style={styles.sendButton}

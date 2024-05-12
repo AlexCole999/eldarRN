@@ -13,8 +13,9 @@ const AdDetailsScreen = ({ route }) => {
       <Text>Контактный телефон: {adPhone}</Text>
       <Text>Адрес: {adAddress}</Text>
       <Text>Часы работы: {adWorkhours}</Text>
+
       {adServiceParams.map((x, i) =>
-        <View key={i} style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
+        <View key={i} style={{ display: 'flex', justifyContent: 'space-between', flexDirection: 'row', backgroundColor: 'white' }}>
           <Text style={{ marginHorizontal: 20 }}>Услуга {i + 1}</Text>
           <Text style={{ marginHorizontal: 20 }}>Часы {x.hours}</Text>
           <Text style={{ marginHorizontal: 20 }}>Цена {x.price}</Text>
@@ -40,7 +41,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: '#f3f2f8',
     paddingHorizontal: 20,
   },
 })

@@ -255,8 +255,8 @@ const ProfileScreen = () => {
               <Text style={styles.adText}>Адрес: {ad.address}</Text>
               <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
               <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
-              {ad.servicesList.map(service => (
-                <Text key={service.price} style={styles.adText}>
+              {ad.servicesList.map((service, index) => (
+                <Text key={index} style={styles.adText}>
                   Часы: {service.hours}, Цена: {service.price}
                 </Text>
               ))}

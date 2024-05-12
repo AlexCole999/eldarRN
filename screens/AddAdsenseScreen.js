@@ -20,6 +20,7 @@ const AddAdsenseScreen = () => {
   const [address, setAddress] = useState('');
   const [workhours, setWorkhours] = useState('');
   const [servicesList, setServicesList] = useState([]);
+  const [description, setDescription] = useState('');
   const [images, setImages] = useState([]);
 
   const [newAdsenseStatusVisible, setNewAdsenseStatusVisible] = useState(false)
@@ -82,7 +83,7 @@ const AddAdsenseScreen = () => {
         user = user.phone
         console.log(user)
         axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
-          user, category, city, phone, address, workhours, servicesList, imagesList
+          user, category, city, phone, address, workhours, servicesList, imagesList, description
         })
           .then((response) => {
 
@@ -110,6 +111,8 @@ const AddAdsenseScreen = () => {
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
+        <TextInput style={{ borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginTop: 10, marginBottom: 10, fontSize: 16 }} placeholder="Введите описание" onChangeText={setDescription} value={description} />
+
         {/* <TouchableOpacity
           style={styles.sendButton}
           onPress={
@@ -181,6 +184,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     display: 'flex',
     flexDirection: 'column',
+    backgroundColor: '#f3f2f8'
   },
   input: {
     height: 40,

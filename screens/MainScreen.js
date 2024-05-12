@@ -6,7 +6,7 @@ import SearchInnerComponent from '../innerCoponents/Search';
 const MainScreen = () => {
 
   return (
-    <ScrollView>
+    <ScrollView style={{ backgroundColor: '#f3f2f8' }}>
       <SearchInnerComponent />
       <CategoriesInnerComponent />
     </ScrollView >

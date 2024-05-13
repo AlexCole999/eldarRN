@@ -3,7 +3,6 @@ import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, Refres
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
-import SearchInnerComponent from './../innerCoponents/Search';
 
 const Stack = createStackNavigator();
 
@@ -77,7 +76,6 @@ const AdsensesScreen = () => {
       textAlign: 'center'
     },
     buttonsContainer: {
-      paddingBottom: -100,
       flexDirection: 'row',
       justifyContent: 'space-between',
     },
@@ -85,9 +83,9 @@ const AdsensesScreen = () => {
       backgroundColor: 'blue',
       paddingHorizontal: 15,
       paddingVertical: 10,
-      borderRadius: 5,
+      borderRadius: 0,
       flex: 1,
-      marginHorizontal: 5,
+      marginHorizontal: 0,
     },
     buttonText: {
       color: 'white',
@@ -119,14 +117,15 @@ const AdsensesScreen = () => {
 
   const Buttons = () => {
     return (
-      <View style={{}}>
-        <Text style={styles.componentText}>Страница: {count}</Text>
+      <View>
+
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => setCount(count - 1)}>
             <Text style={styles.buttonText}>Предыдущие</Text>
           </TouchableOpacity>
+          <Text style={styles.componentText}> {count}</Text>
           <TouchableOpacity
             style={styles.button}
             onPress={() => setCount(count + 1)}>
@@ -138,10 +137,9 @@ const AdsensesScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#f3f2f8' }}>
-      <SearchInnerComponent />
+    <View style={{ flex: 1, backgroundColor: '#f3f2f8', paddingVertical: 20 }}>
       <FlatList
-        contentContainerStyle={{ paddingHorizontal: 0, gap: 20 }}
+        contentContainerStyle={{ paddingHorizontal: 0, gap: 20, paddingBottom: 20 }}
         data={data}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}

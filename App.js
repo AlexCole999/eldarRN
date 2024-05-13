@@ -1,17 +1,17 @@
-import { StatusBar } from 'expo-status-bar';
-import { useState, useEffect } from 'react';
-import axios from 'axios';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, Image, Dimensions, FlatList, ScrollView, Alert } from 'react-native';
+
+import { StyleSheet, Dimensions } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import AdsensesScreen from './screens/AdsensesScreen'
 import AddAdsenseScreen from './screens/AddAdsenseScreen'
 import ProfileScreen from './screens/ProfileScreen'
 import Screen3 from './screens/Screen3';
 import AdDetailsScreen from './screens/AdDetailsScreen';
-import RNPickerSelect from 'react-native-picker-select';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './screens/MainScreen';
+import SearchComponent from './innerCoponents/SearchComponent';
+
+
 
 const Stack = createStackNavigator();
 
@@ -32,10 +32,22 @@ const Tabs = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen
-        options={navigationOptions} name="Главная"
+        options={{
+          headerTitle: () => <SearchComponent />,
+          headerStyle: {
+            height: 140, // увеличиваем высоту шапки до 100 пикселейб
+            backgroundColor: '#f3f2f8'
+          },
+        }} name="Главная"
         component={MainScreen} />
       <Tab.Screen
-        options={navigationOptions}
+        options={{
+          headerTitle: () => <SearchComponent />,
+          headerStyle: {
+            height: 140, // увеличиваем высоту шапки до 100 пикселейб
+            backgroundColor: '#f3f2f8'
+          },
+        }}
         name="Каталог"
         component={AdsensesScreen} />
       <Tab.Screen

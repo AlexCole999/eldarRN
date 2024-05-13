@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -12,6 +12,10 @@ const AdsensesScreen = () => {
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
+
+  const handleScrollToTop = () => {
+    flatListRef.scrollToIndex({ animated: true, index: 0, duration: 200 });
+  };
 
   useEffect(() => {
     fetch(`${localhosturl}/adsenses?page=${count}`)
@@ -62,41 +66,13 @@ const AdsensesScreen = () => {
 
   const navigation = useNavigation();
 
-  const styles = StyleSheet.create({
-    itemContainer: {
-      width: (screenWidth - 60) * 0.5,
-      marginLeft: 20,
-      backgroundColor: 'white',
-      borderRadius: 5,
-    },
-    componentText: {
-      fontSize: 16,
-      fontWeight: 'bold',
-      marginBottom: 10,
-      textAlign: 'center'
-    },
-    buttonsContainer: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-    },
-    button: {
-      backgroundColor: 'blue',
-      paddingHorizontal: 15,
-      paddingVertical: 10,
-      borderRadius: 0,
-      flex: 1,
-      marginHorizontal: 0,
-    },
-    buttonText: {
-      color: 'white',
-      fontWeight: 'bold',
-      textAlign: 'center',
-      fontSize: 16,
-    },
-  });
+
 
   const renderItem = ({ item }) => {
-    return (
+    if (item.id === 'buttons') {
+      return <Buttons />;
+    }
+    else return (
       <TouchableOpacity
         style={styles.itemContainer}
         key={item.id}
@@ -115,20 +91,22 @@ const AdsensesScreen = () => {
     );
   };
 
+
+
   const Buttons = () => {
     return (
       <View>
-
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
-            style={styles.button}
-            onPress={() => setCount(count - 1)}>
+            disabled={count < 2}
+            style={{ ...styles.button, opacity: count < 2 ? 0.5 : null }}
+            onPress={() => { setCount(count - 1); handleScrollToTop() }}>
             <Text style={styles.buttonText}>Предыдущие</Text>
           </TouchableOpacity>
           <Text style={styles.componentText}> {count}</Text>
           <TouchableOpacity
             style={styles.button}
-            onPress={() => setCount(count + 1)}>
+            onPress={() => { setCount(count + 1); handleScrollToTop() }}>
             <Text style={styles.buttonText}>Следующие</Text>
           </TouchableOpacity>
         </View>
@@ -136,11 +114,48 @@ const AdsensesScreen = () => {
     );
   };
 
+  const styles = StyleSheet.create({
+    itemContainer: {
+      width: (screenWidth - 60) * 0.5,
+      marginLeft: 20,
+      backgroundColor: 'white',
+      borderRadius: 5,
+    },
+    componentText: {
+      fontSize: 12,
+      fontWeight: 'bold',
+      paddingHorizontal: 10,
+      textAlign: 'center'
+    },
+    buttonsContainer: {
+      paddingHorizontal: 20,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      width: '100%'
+    },
+    button: {
+      backgroundColor: '#0c6694',
+      paddingHorizontal: 15,
+      paddingVertical: 10,
+      borderRadius: 10,
+      flex: 1,
+      marginHorizontal: 0,
+    },
+    buttonText: {
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'center',
+      fontSize: 16,
+    },
+  });
+
   return (
-    <View style={{ flex: 1, backgroundColor: '#f3f2f8', paddingVertical: 20 }}>
+    <View style={{ flex: 1, backgroundColor: '#f3f2f8', paddingTop: 20 }}>
       <FlatList
+        ref={(ref) => { flatListRef = ref; }}
         contentContainerStyle={{ paddingHorizontal: 0, gap: 20, paddingBottom: 20 }}
-        data={data}
+        data={[...data, { id: 'buttons' }]}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         refreshControl={
@@ -152,9 +167,11 @@ const AdsensesScreen = () => {
         numColumns={numColumns} // Set number of columns
         key={numColumns}
       />
-      <Buttons />
     </View>
   );
+
 };
+
+
 
 export default AdsensesScreen;

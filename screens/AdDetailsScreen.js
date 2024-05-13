@@ -10,25 +10,42 @@ const AdDetailsScreen = ({ route }) => {
 
   return (
     <ScrollView>
+      <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 180, borderRadius: 0 }} />
       <View style={styles.container}>
-        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
-          <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: 130, height: 130, borderRadius: 10 }} />
+        <View>
           <View >
-            <View style={{ display: 'flex', flexDirection: 'row', gap: 5, alignItems: 'center' }}>
-              <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
-                <Image
-                  source={{ uri: `http://192.168.1.102:3000/userIcons/userPhone6.png` }}
-                  style={{ width: 45, height: 45 }}
+            <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
 
-                />
-              </TouchableOpacity>
+
+
+              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+
+                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
+                  <Image
+                    source={{ uri: `http://192.168.1.102:3000/userIcons/userMail.png` }}
+                    style={{ width: 55, height: 55 }}
+
+                  />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
+                  <Image
+                    source={{ uri: `http://192.168.1.102:3000/userIcons/userPhone6.png` }}
+                    style={{ width: 60, height: 60 }}
+
+                  />
+                </TouchableOpacity>
+
+              </View>
+
               <LinearGradient
                 colors={['lightgreen', 'darkgreen']}
                 start={[0, 0]}
                 end={[1, 0]}
-                style={{ height: 38, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 15, borderRadius: 50 }}>
+                style={{ height: 50, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 25 }}>
                 <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
               </LinearGradient>
+
             </View>
           </View>
         </View>
@@ -108,7 +125,8 @@ const styles = StyleSheet.create({
     alignItems: '',
     backgroundColor: '#f3f2f8',
     paddingHorizontal: 20,
-    marginVertical: 20
+    marginTop: 10,
+    marginBottom: 20
   },
 })
 

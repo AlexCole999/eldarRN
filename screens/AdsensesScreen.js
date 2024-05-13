@@ -3,6 +3,7 @@ import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, Refres
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
+import SearchInnerComponent from './../innerCoponents/Search';
 
 const Stack = createStackNavigator();
 
@@ -106,10 +107,11 @@ const AdsensesScreen = () => {
         <View>
           <Image style={{ width: "100%", height: 160, borderRadius: 5, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />
           {/* <Text>{item.user}</Text> */}
-          <Text>{item.city}</Text>
-          <Text>{item.category}</Text>
-          <Text>{item.address}</Text>
-          <Text>Телефон: {item.phone}</Text>
+          <View style={{ padding: 10 }}>
+            <Text style={{ fontWeight: 700, fontSize: 14 }}>{item.category}</Text>
+            <Text style={{ fontSize: 12, color: 'grey' }}>{item.city}</Text>
+            <Text style={{ fontSize: 12, color: 'grey' }}>{item.address}</Text>
+          </View>
         </View>
       </TouchableOpacity>
     );
@@ -136,7 +138,8 @@ const AdsensesScreen = () => {
   };
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, backgroundColor: '#f3f2f8' }}>
+      <SearchInnerComponent />
       <FlatList
         contentContainerStyle={{ paddingHorizontal: 0, gap: 20 }}
         data={data}

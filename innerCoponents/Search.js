@@ -33,9 +33,7 @@ const SearchInnerComponent = () => {
 
 const styles = StyleSheet.create({
   componentContainer: {
-    padding: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
+    padding: 20
   },
   searchContainer: {
     flexDirection: 'row',

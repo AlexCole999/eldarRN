@@ -22,11 +22,13 @@ const AdsensesScreen = () => {
           id: item._id,
           category: item.category,
           city: item.city,
+          district: item?.district,
           phone: item.phone,
           address: item.address,
           workhours: item.workhours,
           servicesList: item.servicesList,
-          imagesList: item.imagesList
+          imagesList: item.imagesList,
+          description: item.description
         }));
         setData(objects);
       });
@@ -44,12 +46,14 @@ const AdsensesScreen = () => {
           id: item._id,
           category: item.category,
           city: item.city,
+          district: item?.district,
           phone: item.phone,
           address: item.address,
           workhours: item.workhours,
           services: item.services,
           servicesList: item.servicesList,
-          imagesList: item.imagesList
+          imagesList: item.imagesList,
+          description: item.description
         }));
         setData(objects);
         setRefreshing(false);
@@ -97,7 +101,7 @@ const AdsensesScreen = () => {
       <TouchableOpacity
         style={styles.itemContainer}
         key={item.id}
-        onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList })}
+        onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description })}
       >
         <View>
           <Image style={{ width: "100%", height: 160, borderRadius: 5, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />

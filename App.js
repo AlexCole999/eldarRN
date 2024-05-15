@@ -10,6 +10,7 @@ import AdDetailsScreen from './screens/AdDetailsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './screens/MainScreen';
 import SearchComponent from './innerCoponents/SearchComponent';
+import TestScreen from './screens/TestScreen';
 
 
 
@@ -62,6 +63,10 @@ const Tabs = () => {
         options={navigationOptions}
         name="Профиль"
         component={ProfileScreen} />
+      <Tab.Screen
+        options={navigationOptions}
+        name="TEST"
+        component={TestScreen} />
     </Tab.Navigator>
   );
 };

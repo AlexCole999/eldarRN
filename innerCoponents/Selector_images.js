@@ -31,7 +31,7 @@ const SelectorImages = ({ images, setImages }) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={{
-          backgroundColor: '#004d00', // светло-голубой фон
+          backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
           padding: 10, // отступы
           borderRadius: 10, // радиус закругления углов
           alignItems: 'center', // центрирование по горизонтали

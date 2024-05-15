@@ -33,7 +33,8 @@ const AdsensesScreen = () => {
           workhours: item.workhours,
           servicesList: item.servicesList,
           imagesList: item.imagesList,
-          description: item.description
+          description: item.description,
+          testimonials: item.testimonials
         }));
         setData(objects);
       });
@@ -58,7 +59,8 @@ const AdsensesScreen = () => {
           services: item.services,
           servicesList: item.servicesList,
           imagesList: item.imagesList,
-          description: item.description
+          description: item.description,
+          testimonials: item.testimonials
         }));
         setData(objects);
         setRefreshing(false);
@@ -77,7 +79,9 @@ const AdsensesScreen = () => {
       <TouchableOpacity
         style={styles.itemContainer}
         key={item.id}
-        onPress={() => navigation.navigate('Детали объявления', { adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description })}
+        onPress={() => navigation.navigate('Детали объявления', {
+          adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+        })}
       >
         <View>
           <Image style={{ width: "100%", height: 160, borderRadius: 5, borderBottomLeftRadius: 0, borderBottomRightRadius: 0 }} source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }} />
@@ -87,8 +91,17 @@ const AdsensesScreen = () => {
             <Text style={{ fontSize: 12, color: 'grey' }}>{item.city}</Text>
             <Text style={{ fontSize: 12, color: 'grey' }}>{item.address}</Text>
             <View style={{ flexDirection: 'row', gap: 5, paddingTop: 3, justifyContent: 'flex-start' }}>
-              <StarRating rating={4.5} size={10} />
-              <Text style={{ fontSize: 8, color: 'grey' }}>4.5</Text>
+              <StarRating
+                rating={item.testimonials.length
+                  ? item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length
+                  : 0}
+                size={10}
+              />
+              <Text style={{ fontSize: 8, color: 'grey' }}>
+                {item.testimonials.length
+                  ? item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length
+                  : 0}
+              </Text>
             </View>
           </View>
         </View>
@@ -100,21 +113,19 @@ const AdsensesScreen = () => {
 
   const Buttons = () => {
     return (
-      <View>
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            disabled={count < 2}
-            style={{ ...styles.button, opacity: count < 2 ? 0.5 : null }}
-            onPress={() => { setCount(count - 1); handleScrollToTop() }}>
-            <Text style={styles.buttonText}>Предыдущие</Text>
-          </TouchableOpacity>
-          <Text style={styles.componentText}> {count}</Text>
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => { setCount(count + 1); handleScrollToTop() }}>
-            <Text style={styles.buttonText}>Следующие</Text>
-          </TouchableOpacity>
-        </View>
+      <View style={styles.buttonsContainer}>
+        <TouchableOpacity
+          disabled={count < 2}
+          style={{ ...styles.button, opacity: count < 2 ? 0.5 : null }}
+          onPress={() => { setCount(count - 1); handleScrollToTop() }}>
+          <Text style={styles.buttonText}>Предыдущие</Text>
+        </TouchableOpacity>
+        <Text style={styles.componentText}> {count}</Text>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => { setCount(count + 1); handleScrollToTop() }}>
+          <Text style={styles.buttonText}>Следующие</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -160,7 +171,7 @@ const AdsensesScreen = () => {
       <FlatList
         ref={(ref) => { flatListRef = ref; }}
         contentContainerStyle={{ paddingHorizontal: 0, gap: 20, paddingBottom: 20 }}
-        data={[...data, { id: 'buttons' }]}
+        data={[...data]}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}
         refreshControl={
@@ -172,6 +183,7 @@ const AdsensesScreen = () => {
         numColumns={numColumns} // Set number of columns
         key={numColumns}
       />
+      <Buttons />
     </View>
   );
 

@@ -89,7 +89,7 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
           />
           <TouchableOpacity
             style={{
-              backgroundColor: '#004d00', // светло-голубой фон
+              backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
               padding: 10, // отступы
               borderRadius: 10, // радиус закругления углов
               alignItems: 'center', // центрирование по горизонтали
@@ -103,7 +103,7 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
       {!showInputs && (
         <TouchableOpacity
           style={{
-            backgroundColor: '#004d00', // светло-голубой фон
+            backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
             padding: 10, // отступы
             borderRadius: 10, // радиус закругления углов
             alignItems: 'center', // центрирование по горизонтали

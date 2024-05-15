@@ -7,7 +7,8 @@ import StarRating from './../innerCoponents/StarRating';
 
 
 const AdDetailsScreen = ({ route }) => {
-  const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription } = route.params;
+  const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
+  let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
 
   return (
     <ScrollView>
@@ -17,14 +18,12 @@ const AdDetailsScreen = ({ route }) => {
           <View >
             <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
 
-
-
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
                     source={{ uri: `http://192.168.1.102:3000/userIcons/userMail.png` }}
-                    style={{ width: 55, height: 55 }}
+                    style={{ width: 45, height: 45 }}
 
                   />
                 </TouchableOpacity>
@@ -32,7 +31,7 @@ const AdDetailsScreen = ({ route }) => {
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
                     source={{ uri: `http://192.168.1.102:3000/userIcons/userPhone6.png` }}
-                    style={{ width: 60, height: 60 }}
+                    style={{ width: 50, height: 50 }}
 
                   />
                 </TouchableOpacity>
@@ -40,10 +39,10 @@ const AdDetailsScreen = ({ route }) => {
               </View>
 
               <LinearGradient
-                colors={['lightgreen', 'darkgreen']}
+                colors={['rgb(0, 191, 255)', 'rgb(135, 206, 250)']}
                 start={[0, 0]}
                 end={[1, 0]}
-                style={{ height: 50, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 25 }}>
+                style={{ height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 25 }}>
                 <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
               </LinearGradient>
 
@@ -102,23 +101,53 @@ const AdDetailsScreen = ({ route }) => {
 
         </View>
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ fontSize: 12, fontStyle: 'italic' }}>Рейтинг: </Text>
-          <StarRating rating={3.5} size={10} />
-          <Text style={{ fontSize: 8, paddingLeft: 2, fontStyle: 'italic' }}>3.5</Text>
+
+        <View style={{ width: '100%', marginVertical: 10 }}>
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
+            <Text style={{ fontWeight: 700, fontSize: 16 }}>Отзывы</Text>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
+              <Text style={{ fontSize: 12, fontStyle: 'italic' }}>Рейтинг: </Text>
+              <StarRating rating={averageRating} size={10} />
+              <Text style={{ fontSize: 8, fontStyle: 'italic' }}>{averageRating}</Text>
+            </View>
+          </View>
+          <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10 }}>
+            {adTestimonials
+              ?
+              <FlatList
+                style={{ backgroundColor: 'white', borderRadius: 10, width: '100%' }}
+                data={adTestimonials}
+                keyExtractor={(item, index) => index.toString()}
+                horizontal
+                renderItem={({ item }) => (
+                  <TouchableOpacity onPress={() => console.log(item)} style={{ width: 150, justifyContent: 'flex-start', alignItems: 'center', paddingRight: 20 }}>
+                    <View style={{ alignItems: 'center' }}>
+                      <StarRating rating={item.rating} size={20} />
+                      <Text style={{ color: 'grey', fontSize: 12, fontStyle: 'italic', textAlign: 'center', paddingTop: 4 }}>{item.text}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+              />
+              // ? adTestimonials.map((x, i) => <Text key={i}>{x.text}{x.rating}</Text>) 
+              : null}
+          </View>
+        </View>
+
+        <View>
+          <Text style={{ color: 'rgb(0, 191, 255)', textAlign: 'right' }}>Оставить отзыв</Text>
         </View>
 
         <TouchableOpacity
           style={{
             marginVertical: 10,
-            backgroundColor: '#004d00', // светло-голубой фон
+            backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
             padding: 10, // отступы
             borderRadius: 10, // радиус закругления углов
             alignItems: 'center', // центрирование по горизонтали
           }}
           onPress={() => { }}
         >
-          <Text style={{ color: 'white', textTransform: 'uppercase' }}>Забронировать</Text>
+          <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Забронировать</Text>
         </TouchableOpacity>
 
       </View>

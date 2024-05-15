@@ -4,7 +4,7 @@ import localhosturl from '../localhoststring';
 
 
 const Star = ({ filled, size }) => (
-  <Text>{
+  <View>{
     filled
       ?
       < Image source={{ uri: `${localhosturl}/others/star.png` }}
@@ -13,7 +13,7 @@ const Star = ({ filled, size }) => (
       : < Image source={{ uri: `${localhosturl}/others/starnull.png` }}
         style={{ width: size, height: size }}
       />
-  }</Text>
+  }</View>
 );
 
 const HalfStar = ({ size }) => (

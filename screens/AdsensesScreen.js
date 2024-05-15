@@ -3,6 +3,7 @@ import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, Refres
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
+import StarRating from './../innerCoponents/StarRating';
 
 const Stack = createStackNavigator();
 
@@ -85,6 +86,10 @@ const AdsensesScreen = () => {
             <Text style={{ fontWeight: 700, fontSize: 14 }}>{item.category}</Text>
             <Text style={{ fontSize: 12, color: 'grey' }}>{item.city}</Text>
             <Text style={{ fontSize: 12, color: 'grey' }}>{item.address}</Text>
+            <View style={{ flexDirection: 'row', gap: 5, paddingTop: 3, justifyContent: 'flex-start' }}>
+              <StarRating rating={4.5} size={10} />
+              <Text style={{ fontSize: 8, color: 'grey' }}>4.5</Text>
+            </View>
           </View>
         </View>
       </TouchableOpacity>

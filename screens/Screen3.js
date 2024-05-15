@@ -148,6 +148,8 @@ const Screen3 = () => {
     },
   ];
 
+
+
   return (
     <ScrollView style={{ paddingHorizontal: 20, backgroundColor: '#f3f2f8' }}>
       <Text style={{ textAlign: 'center', paddingTop: 20, fontSize: 20, fontWeight: 800 }}>Выберите специализацию</Text>

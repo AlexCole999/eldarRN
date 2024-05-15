@@ -2,6 +2,7 @@ import { StyleSheet, FlatList, TouchableOpacity, Image, Text, View, Linking } fr
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
+import StarRating from './../innerCoponents/StarRating';
 
 
 
@@ -56,7 +57,6 @@ const AdDetailsScreen = ({ route }) => {
         <Text style={{ fontWeight: 700, fontSize: 14 }}>{adAddress}</Text>
         <Text style={{ marginTop: 2, color: 'grey', fontSize: 12 }}>{adWorkhours}</Text>
         <Text style={{ marginTop: 7, fontSize: 14, fontStyle: 'italic' }}>{adCategory}</Text>
-
         <View style={{ width: '100%', marginVertical: 10 }}>
           <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Описание</Text>
           <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10 }}>
@@ -101,6 +101,13 @@ const AdDetailsScreen = ({ route }) => {
           />
 
         </View>
+
+        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <Text style={{ fontSize: 12, fontStyle: 'italic' }}>Рейтинг: </Text>
+          <StarRating rating={3.5} size={10} />
+          <Text style={{ fontSize: 8, paddingLeft: 2, fontStyle: 'italic' }}>3.5</Text>
+        </View>
+
         <TouchableOpacity
           style={{
             marginVertical: 10,
@@ -113,7 +120,9 @@ const AdDetailsScreen = ({ route }) => {
         >
           <Text style={{ color: 'white', textTransform: 'uppercase' }}>Забронировать</Text>
         </TouchableOpacity>
+
       </View>
+
     </ScrollView>
   );
 };

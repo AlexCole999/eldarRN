@@ -11,6 +11,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './screens/MainScreen';
 import SearchComponent from './innerCoponents/SearchComponent';
 import TestScreen from './screens/TestScreen';
+import TestimonialScreen from './screens/TestimonialScreen';
 
 
 
@@ -24,6 +25,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
+        <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

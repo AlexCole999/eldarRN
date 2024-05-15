@@ -99,7 +99,7 @@ const AdsensesScreen = () => {
               />
               <Text style={{ fontSize: 8, color: 'grey' }}>
                 {item.testimonials.length
-                  ? item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length
+                  ? (item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length).toFixed(2)
                   : 0}
               </Text>
             </View>

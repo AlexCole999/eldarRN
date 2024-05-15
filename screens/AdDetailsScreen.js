@@ -3,13 +3,15 @@ import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
 import StarRating from './../innerCoponents/StarRating';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 
 
 
 const AdDetailsScreen = ({ route }) => {
   const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
-
+  const navigation = useNavigation();
   return (
     <ScrollView>
       <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 180, borderRadius: 0 }} />
@@ -22,7 +24,7 @@ const AdDetailsScreen = ({ route }) => {
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
-                    source={{ uri: `http://192.168.1.102:3000/userIcons/userMail.png` }}
+                    source={{ uri: `${localhosturl}/userIcons/userMail.png` }}
                     style={{ width: 45, height: 45 }}
 
                   />
@@ -30,7 +32,7 @@ const AdDetailsScreen = ({ route }) => {
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
-                    source={{ uri: `http://192.168.1.102:3000/userIcons/userPhone6.png` }}
+                    source={{ uri: `${localhosturl}/userIcons/userPhone6.png` }}
                     style={{ width: 50, height: 50 }}
 
                   />
@@ -71,7 +73,7 @@ const AdDetailsScreen = ({ route }) => {
               <View key={i} style={{ paddingVertical: 10, paddingHorizontal: 20, borderBottomWidth: adServiceParams.length - 1 == i ? 0 : 1, borderColor: 'lightgrey', display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
                 <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
                   <Image
-                    source={{ uri: `http://192.168.1.102:3000/userIcons/serviceTimeIcon.png` }}
+                    source={{ uri: `${localhosturl}/userIcons/serviceTimeIcon.png` }}
                     style={{ width: 20, height: 20 }}
 
                   />
@@ -108,11 +110,11 @@ const AdDetailsScreen = ({ route }) => {
             <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
               <Text style={{ fontSize: 12, fontStyle: 'italic' }}>Рейтинг: </Text>
               <StarRating rating={averageRating} size={10} />
-              <Text style={{ fontSize: 8, fontStyle: 'italic' }}>{averageRating}</Text>
+              <Text style={{ fontSize: 8, fontStyle: 'italic' }}>{averageRating.toFixed(2)}</Text>
             </View>
           </View>
           <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10 }}>
-            {adTestimonials
+            {adTestimonials.length
               ?
               <FlatList
                 style={{ backgroundColor: 'white', borderRadius: 10, width: '100%' }}
@@ -120,7 +122,7 @@ const AdDetailsScreen = ({ route }) => {
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
                 renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => console.log(item)} style={{ width: 150, justifyContent: 'flex-start', alignItems: 'center', paddingRight: 20 }}>
+                  <TouchableOpacity onPress={() => console.log(item)} style={{ width: 200, justifyContent: 'flex-start', alignItems: 'center', paddingRight: 20 }}>
                     <View style={{ alignItems: 'center' }}>
                       <StarRating rating={item.rating} size={20} />
                       <Text style={{ color: 'grey', fontSize: 12, fontStyle: 'italic', textAlign: 'center', paddingTop: 4 }}>{item.text}</Text>
@@ -128,14 +130,28 @@ const AdDetailsScreen = ({ route }) => {
                   </TouchableOpacity>
                 )}
               />
-              // ? adTestimonials.map((x, i) => <Text key={i}>{x.text}{x.rating}</Text>) 
-              : null}
+              : <Text style={{ color: 'grey', fontWeight: 600 }}>У этого объявления пока нет отзывов</Text>}
           </View>
         </View>
 
-        <View>
+
+
+        <TouchableOpacity onPress={() => {
+          navigation.navigate('Оставить отзыв', {
+            adId: adId
+          })
+          // console.log(1);
+          // let text = '123123123';
+          // let rating = 3.5
+          // axios.post(`${localhosturl}/newAdsenseTestimonial`, { // Создаем новое объявление
+          //   text, rating
+          // })
+
+        }}>
           <Text style={{ color: 'rgb(0, 191, 255)', textAlign: 'right' }}>Оставить отзыв</Text>
-        </View>
+        </TouchableOpacity>
+
+
 
         <TouchableOpacity
           style={{

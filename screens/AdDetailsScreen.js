@@ -20,11 +20,21 @@ const AdDetailsScreen = ({ route }) => {
           <View >
             <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
 
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 10 }}>
+              <LinearGradient
+                colors={['rgb(0, 110, 204)', 'rgb(80, 130, 200)']}
+                start={[0, 0]}
+                end={[1, 0]}
+                style={{ borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
+                <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
+              </LinearGradient>
+
+              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 15 }}>
+
+
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
-                    source={{ uri: `${localhosturl}/userIcons/userMail.png` }}
+                    source={{ uri: `${localhosturl}/userIcons/userMail4.png` }}
                     style={{ width: 45, height: 45 }}
 
                   />
@@ -32,7 +42,7 @@ const AdDetailsScreen = ({ route }) => {
 
                 <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
                   <Image
-                    source={{ uri: `${localhosturl}/userIcons/userPhone6.png` }}
+                    source={{ uri: `${localhosturl}/userIcons/userPhone8.png` }}
                     style={{ width: 50, height: 50 }}
 
                   />
@@ -40,13 +50,7 @@ const AdDetailsScreen = ({ route }) => {
 
               </View>
 
-              <LinearGradient
-                colors={['rgb(0, 191, 255)', 'rgb(135, 206, 250)']}
-                start={[0, 0]}
-                end={[1, 0]}
-                style={{ height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 25 }}>
-                <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
-              </LinearGradient>
+
 
             </View>
           </View>

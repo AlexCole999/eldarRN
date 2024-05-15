@@ -7,9 +7,6 @@ const TestScreen = () => {
 
   async function requestData() {
     console.log(1);
-    let some = await axios.get(`${localhosturl}/adsenseTestimonials`)
-      .then(x => console.log(x.data))
-      ;
   }
 
   return (

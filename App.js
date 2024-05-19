@@ -12,6 +12,7 @@ import MainScreen from './screens/MainScreen';
 import SearchComponent from './innerCoponents/SearchComponent';
 import TestScreen from './screens/TestScreen';
 import TestimonialScreen from './screens/TestimonialScreen';
+import OrderScreen from './screens/OrderScreen';
 
 
 
@@ -26,6 +27,7 @@ export default function App() {
         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
         <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
+        <Stack.Screen name="Забронировать" component={OrderScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

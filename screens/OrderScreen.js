@@ -1,8 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
 import { Calendar } from 'react-native-calendars';
+import { useRoute } from '@react-navigation/native';
+import localhosturl from './../localhoststring';
 
-const BookingCalendar = () => {
+const OrderScreen = ({ route }) => {
+
+  const { adId, adServiceParams, adWorkhours } = route.params;
+
+  const timeRange = adWorkhours.split('-');
+  const startHour = parseInt(timeRange[0].split(':')[0], 10);
+  const endHour = parseInt(timeRange[1].split(':')[0], 10);
+
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
@@ -47,18 +56,42 @@ const BookingCalendar = () => {
           minDate={new Date().toISOString().split('T')[0]}
         />
         {selectedDate && (
-          <View>
-            <Text style={styles.headerText}>Выберите длительность</Text>
-            <View style={styles.durationContainer}>
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, '1 День'].map((hours) => (
-                <TouchableOpacity
-                  key={hours}
-                  style={[styles.durationButton, selectedDuration === hours && styles.selectedDurationButton]}
-                  onPress={() => handleDurationSelection(hours)}
-                >
-                  <Text style={{ fontStyle: 'italic', color: selectedDuration == hours ? 'white' : 'black' }}>{hours} ч.</Text>
+          <View style={{ width: '100%', marginVertical: 10 }}>
+            <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16, textAlign: 'center' }}>Выберите длительность</Text>
+            <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
+              {adServiceParams.map((x, i) =>
+                <TouchableOpacity key={i} onPress={() => handleDurationSelection(x.hours)}>
+                  <View style={{
+                    backgroundColor: x.hours == selectedDuration ? 'rgb(0, 191, 255)' : 'white',
+                    borderRadius: 10,
+                    paddingVertical: 10,
+                    paddingHorizontal: 20,
+                    borderBottomWidth: adServiceParams.length - 1 == i ? 0 : 1,
+                    borderColor: 'lightgrey',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    flexDirection: 'row'
+                  }}>
+                    <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+
+                      <Image
+                        source={{ uri: `${localhosturl}/userIcons/serviceTimeIcon.png` }}
+                        style={{ width: 20, height: 20 }}
+
+                      />
+                      <Text style={{
+                        paddingLeft: 10,
+                        color: x.hours == selectedDuration ? 'white' : 'black',
+                      }}>Часов:{x.hours}</Text>
+                    </View>
+                    <Text style={{
+                      fontStyle: 'italic',
+                      color: 'grey',
+                      color: x.hours == selectedDuration ? 'white' : 'black',
+                    }}>{x.price} UZS</Text>
+                  </View>
                 </TouchableOpacity>
-              ))}
+              )}
             </View>
           </View>
         )}
@@ -66,7 +99,7 @@ const BookingCalendar = () => {
           <View>
             <Text style={styles.headerText}>Выберите время</Text>
             <View style={styles.timeContainer}>
-              {Array.from({ length: 13 }, (_, i) => i + 8).map((hour) => (
+              {Array.from({ length: endHour - startHour + 1 }, (_, i) => i + startHour).map((hour) => (
                 <TouchableOpacity
                   key={hour}
                   style={[
@@ -76,7 +109,7 @@ const BookingCalendar = () => {
                   ]}
                   onPress={() => handleTimeSelection(hour)}
                 >
-                  <Text style={{ fontStyle: 'italic', color: selectedTime == hour ? 'white' : 'black' }}>{hour}:00</Text>
+                  <Text style={{ fontStyle: 'italic', color: selectedTime === hour ? 'white' : 'black' }}>{hour}:00</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -156,4 +189,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookingCalendar;
+export default OrderScreen;

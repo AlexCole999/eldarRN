@@ -165,7 +165,11 @@ const AdDetailsScreen = ({ route }) => {
             borderRadius: 10, // радиус закругления углов
             alignItems: 'center', // центрирование по горизонтали
           }}
-          onPress={() => { }}
+          onPress={() => {
+            navigation.navigate('Забронировать', {
+              adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours
+            })
+          }}
         >
           <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Забронировать</Text>
         </TouchableOpacity>

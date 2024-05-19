@@ -14,10 +14,8 @@ const generateTimeItems = () => {
   return items;
 };
 
-const SelectorHours = ({ workhours, setWorkhours }) => {
+const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWorkhoursEnd, workhours, setWorkhours }) => {
 
-  const [workhoursStart, setWorkhoursStart] = useState('');
-  const [workhoursEnd, setWorkhoursEnd] = useState('');
   return (
     <>
       <View style={{

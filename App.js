@@ -5,7 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AdsensesScreen from './screens/AdsensesScreen'
 import AddAdsenseScreen from './screens/AddAdsenseScreen'
 import ProfileScreen from './screens/ProfileScreen'
-import Screen3 from './screens/Screen3';
+import Screen3 from './innerCoponents/Selector_categoriesVisual';
 import AdDetailsScreen from './screens/AdDetailsScreen';
 import { createStackNavigator } from '@react-navigation/stack';
 import MainScreen from './screens/MainScreen';
@@ -59,10 +59,6 @@ const Tabs = () => {
         options={navigationOptions}
         name="Добавить объявление"
         component={AddAdsenseScreen} />
-      <Tab.Screen
-        options={navigationOptions}
-        name="Мои записи"
-        component={Screen3} />
       <Tab.Screen
         options={navigationOptions}
         name="Профиль"

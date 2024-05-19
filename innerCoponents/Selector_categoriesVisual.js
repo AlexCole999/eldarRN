@@ -1,22 +1,8 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
-import localhosturl from './../localhoststring';
+import localhosturl from '../localhoststring';
 
-const Screen3 = () => {
-  const [currentScreen, setCurrentScreen] = useState('specialization');
-  const [selectedSpecialization, setSelectedSpecialization] = useState('');
-  const [city, setCity] = useState('');
-  const [companyName, setCompanyName] = useState('');
-
-  const handleSpecializationClick = (specialization) => {
-    setSelectedSpecialization(specialization);
-    setCurrentScreen('information');
-  };
-
-  const handleNext = () => {
-    // Можно добавить дополнительную логику, если нужно
-    setCurrentScreen('result');
-  };
+const SelectorCategoryVisual = ({ category, setCategory }) => {
 
   const services = [
     {
@@ -153,59 +139,38 @@ const Screen3 = () => {
   return (
     <ScrollView style={{ paddingHorizontal: 20, backgroundColor: '#f3f2f8' }}>
       <Text style={{ textAlign: 'center', paddingTop: 20, fontSize: 20, fontWeight: 800 }}>Выберите специализацию</Text>
-      {currentScreen === 'specialization' && (
-        <View>
-          <View style={{ marginVertical: 20 }}>
-            {services.map((service, index) => (
-              <View key={index} style={{ marginTop: 20 }}>
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: 'white',
-                    padding: 12,
-                    borderRadius: 10,
-                    display: 'flex',
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    gap: 10
-                  }}
-                  onPress={() => handleSpecializationClick(service.name)}>
-                  <Image
-                    source={{ uri: `${localhosturl}/categoryIcons/${service.icon}` }}
-                    style={{ width: 40, height: 40 }}
-                  />
-                  <View style={{ maxWidth: '80%' }}>
-                    <Text>{service.name}</Text>
-                    <Text style={{ color: 'grey', fontSize: 12 }}>{service.description}</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
-            ))}
-          </View>
-
+      <View>
+        <View style={{ marginVertical: 20 }}>
+          {services.map((service, index) => (
+            <View key={index} style={{ marginTop: 20 }}>
+              <TouchableOpacity
+                style={{
+                  backgroundColor: 'white',
+                  padding: 12,
+                  borderRadius: 10,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  gap: 10
+                }}
+                onPress={() => setCategory(service.name)}>
+                <Image
+                  source={{ uri: `${localhosturl}/categoryIcons/${service.icon}` }}
+                  style={{ width: 40, height: 40 }}
+                />
+                <View style={{ maxWidth: '80%' }}>
+                  <Text>{service.name}</Text>
+                  <Text style={{ color: 'grey', fontSize: 12 }}>{service.description}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))}
         </View>
 
-      )}
-      {currentScreen === 'information' && (
-        <View>
-          <Text>Специализация: {selectedSpecialization}</Text>
-          <TextInput
-            placeholder="Город"
-            value={city}
-            onChangeText={setCity}
-          />
-          <TextInput
-            placeholder="Название компании"
-            value={companyName}
-            onChangeText={setCompanyName}
-          />
-          {/* Другие поля ввода */}
+      </View>
 
-          <Button title="Продолжить" onPress={handleNext} />
-        </View>
-      )}
-      {/* Другие экраны */}
     </ScrollView>
   );
 };
 
-export default Screen3;
+export default SelectorCategoryVisual;

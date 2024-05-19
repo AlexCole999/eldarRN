@@ -10,14 +10,19 @@ import SelectorServices from '../innerCoponents/Selector_services';
 import SelectorImages from '../innerCoponents/Selector_images';
 import SelectorDistrict from './../innerCoponents/Selector_district';
 import localhosturl from './../localhoststring';
+import Screen3 from '../innerCoponents/Selector_categoriesVisual';
 
 const AddAdsenseScreen = () => {
+
+  const [stage, setStage] = useState(1);
   const [user, setUser] = useState('default');
   const [category, setCategory] = useState('');
   const [city, setCity] = useState('');
   const [cityDistrict, setCityDistrict] = useState('');
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
+  const [workhoursStart, setWorkhoursStart] = useState('');
+  const [workhoursEnd, setWorkhoursEnd] = useState('');
   const [workhours, setWorkhours] = useState('');
   const [servicesList, setServicesList] = useState([]);
   const [description, setDescription] = useState('');
@@ -84,6 +89,7 @@ const AddAdsenseScreen = () => {
         console.log(user)
         console.log(cityDistrict)
         let district = city == 'Ташкент' ? cityDistrict : null
+        console.log(user, category, city, district, phone, address, workhours, servicesList, imagesList, description)
         axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
           user, category, city, district, phone, address, workhours, servicesList, imagesList, description
         })
@@ -102,13 +108,109 @@ const AddAdsenseScreen = () => {
 
   };
 
+  if (stage == 1) {
+    return (
+      <View style={{ ...styles.container, paddingHorizontal: 0 }}>
+        <Screen3 category={category} setCategory={(item) => { setCategory(item); setStage(2) }} />
+        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  if (stage == 2) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Выберите город</Text>
+        <SelectorCity city={city} setCity={setCity} />
+        <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
+        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+
+  if (stage == 3) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте информацию о работе</Text>
+        <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
+        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
+        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  if (stage == 4) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте услуги</Text>
+        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
+        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  if (stage == 5) {
+    return (
+      <View style={styles.container}>
+        <SelectorImages images={images} setImages={setImages} />
+        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
+  if (stage == 6) {
+    return (
+      <View style={styles.container}>
+        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте описание</Text>
+        <TextInput
+          style={{
+            textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
+          }}
+          multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
+        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          onPress={() => setStage(stage => stage + 1)}>
+          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+            Дальше
+          </Text>
+        </TouchableOpacity>
+      </View>
+    )
+  }
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
         <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
         <SelectorCategory category={category} setCategory={setCategory} />
-        <SelectorHours setWorkhours={setWorkhours} />
+        <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
@@ -119,27 +221,6 @@ const AddAdsenseScreen = () => {
           }}
           multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
 
-        {/* <TouchableOpacity
-          style={styles.sendButton}
-          onPress={
-            async () => {
-              let some = await AsyncStorage.getItem('userData');
-              some = JSON.parse(some)
-              console.log(some.phone)
-            }
-
-          }>
-          <Text
-            style={styles.sendButtonText}
-            onPress={async () => {
-              const userData = await AsyncStorage.getItem('userData');
-              console.log(userData)
-
-              console.log(localhosturl)
-            }}>
-            Custom
-          </Text>
-        </TouchableOpacity> */}
         {
           newAdsenseStatusVisible ?
             <View style={{ paddingTop: 5 }}>

@@ -93,7 +93,7 @@ const ProfileScreen = () => {
           alignItems: 'center',
           gap: 5
         }}>
-          <Image source={{ uri: `http://192.168.1.102:3000/userIcons/user2.png` }}
+          <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }}
             style={{ width: 70, height: 70 }}
           />
           <View>

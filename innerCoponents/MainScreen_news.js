@@ -5,136 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const categoriesList = [
-  [
-    {
-      name: 'Фитнес',
-      icon: 'fitness.jpg'
-    },
-    {
-      name: 'Бани, сауны',
-      icon: 'baths.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Пирсинг',
-      icon: 'piercing.jpg'
-    },
-    {
-      name: 'Языковая школа',
-      icon: 'language-school.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Коворкинг',
-      icon: 'coworking.jpg'
-    },
-    {
-      name: 'Массаж',
-      icon: 'massage.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Психология',
-      icon: 'psychology.jpg'
-    },
-    {
-      name: 'Татуаж, тату',
-      icon: 'tattoo.jpg'
-    }
-  ],
-  [
-    {
-      name: 'СПА',
-      icon: 'spa.jpg'
-    },
-    {
-      name: 'Подология',
-      icon: 'podiatry.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Депиляция, эпиляция',
-      icon: 'waxing.jpg'
-    },
-    {
-      name: 'Репетитор',
-      icon: 'tutoring.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Курсы',
-      icon: 'courses.jpg'
-    },
-    {
-      name: 'Косметология, уход',
-      icon: 'cosmetology.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Брови',
-      icon: 'brows.jpg'
-    },
-    {
-      name: 'Ресницы',
-      icon: 'eyelashes.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Ногтевой сервис',
-      icon: 'nails.jpg'
-    },
-    {
-      name: 'Стоматология',
-      icon: 'dentistry.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Ветеринария',
-      icon: 'veterinary.jpg'
-    },
-    {
-      name: 'Визаж',
-      icon: 'makeup.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Груминг',
-      icon: 'grooming.jpg'
-    },
-    {
-      name: 'Парикмахерские услуги',
-      icon: 'haircut.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Усы, борода',
-      icon: 'beard.jpg'
-    },
-    {
-      name: 'Барбершоп',
-      icon: 'barbershop.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Прочие',
-      icon: 'other.jpg'
-    }
-  ]
-];
-
-const NewAdsensesInnerComponent = () => {
+const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
 
   const screenWidth = Dimensions.get('window').width;
 
@@ -144,27 +15,28 @@ const NewAdsensesInnerComponent = () => {
         style={{ gap: 10, flexDirection: 'row', backgroundColor: 'white', padding: 10, borderRadius: 10, width: screenWidth * 0.7 }}
         onPress={() => { console.log(item[0]) }}>
         <Image
-          source={{ uri: `${localhosturl}/categoryPhotos/${item[0].icon}` }}
+          source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
           style={{ width: 80, height: 70, borderRadius: 5 }}
           resizeMode='stretch'
           imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
         </Image>
-        <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
-          <Text style={{ color: 'black' }}>{item[0]?.name}</Text>
+        <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'center', borderRadius: 5, gap: 10 }}>
+          <Text style={{ color: 'black', fontWeight: 700 }}>{item.category}</Text>
+          <Text style={{ color: 'grey', fontSize: 12 }}>{item.address}</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity >
 
-    </View>
+    </View >
   );
 
   return (
     <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-      <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Новые</Text>
+      <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Недавние</Text>
       <FlatList
-        data={categoriesList}
+        data={newestAdsenses}
         renderItem={renderItem}
-        keyExtractor={(item) => item[0].name}
+        keyExtractor={(item) => item._id}
         horizontal
       />
     </View>

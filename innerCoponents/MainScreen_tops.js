@@ -134,9 +134,11 @@ const categoriesList = [
   ]
 ];
 
-const TopAdsensesInnerComponent = () => {
+const TopAdsensesInnerComponent = (props) => {
 
   const screenWidth = Dimensions.get('window').width;
+
+
 
   const renderItem = ({ item }) => (
     <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>

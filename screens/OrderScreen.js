@@ -118,7 +118,7 @@ const OrderScreen = ({ route }) => {
         {selectedDate && selectedDuration && (
           <TouchableOpacity
             style={{ marginVertical: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, alignItems: 'center' }}
-            onPress={() => { console.log(1) }}
+            onPress={() => { console.log(adId) }}
           >
             <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: '600' }}>Забронировать</Text>
           </TouchableOpacity>

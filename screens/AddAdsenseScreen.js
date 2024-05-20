@@ -128,12 +128,20 @@ const AddAdsenseScreen = () => {
         <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Выберите город</Text>
         <SelectorCity city={city} setCity={setCity} />
         <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
-        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage - 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Назад
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage + 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Дальше
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -146,12 +154,20 @@ const AddAdsenseScreen = () => {
         <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
-        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage - 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Назад
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage + 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Дальше
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -161,12 +177,20 @@ const AddAdsenseScreen = () => {
       <View style={styles.container}>
         <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте услуги</Text>
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage - 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Назад
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage + 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Дальше
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -175,12 +199,20 @@ const AddAdsenseScreen = () => {
     return (
       <View style={styles.container}>
         <SelectorImages images={images} setImages={setImages} />
-        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage - 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Назад
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage + 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Дальше
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }
@@ -194,12 +226,20 @@ const AddAdsenseScreen = () => {
             textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
           }}
           multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
-        <TouchableOpacity style={{ marginTop: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage - 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Назад
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+            onPress={() => setStage(stage => stage + 1)}>
+            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+              Дальше
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     )
   }

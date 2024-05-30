@@ -15,6 +15,8 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
   }, [newestAdsenses]);
   console.log(data)
 
+  const screenWidth = Dimensions.get('window').width;
+
   return (
     <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
       <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Примеры интерьеров</Text>

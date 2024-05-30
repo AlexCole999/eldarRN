@@ -25,6 +25,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+        <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
         <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
         <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
         <Stack.Screen name="Забронировать" component={OrderScreen} />
@@ -55,10 +56,6 @@ const Tabs = () => {
         }}
         name="Каталог"
         component={AdsensesScreen} />
-      <Tab.Screen
-        options={navigationOptions}
-        name="Добавить объявление"
-        component={AddAdsenseScreen} />
       <Tab.Screen
         options={navigationOptions}
         name="Профиль"

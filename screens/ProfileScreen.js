@@ -4,6 +4,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
 import user2 from '../assets/user2.png'
+import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
@@ -11,6 +12,8 @@ const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [adsenses, setAdsenses] = useState([]);
+
+  const navigation = useNavigation();
 
   const handleClearDatabase = async () => {
     Alert.alert(
@@ -144,6 +147,26 @@ const ProfileScreen = () => {
         </View>
       )}
 
+      <TouchableOpacity style={{
+        backgroundColor: 'white',
+        marginTop: 20,
+        paddingVertical: 10,
+
+        paddingLeft: 14,
+        borderRadius: 10,
+      }}
+        onPress={() => {
+          navigation.navigate('Добавить объявление')
+        }}
+      >
+        <Text style={{
+          fontWeight: 500,
+          fontSize: 16,
+        }}>
+          Добавить объявление
+        </Text>
+      </TouchableOpacity>
+
       <View style={{
         backgroundColor: 'white',
         marginTop: 20,
@@ -238,18 +261,8 @@ const ProfileScreen = () => {
         <Text style={styles.title}>Мои объявления</Text>
         {adsenses.map(ad => (
           <View key={ad._id} style={styles.adContainer}>
-            <FlatList
-              data={ad.imagesList}
-              keyExtractor={(item, index) => index.toString()}
-              horizontal
-              renderItem={({ item }) => (
-                <TouchableOpacity onPress={() => { }
-                }>
-                  <Image source={{ uri: `${localhosturl}/${userData?.phone}/${item}` }} style={styles.adImage} />
-                </TouchableOpacity>
-              )}
-            />
             <View style={styles.infoContainer}>
+              <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
               <Text style={styles.adText}>Город: {ad.city}</Text>
               <Text style={styles.adText}>Категория: {ad.category}</Text>
               <Text style={styles.adText}>Адрес: {ad.address}</Text>
@@ -327,7 +340,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   adImage: {
-    width: 290,
+    width: 300,
     height: 300,
     resizeMode: 'cover',
     marginBottom: 10,
@@ -336,7 +349,7 @@ const styles = StyleSheet.create({
     borderColor: 'lightgray',
   },
   infoContainer: {
-    paddingHorizontal: 10,
+    paddingHorizontal: 0,
   },
 });
 

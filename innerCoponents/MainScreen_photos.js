@@ -36,12 +36,6 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           />
-          <Image
-            source={{ uri: `${localhosturl}/${data[5]?.user}/${data[5]?.photo}` }}
-            style={{ width: 80, height: 90, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
         </View>
 
         <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -53,12 +47,6 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
           />
           <Image
             source={{ uri: `${localhosturl}/${data[3]?.user}/${data[3]?.photo}` }}
-            style={{ width: 80, height: 70, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
-          <Image
-            source={{ uri: `${localhosturl}/${data[4]?.user}/${data[4]?.photo}` }}
             style={{ width: 80, height: 70, borderRadius: 5, flexGrow: 1 }}
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}

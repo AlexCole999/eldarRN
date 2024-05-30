@@ -8,128 +8,44 @@ import { ScrollView } from 'react-native-gesture-handler';
 const categoriesList = [
   [
     {
-      name: 'Фитнес',
-      icon: 'fitness.jpg'
+      name: 'Косметология',
+      icon: 'categories_cosmetology.jpg'
     },
     {
-      name: 'Бани, сауны',
-      icon: 'baths.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Пирсинг',
-      icon: 'piercing.jpg'
+      name: 'Лашмейкеры и Бровисты',
+      icon: 'categories_lashmaker.jpg'
     },
     {
-      name: 'Языковая школа',
-      icon: 'language-school.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Коворкинг',
-      icon: 'coworking.jpg'
-    },
-    {
-      name: 'Массаж',
-      icon: 'massage.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Психология',
-      icon: 'psychology.jpg'
-    },
-    {
-      name: 'Татуаж, тату',
-      icon: 'tattoo.jpg'
-    }
-  ],
-  [
-    {
-      name: 'СПА',
-      icon: 'spa.jpg'
-    },
-    {
-      name: 'Подология',
-      icon: 'podiatry.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Депиляция, эпиляция',
-      icon: 'waxing.jpg'
-    },
-    {
-      name: 'Репетитор',
-      icon: 'tutoring.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Курсы',
-      icon: 'courses.jpg'
-    },
-    {
-      name: 'Косметология, уход',
-      icon: 'cosmetology.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Брови',
-      icon: 'brows.jpg'
-    },
-    {
-      name: 'Ресницы',
-      icon: 'eyelashes.jpg'
+      name: 'Стилисты',
+      icon: 'categories_stylist.jpg'
     }
   ],
   [
     {
       name: 'Ногтевой сервис',
-      icon: 'nails.jpg'
+      icon: 'categories_nails.jpg'
     },
     {
-      name: 'Стоматология',
-      icon: 'dentistry.jpg'
+      name: 'Массаж и Спа',
+      icon: 'categories_massageAndSpa.jpg'
+    },
+    {
+      name: 'Тату и пирсинг',
+      icon: 'categories_tattooAndPiercing.jpg'
     }
   ],
   [
     {
-      name: 'Ветеринария',
-      icon: 'veterinary.jpg'
+      name: 'Коворкинг и Конферент  залы',
+      icon: 'categories_coworking.jpg'
     },
     {
-      name: 'Визаж',
-      icon: 'makeup.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Груминг',
-      icon: 'grooming.jpg'
+      name: 'Фотостудия',
+      icon: 'categories_photostudy.jpg'
     },
     {
-      name: 'Парикмахерские услуги',
-      icon: 'haircut.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Усы, борода',
-      icon: 'beard.jpg'
-    },
-    {
-      name: 'Барбершоп',
-      icon: 'barbershop.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Прочие',
-      icon: 'other.jpg'
+      name: 'Рестораны и Банкетные Залы',
+      icon: 'categories_bankets.jpg'
     }
   ]
 ];
@@ -148,7 +64,7 @@ const CategoriesInnerComponent = () => {
           imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
           <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-            <Text style={{ color: 'white' }}>{item[0]?.name}</Text>
+            <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[0]?.name}</Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
@@ -161,7 +77,21 @@ const CategoriesInnerComponent = () => {
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           >
             <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-              <Text style={{ color: 'white' }}>{item[1]?.name}</Text>
+              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[1]?.name}</Text>
+            </View>
+          </ImageBackground>
+        </TouchableOpacity>
+        : null}
+      {item[2]?.name
+        ? <TouchableOpacity onPress={() => { console.log(item[2]) }}>
+          <ImageBackground
+            source={{ uri: `${localhosturl}/categoryPhotos/${item[2]?.icon}` }}
+            style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}
+            resizeMode='stretch'
+            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
+          >
+            <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[2]?.name}</Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>

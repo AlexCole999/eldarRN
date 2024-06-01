@@ -38,6 +38,7 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
         renderItem={renderItem}
         keyExtractor={(item) => item._id}
         horizontal
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

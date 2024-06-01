@@ -117,7 +117,7 @@ const AdDetailsScreen = ({ route }) => {
               <Text style={{ fontSize: 8, fontStyle: 'italic' }}>{averageRating.toFixed(2)}</Text>
             </View>
           </View>
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10 }}>
+          <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: 'white', borderRadius: 10, minHeight: 150 }}>
             {adTestimonials.length
               ?
               <FlatList
@@ -125,10 +125,12 @@ const AdDetailsScreen = ({ route }) => {
                 data={adTestimonials}
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
+                showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => (
-                  <TouchableOpacity onPress={() => console.log(item)} style={{ width: 200, justifyContent: 'flex-start', alignItems: 'center', paddingRight: 20 }}>
-                    <View style={{ alignItems: 'center' }}>
-                      <StarRating rating={item.rating} size={20} />
+                  <TouchableOpacity
+                    style={{ padding: 10, borderRadius: 10, marginHorizontal: 10, paddingHorizontal: 20, minWidth: 160, maxWidth: 240, backgroundColor: '#f3f2f8', justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <View style={{ alignItems: 'center', paddingBottom: 10 }}>
+                      <StarRating rating={item.rating} size={35} />
                       <Text style={{ color: 'grey', fontSize: 12, fontStyle: 'italic', textAlign: 'center', paddingTop: 4 }}>{item.text}</Text>
                     </View>
                   </TouchableOpacity>

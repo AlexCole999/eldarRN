@@ -168,6 +168,7 @@ const TopAdsensesInnerComponent = (props) => {
         renderItem={renderItem}
         keyExtractor={(item) => item[0].name}
         horizontal
+        showsHorizontalScrollIndicator={false}
       />
     </View>
   );

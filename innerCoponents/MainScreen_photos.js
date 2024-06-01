@@ -26,13 +26,13 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <Image
             source={{ uri: `${localhosturl}/${data[0]?.user}/${data[0]?.photo}` }}
-            style={{ width: 80, height: 90, borderRadius: 5, flexGrow: 1 }}
+            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           />
           <Image
             source={{ uri: `${localhosturl}/${data[1]?.user}/${data[1]?.photo}` }}
-            style={{ width: 80, height: 90, borderRadius: 5, flexGrow: 1 }}
+            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           />
@@ -41,13 +41,13 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
         <View style={{ flexDirection: 'row', gap: 10 }}>
           <Image
             source={{ uri: `${localhosturl}/${data[2]?.user}/${data[2]?.photo}` }}
-            style={{ width: 80, height: 70, borderRadius: 5, flexGrow: 1 }}
+            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           />
           <Image
             source={{ uri: `${localhosturl}/${data[3]?.user}/${data[3]?.photo}` }}
-            style={{ width: 80, height: 70, borderRadius: 5, flexGrow: 1 }}
+            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           />

@@ -63,8 +63,8 @@ const CategoriesInnerComponent = () => {
           resizeMode='stretch'
           imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
-          <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-            <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[0]?.name}</Text>
+          <View style={{ backgroundColor: 'rgba(0,0,0, 0.40)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+            <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center', fontWeight: 600 }}>{item[0]?.name}</Text>
           </View>
         </ImageBackground>
       </TouchableOpacity>
@@ -76,8 +76,8 @@ const CategoriesInnerComponent = () => {
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           >
-            <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[1]?.name}</Text>
+            <View style={{ backgroundColor: 'rgba(0,0,0, 0.40)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center', fontWeight: 600 }}>{item[1]?.name}</Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>
@@ -90,8 +90,8 @@ const CategoriesInnerComponent = () => {
             resizeMode='stretch'
             imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
           >
-            <View style={{ backgroundColor: 'rgba(0,0,0, 0.30)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
-              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center' }}>{item[2]?.name}</Text>
+            <View style={{ backgroundColor: 'rgba(0,0,0, 0.40)', display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderRadius: 5 }}>
+              <Text style={{ color: 'white', paddingHorizontal: 10, textAlign: 'center', fontWeight: 600 }}>{item[2]?.name}</Text>
             </View>
           </ImageBackground>
         </TouchableOpacity>

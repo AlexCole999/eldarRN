@@ -129,14 +129,15 @@ const AddAdsenseScreen = () => {
               Назад
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          <TouchableOpacity style={{ backgroundColor: !(city && (city !== 'Ташкент' || cityDistrict)) ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+            disabled={!(city && (city !== 'Ташкент' || cityDistrict))}
             onPress={() => setStage(stage => stage + 1)}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
               Дальше
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View >
     )
   }
 
@@ -155,7 +156,8 @@ const AddAdsenseScreen = () => {
               Назад
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          <TouchableOpacity style={{ backgroundColor: !(phone && address && workhours) ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+            disabled={!(phone && address && workhours)}
             onPress={() => setStage(stage => stage + 1)}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
               Дальше
@@ -178,7 +180,8 @@ const AddAdsenseScreen = () => {
               Назад
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          <TouchableOpacity style={{ backgroundColor: !servicesList.length ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+            disabled={!servicesList.length}
             onPress={() => setStage(stage => stage + 1)}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
               Дальше
@@ -200,7 +203,8 @@ const AddAdsenseScreen = () => {
               Назад
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          <TouchableOpacity style={{ backgroundColor: !images.length ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+            disabled={!images.length}
             onPress={() => setStage(stage => stage + 1)}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
               Дальше
@@ -227,7 +231,8 @@ const AddAdsenseScreen = () => {
               Назад
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+          <TouchableOpacity style={{ backgroundColor: !description ? 'lightgreya' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+            disabled={!description}
             onPress={() => setStage(stage => stage + 1)}>
             <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
               Дальше

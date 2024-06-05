@@ -112,12 +112,6 @@ const AddAdsenseScreen = () => {
     return (
       <View style={{ ...styles.container, paddingHorizontal: 0 }}>
         <Screen3 category={category} setCategory={(item) => { setCategory(item); setStage(2) }} />
-        <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-          onPress={() => setStage(stage => stage + 1)}>
-          <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-            Дальше
-          </Text>
-        </TouchableOpacity>
       </View>
     )
   }

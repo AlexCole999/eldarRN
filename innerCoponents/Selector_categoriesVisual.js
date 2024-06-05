@@ -1,174 +1,146 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import localhosturl from '../localhoststring';
 
-const SelectorCategoryVisual = ({ category, setCategory }) => {
-
-  const services = [
+const SelectorCategoryVisual = ({ setCategory }) => {
+  const categories = [
     {
-      name: 'Фитнес',
-      icon: 'fitness.png',
-      description: 'Тренажерные залы, спортивные секции'
+      name: 'Косметология',
+      icon: 'cosmetologyIcon.png',
+      subcategories: [
+        { name: 'Эстетическая косметология', icon: 'subcategory.png' },
+        { name: 'Аппаратная косметология', icon: 'subcategory.png' },
+        { name: 'Инъекционная косметология', icon: 'subcategory.png' },
+        { name: 'Депиляция, шугаринг', icon: 'subcategory.png' },
+        { name: 'Перманентный макияж', icon: 'subcategory.png' }
+      ]
     },
     {
-      name: 'Бани, сауны',
-      icon: 'baths.png',
-      description: 'Бани, сауны, парные'
+      name: 'Лашмейкеры/Бровисты',
+      icon: 'lashmaker.png'
     },
     {
-      name: 'Пирсинг',
-      icon: 'piercing.png',
-      description: 'Проколы ушей, носа, пупка и других частей тела'
+      name: 'Стилисты',
+      icon: 'stylists.png',
+      subcategories: [
+        { name: 'Стилисты по волосам', icon: 'stylistHair.png' },
+        { name: 'Визаж', icon: 'visage.png' },
+        { name: 'Барбершоп', icon: 'barber1.png' }
+      ]
     },
-    {
-      name: 'Языковая школа',
-      icon: 'language-school.png',
-      description: 'Обучение иностранным языкам'
-    },
-    {
-      name: 'Коворкинг',
-      icon: 'coworking.png',
-      description: 'Общие офисные пространства'
-    },
-    {
-      name: 'Массаж',
-      icon: 'massage.png',
-      description: 'Профессиональные массажные услуги'
-    },
-    {
-      name: 'Психология',
-      icon: 'psychology.png',
-      description: 'Консультации психологов, психотерапия'
-    },
-    {
-      name: 'Татуаж, тату',
-      icon: 'tattoo.png',
-      description: 'Постоянный макияж, татуировки'
-    },
-    {
-      name: 'СПА',
-      icon: 'spa.png',
-      description: 'Спа-процедуры, массаж, уход за телом'
-    },
-    {
-      name: 'Подология',
-      icon: 'podiatry.png',
-      description: 'Лечение заболеваний стопы, уход за ногтями'
-    },
-    {
-      name: 'Депиляция, эпиляция',
-      icon: 'waxing.png',
-      description: 'Удаление волос с помощью воска, сахара или лазера'
-    },
-    {
-      name: 'Репетитор',
-      icon: 'tutoring.png',
-      description: 'Частные уроки, подготовка к экзаменам'
-    },
-
-    {
-      name: 'Курсы',
-      icon: 'courses.png',
-      description: 'Обучающие курсы по различным темам'
-    },
-    {
-      name: 'Косметология, уход',
-      icon: 'cosmetology.png',
-      description: 'Процедуры по уходу за кожей лица и тела'
-    },
-    {
-      name: 'Брови',
-      icon: 'eyelashes.png',
-      description: 'Коррекция и окрашивание бровей'
-    },
-    {
-      name: 'Ресницы',
-      icon: 'eyelashes.png',
-      description: 'Наращивание и окрашивание ресниц'
-    },
-
     {
       name: 'Ногтевой сервис',
-      icon: 'nails.png',
-      description: 'Маникюр, педикюр, наращивание ногтей'
+      icon: 'mails.png'
     },
     {
-      name: 'Стоматология',
-      icon: 'dentistry.png',
-      description: 'Стоматологические услуги, лечение зубов'
+      name: 'Массаж /Спа',
+      icon: 'massagaSpa.png'
     },
     {
-      name: 'Ветеринария',
-      icon: 'veterinary.png',
-      description: 'Услуги ветеринарного врача'
+      name: 'Тату/Пирсинг',
+      icon: 'tatooPiercing.png'
     },
     {
-      name: 'Визаж',
-      icon: 'makeup.png',
-      description: 'Подготовка к мероприятиям, макияж'
+      name: 'Коворкинг/Конференц залы',
+      icon: 'coworking1.png'
     },
     {
-      name: 'Груминг',
-      icon: 'grooming.png',
-      description: 'Уход за животными, стрижка и купание'
+      name: 'Фотостудия',
+      icon: 'photostudy.png'
     },
     {
-      name: 'Парикмахерские услуги',
-      icon: 'haircut.png',
-      description: 'Стрижки, укладки, окрашивание волос'
-    },
-    {
-      name: 'Усы, борода',
-      icon: 'beard.png',
-      description: 'Стрижка, уход и окрашивание усов и бороды'
-    },
-    {
-      name: 'Барбершоп',
-      icon: 'barbershop.png',
-      description: 'Мужская стрижка, бритье, уход за волосами'
-    },
-    {
-      name: 'Прочие',
-      icon: 'other.png',
-      description: 'Прочие услуги, не вошедшие в основные категории'
-    },
+      name: 'Рестораны/Банкетные Залы',
+      icon: 'restraunts.png'
+    }
   ];
 
+  const [selectedCategory, setSelectedCategory] = useState(null);
 
+  const handleCategoryPress = (category) => {
+    if (category.subcategories) {
+      setSelectedCategory(category);
+    } else {
+      setCategory(category.name);
+    }
+  };
+
+  const handleSubcategoryPress = (subcategory) => {
+    setCategory(subcategory.name);
+    setSelectedCategory(null);
+  };
+
+  const renderCategory = (category, index) => (
+    <View key={index} style={{ marginTop: 20 }}>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'white',
+          padding: 12,
+          borderRadius: 10,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10
+        }}
+        onPress={() => handleCategoryPress(category)}
+      >
+        <Image
+          source={{ uri: `${localhosturl}/categoryIcons/${category.icon || 'default.png'}` }}
+          style={{ width: 40, height: 40 }}
+        />
+        <View style={{ maxWidth: '80%' }}>
+          <Text>{category.name}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+
+  const renderSubcategory = (subcategory, index) => (
+    <View key={index} style={{ marginTop: 20 }}>
+      <TouchableOpacity
+        style={{
+          backgroundColor: 'white',
+          padding: 12,
+          borderRadius: 10,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 10
+        }}
+        onPress={() => handleSubcategoryPress(subcategory)}
+      >
+        <Image
+          source={{ uri: `${localhosturl}/categoryIcons/${subcategory.icon}` }}
+          style={{ width: 40, height: 40 }}
+        />
+        <View style={{ maxWidth: '80%' }}>
+          <Text>{subcategory.name}</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
 
   return (
     <ScrollView style={{ paddingHorizontal: 20, backgroundColor: '#f3f2f8' }}>
-      <Text style={{ textAlign: 'center', paddingTop: 20, fontSize: 20, fontWeight: 800 }}>Выберите специализацию</Text>
+      <Text style={{ textAlign: 'center', paddingTop: 20, fontSize: 20, fontWeight: '800' }}>
+        Выберите специализацию
+      </Text>
       <View>
         <View style={{ marginVertical: 20 }}>
-          {services.map((service, index) => (
-            <View key={index} style={{ marginTop: 20 }}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: 'white',
-                  padding: 12,
-                  borderRadius: 10,
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  gap: 10
-                }}
-                onPress={() => setCategory(service.name)}>
-                <Image
-                  source={{ uri: `${localhosturl}/categoryIcons/${service.icon}` }}
-                  style={{ width: 40, height: 40 }}
-                />
-                <View style={{ maxWidth: '80%' }}>
-                  <Text>{service.name}</Text>
-                  <Text style={{ color: 'grey', fontSize: 12 }}>{service.description}</Text>
-                </View>
+          {selectedCategory ? (
+            <>
+              {selectedCategory.subcategories.map((subcategory, index) => renderSubcategory(subcategory, index))}
+              <TouchableOpacity style={{ marginTop: 20, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
+                onPress={() => setSelectedCategory(null)}>
+                <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
+                  Назад
+                </Text>
               </TouchableOpacity>
-            </View>
-          ))}
+            </>
+          ) : (
+            categories.map((category, index) => renderCategory(category, index))
+          )}
         </View>
-
       </View>
-
     </ScrollView>
   );
 };

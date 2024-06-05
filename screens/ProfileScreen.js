@@ -199,6 +199,13 @@ const ProfileScreen = () => {
           fontSize: 16,
         }}>Скидки</Text>
         <Text style={{
+          borderBottomColor: '#ececec',
+          borderBottomWidth: 1,
+          paddingVertical: 7,
+          fontWeight: 500,
+          fontSize: 16,
+        }}>Брони</Text>
+        <Text style={{
           paddingTop: 7,
           fontSize: 16,
           fontWeight: 500,

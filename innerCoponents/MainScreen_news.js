@@ -9,11 +9,17 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
 
   const screenWidth = Dimensions.get('window').width;
 
+  const navigation = useNavigation();
+
   const renderItem = ({ item }) => (
     <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
       <TouchableOpacity
         style={{ gap: 10, flexDirection: 'row', backgroundColor: 'white', padding: 10, borderRadius: 10, width: screenWidth * 0.7 }}
-        onPress={() => { console.log(item[0]) }}>
+        // onPress={() => { console.log(item) }}
+        onPress={() => navigation.navigate('Детали объявления', {
+          adId: item._id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+        })}
+      >
         <Image
           source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
           style={{ width: 80, height: 70, borderRadius: 5 }}

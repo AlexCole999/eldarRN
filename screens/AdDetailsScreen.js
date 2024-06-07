@@ -12,6 +12,7 @@ const AdDetailsScreen = ({ route }) => {
   const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
+  console.log(route.params)
   return (
     <ScrollView>
       <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 180, borderRadius: 0 }} />
@@ -146,13 +147,6 @@ const AdDetailsScreen = ({ route }) => {
           navigation.navigate('Оставить отзыв', {
             adId: adId
           })
-          // console.log(1);
-          // let text = '123123123';
-          // let rating = 3.5
-          // axios.post(`${localhosturl}/newAdsenseTestimonial`, { // Создаем новое объявление
-          //   text, rating
-          // })
-
         }}>
           <Text style={{ color: 'rgb(0, 191, 255)', textAlign: 'right' }}>Оставить отзыв</Text>
         </TouchableOpacity>

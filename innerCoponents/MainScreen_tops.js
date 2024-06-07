@@ -5,157 +5,32 @@ import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from '../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 
-const categoriesList = [
-  [
-    {
-      name: 'Фитнес',
-      icon: 'fitness.jpg'
-    },
-    {
-      name: 'Бани, сауны',
-      icon: 'baths.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Пирсинг',
-      icon: 'piercing.jpg'
-    },
-    {
-      name: 'Языковая школа',
-      icon: 'language-school.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Коворкинг',
-      icon: 'coworking.jpg'
-    },
-    {
-      name: 'Массаж',
-      icon: 'massage.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Психология',
-      icon: 'psychology.jpg'
-    },
-    {
-      name: 'Татуаж, тату',
-      icon: 'tattoo.jpg'
-    }
-  ],
-  [
-    {
-      name: 'СПА',
-      icon: 'spa.jpg'
-    },
-    {
-      name: 'Подология',
-      icon: 'podiatry.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Депиляция, эпиляция',
-      icon: 'waxing.jpg'
-    },
-    {
-      name: 'Репетитор',
-      icon: 'tutoring.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Курсы',
-      icon: 'courses.jpg'
-    },
-    {
-      name: 'Косметология, уход',
-      icon: 'cosmetology.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Брови',
-      icon: 'brows.jpg'
-    },
-    {
-      name: 'Ресницы',
-      icon: 'eyelashes.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Ногтевой сервис',
-      icon: 'nails.jpg'
-    },
-    {
-      name: 'Стоматология',
-      icon: 'dentistry.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Ветеринария',
-      icon: 'veterinary.jpg'
-    },
-    {
-      name: 'Визаж',
-      icon: 'makeup.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Груминг',
-      icon: 'grooming.jpg'
-    },
-    {
-      name: 'Парикмахерские услуги',
-      icon: 'haircut.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Усы, борода',
-      icon: 'beard.jpg'
-    },
-    {
-      name: 'Барбершоп',
-      icon: 'barbershop.jpg'
-    }
-  ],
-  [
-    {
-      name: 'Прочие',
-      icon: 'other.jpg'
-    }
-  ]
-];
-
-const TopAdsensesInnerComponent = (props) => {
+const TopAdsensesInnerComponent = ({ topAdsenses }) => {
 
   const screenWidth = Dimensions.get('window').width;
 
-
+  const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
     <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
       <TouchableOpacity
         style={{ gap: 10, flexDirection: 'row', backgroundColor: 'white', padding: 10, borderRadius: 10, width: screenWidth * 0.7 }}
-        onPress={() => { console.log(item[0]) }}>
+        onPress={() => navigation.navigate('Детали объявления', {
+          adId: item._id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+        })}
+      >
         <Image
-          source={{ uri: `${localhosturl}/categoryPhotos/${item[0].icon}` }}
-          style={{ width: 80, height: 70, borderRadius: 5 }}
-          resizeMode='stretch'
+          source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
+          style={{ width: 90, height: 80, borderRadius: 5 }}
+          resizeMode='cover'
           imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
         </Image>
-        <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
-          <Text style={{ color: 'black' }}>{item[0]?.name}</Text>
+        <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'center', borderRadius: 5, gap: 10 }}>
+          <Text style={{ color: 'black', fontWeight: 700 }}>{item.category}</Text>
+          <Text style={{ color: 'grey', fontSize: 12 }}>{item.address}</Text>
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity >
 
     </View>
   );
@@ -164,9 +39,9 @@ const TopAdsensesInnerComponent = (props) => {
     <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
       <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Топ объявления</Text>
       <FlatList
-        data={categoriesList}
+        data={topAdsenses}
         renderItem={renderItem}
-        keyExtractor={(item) => item[0].name}
+        keyExtractor={(item) => item._id}
         horizontal
         showsHorizontalScrollIndicator={false}
       />

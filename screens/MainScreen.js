@@ -10,12 +10,14 @@ import localhosturl from './../localhoststring';
 const MainScreen = () => {
 
   const [newestAdsenses, setNewestAdsenses] = useState([])
+  const [topAdsenses, setTopAdsenses] = useState([])
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let a = await axios.get(`${localhosturl}/adsensesMainScreen`);
-        setNewestAdsenses(a.data.adsensesSortedByCreatedAt)
+        let response = await axios.get(`${localhosturl}/adsensesMainScreen`);
+        setNewestAdsenses(response.data.adsensesSortedByCreatedAt)
+        setTopAdsenses(response.data.adsensesSortedByRating)
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -27,7 +29,7 @@ const MainScreen = () => {
   return (
     <ScrollView style={{ backgroundColor: '#f3f2f8' }}>
       <MainScreenCategories />
-      <MainScreenTops />
+      <MainScreenTops topAdsenses={topAdsenses} />
       <MainScreenPhotos newestAdsenses={newestAdsenses} />
       <MainScreenNews newestAdsenses={newestAdsenses} />
     </ScrollView >

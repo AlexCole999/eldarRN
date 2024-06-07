@@ -10,12 +10,42 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
   let [data, setData] = useState([])
 
   useEffect(() => {
-    let result = newestAdsenses.map(x => { return { photo: x.imagesList[0], user: x.user } })
-    setData(result)
+
+    function chunkArray(arr, chunkSize) {
+      const result = [];
+      for (let i = 0; i < arr.length; i += chunkSize) {
+        result.push(arr.slice(i, i + chunkSize));
+      }
+      return result;
+    }
+    // let result = newestAdsenses.map(x => { return { photo: x.imagesList[0], user: x.user } })
+    // setData(result)
+    setData(chunkArray(newestAdsenses, 2))
   }, [newestAdsenses]);
-  console.log(data)
 
   const screenWidth = Dimensions.get('window').width;
+
+  const renderItem = ({ item }) => (
+    <View style={{ gap: 10 }}>
+      <TouchableOpacity>
+        <Image
+          source={{ uri: `${localhosturl}/${item[0]?.user}/${item[0]?.imagesList[0]}` }}
+          style={{ width: screenWidth * 0.43, height: 120, borderRadius: 5 }}
+          resizeMode='cover'
+          imageStyle={{ borderRadius: 5, width: 100, height: '100%' }}
+        />
+      </TouchableOpacity>
+      <TouchableOpacity>
+        <Image
+          source={{ uri: `${localhosturl}/${item[1]?.user}/${item[1]?.imagesList[0]}` }}
+          style={{ width: screenWidth * 0.43, height: 120, borderRadius: 5 }}
+          resizeMode='cover'
+          imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
+        />
+      </TouchableOpacity >
+    </View>
+
+  );
 
   return (
     <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
@@ -23,35 +53,14 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
 
       <View style={{ gap: 10 }}>
 
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Image
-            source={{ uri: `${localhosturl}/${data[0]?.user}/${data[0]?.photo}` }}
-            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
-          <Image
-            source={{ uri: `${localhosturl}/${data[1]?.user}/${data[1]?.photo}` }}
-            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
-        </View>
-
-        <View style={{ flexDirection: 'row', gap: 10 }}>
-          <Image
-            source={{ uri: `${localhosturl}/${data[2]?.user}/${data[2]?.photo}` }}
-            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
-          <Image
-            source={{ uri: `${localhosturl}/${data[3]?.user}/${data[3]?.photo}` }}
-            style={{ width: 80, height: 130, borderRadius: 5, flexGrow: 1 }}
-            resizeMode='stretch'
-            imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
-          />
-        </View>
+        <FlatList
+          contentContainerStyle={{ gap: 10 }}
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+        />
 
       </View>
     </View>

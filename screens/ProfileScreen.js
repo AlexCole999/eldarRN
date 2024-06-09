@@ -263,34 +263,31 @@ const ProfileScreen = () => {
         backgroundColor: 'white',
         marginTop: 20,
         paddingTop: 20,
-        borderRadius: 10,
+        borderRadius: 10
       }}>
         <Text style={styles.title}>Мои объявления</Text>
         {adsenses.map(ad => (
-          <View key={ad._id} style={styles.adContainer}>
-            <View style={styles.infoContainer}>
-              <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
-              <Text style={styles.adText}>Город: {ad.city}</Text>
-              <Text style={styles.adText}>Категория: {ad.category}</Text>
-              <Text style={styles.adText}>Адрес: {ad.address}</Text>
-              <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
-              <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
-              {ad.servicesList.map((service, index) => (
-                <Text key={index} style={styles.adText}>
-                  Часы: {service.hours}, Цена: {service.price}
-                </Text>
-              ))}
+          <TouchableOpacity key={ad._id}>
+            <View style={styles.adContainer}>
+              <View style={styles.infoContainer}>
+                <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
+                <View>
+                  <Text style={styles.adText}>Город: {ad.city}</Text>
+                  <Text style={styles.adText}>Категория: {ad.category}</Text>
+                  <Text style={styles.adText}>Адрес: {ad.address}</Text>
+                  <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
+                  <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
+                  {ad.servicesList.map((service, index) => (
+                    <Text key={index} style={styles.adText}>
+                      Часы: {service.hours}, Цена: {service.price}
+                    </Text>
+                  ))}
+                </View>
+              </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       </View>
-
-      <TouchableOpacity style={styles.button} onPress={handleClearDatabase}>
-        <Text style={styles.buttonText}>Очистить базу данных</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={refreshAdsenses}>
-        <Text style={styles.buttonText}>Обновить данные объявлений</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
         onPress={async () => {
@@ -343,12 +340,14 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   adText: {
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 12,
+    marginBottom: 2,
+    maxWidth: '80%',
+    color: 'black'
   },
   adImage: {
-    width: 300,
-    height: 300,
+    width: 120,
+    height: '100%',
     resizeMode: 'cover',
     marginBottom: 10,
     borderRadius: 10,
@@ -357,6 +356,8 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     paddingHorizontal: 0,
+    flexDirection: 'row',
+    gap: 10
   },
 });
 

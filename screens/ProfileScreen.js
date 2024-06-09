@@ -3,7 +3,6 @@ import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, A
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
-import user2 from '../assets/user2.png'
 import { useNavigation } from '@react-navigation/native';
 
 const ProfileScreen = () => {
@@ -15,38 +14,13 @@ const ProfileScreen = () => {
 
   const navigation = useNavigation();
 
-  const handleClearDatabase = async () => {
-    Alert.alert(
-      'Подтверждение',
-      'Вы уверены, что хотите очистить базу данных?',
-      [
-        {
-          text: 'Отмена',
-          style: 'cancel',
-        },
-        {
-          text: 'Очистить',
-          onPress: async () => {
-            try {
-              await axios.delete(`${localhosturl}/users`);
-              alert('База данных успешно очищена');
-            } catch (error) {
-              alert('Ошибка при очистке базы данных');
-            }
-          },
-        },
-      ],
-      { cancelable: false }
-    );
-  };
-
   const refreshAdsenses = async () => {
 
     let user = await AsyncStorage.getItem('userData');
     if (user) {
       try {
         let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
-        console.log(response.data.adsenses);
+        console.log("объявления обновлены");
         setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
       } catch (error) {
         console.error("Ошибка при получении объявлений:", error);
@@ -71,6 +45,53 @@ const ProfileScreen = () => {
       alert('Ошибка при регистрации');
     }
   };
+
+  const deleteAdsense = async (adId) => {
+
+    Alert.alert(
+      'Подтверждение удаления',
+      'Вы уверены, что хотите удалить это объявление?',
+      [
+        {
+          text: 'Отмена',
+          style: 'cancel',
+        },
+        {
+          text: 'Удалить',
+          onPress: () => deleteAd(adId),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    );
+
+    async function deleteAd(adId) {
+      try {
+        const response = await fetch(`${localhosturl}/deleteAdsense`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id: adId }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          console.log('Успешно удалено:', result);
+          Alert.alert('Успех', 'Объявление успешно удалено');
+          await refreshAdsenses()
+        } else {
+          const errorData = await response.json();
+          console.error('Ошибка при удалении:', errorData.message);
+          Alert.alert('Ошибка', 'Ошибка при удалении объявления');
+        }
+      } catch (error) {
+        console.error('Ошибка при соединении с сервером:', error);
+        Alert.alert('Ошибка', 'Ошибка при соединении с сервером');
+      }
+    }
+
+  }
 
   const loadUserData = async () => {
     const userDataString = await AsyncStorage.getItem('userData');
@@ -267,11 +288,15 @@ const ProfileScreen = () => {
       }}>
         <Text style={styles.title}>Мои объявления</Text>
         {adsenses.map(ad => (
-          <TouchableOpacity key={ad._id}>
+          <TouchableOpacity key={ad._id}
+            onPress={() => navigation.navigate('Детали объявления', {
+              adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+            })}
+          >
             <View style={styles.adContainer}>
               <View style={styles.infoContainer}>
                 <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
-                <View>
+                <View style={{ maxWidth: '80%' }}>
                   <Text style={styles.adText}>Город: {ad.city}</Text>
                   <Text style={styles.adText}>Категория: {ad.category}</Text>
                   <Text style={styles.adText}>Адрес: {ad.address}</Text>
@@ -283,6 +308,19 @@ const ProfileScreen = () => {
                     </Text>
                   ))}
                 </View>
+              </View>
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
+                <TouchableOpacity
+                  style={styles.button}
+                >
+                  <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Изменить</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={{ ...styles.button, backgroundColor: 'red' }}
+                  onPress={() => { deleteAdsense(ad._id) }}
+                >
+                  <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Удалить</Text>
+                </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
@@ -323,12 +361,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   button: {
-    backgroundColor: 'blue',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 5,
+    flexGrow: 1,
     marginVertical: 10,
-    alignItems: 'center',
+    backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
+    padding: 10, // отступы
+    borderRadius: 10, // радиус закругления углов
+    alignItems: 'center', // центрирование по горизонтали
   },
   buttonText: {
     color: '#fff',
@@ -346,7 +384,7 @@ const styles = StyleSheet.create({
     color: 'black'
   },
   adImage: {
-    width: 120,
+    width: '50%',
     height: '100%',
     resizeMode: 'cover',
     marginBottom: 10,

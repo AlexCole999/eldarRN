@@ -23,7 +23,7 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
         <Image
           source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
           style={{ width: 90, height: 80, borderRadius: 5 }}
-          resizeMode='stretch'
+          resizeMode='cover'
           imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
         </Image>

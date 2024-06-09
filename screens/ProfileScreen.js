@@ -192,7 +192,11 @@ const ProfileScreen = () => {
                 </View>
               </View>
               <View style={styles.adButtonsContainer}>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button}
+                  onPress={() => navigation.navigate('Изменить объявление', {
+                    adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+                  })}
+                >
                   <Text style={styles.buttonText}>Изменить</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.deleteButton} onPress={() => { deleteAdsense(ad._id) }}>

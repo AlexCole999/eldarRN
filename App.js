@@ -12,6 +12,7 @@ import TestScreen from './screens/TestScreen';
 import TestimonialScreen from './screens/TestimonialScreen';
 import OrderScreen from './screens/OrderScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
+import UpdateAdsenseScreen from './screens/UpdateAdsenseScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -95,6 +96,7 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
         <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
+        <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
         <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
         <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
         <Stack.Screen name="Забронировать" component={OrderScreen} />

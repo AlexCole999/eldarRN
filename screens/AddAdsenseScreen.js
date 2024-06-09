@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Button, TextInput, ScrollView, StyleSheet, Text, TouchableOpacity, Image, FlatList, Alert } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 
@@ -13,6 +14,8 @@ import localhosturl from './../localhoststring';
 import Screen3 from '../innerCoponents/Selector_categoriesVisual';
 
 const AddAdsenseScreen = () => {
+
+  const navigation = useNavigation();
 
   const [stage, setStage] = useState(1);
   const [user, setUser] = useState('default');
@@ -100,6 +103,7 @@ const AddAdsenseScreen = () => {
             Alert.alert('Успешно', 'Объявление создано');
 
             console.log(response.data.adsenseId);
+            navigation.navigate('Каталог');
 
           }).catch((error) => {
             console.error(error);

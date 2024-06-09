@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, Alert, ScrollView, RefreshControl } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
@@ -11,11 +11,12 @@ const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [adsenses, setAdsenses] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
 
   const navigation = useNavigation();
 
   const refreshAdsenses = async () => {
-
+    setRefreshing(true);
     let user = await AsyncStorage.getItem('userData');
     if (user) {
       try {
@@ -26,6 +27,7 @@ const ProfileScreen = () => {
         console.error("Ошибка при получении объявлений:", error);
       }
     }
+    setRefreshing(false);
   }
 
   const handleRegistration = async () => {
@@ -47,7 +49,6 @@ const ProfileScreen = () => {
   };
 
   const deleteAdsense = async (adId) => {
-
     Alert.alert(
       'Подтверждение удаления',
       'Вы уверены, что хотите удалить это объявление?',
@@ -79,7 +80,7 @@ const ProfileScreen = () => {
           const result = await response.json();
           console.log('Успешно удалено:', result);
           Alert.alert('Успех', 'Объявление успешно удалено');
-          await refreshAdsenses()
+          await refreshAdsenses();
         } else {
           const errorData = await response.json();
           console.error('Ошибка при удалении:', errorData.message);
@@ -90,7 +91,6 @@ const ProfileScreen = () => {
         Alert.alert('Ошибка', 'Ошибка при соединении с сервером');
       }
     }
-
   }
 
   const loadUserData = async () => {
@@ -106,38 +106,16 @@ const ProfileScreen = () => {
   }, []);
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView
+      contentContainerStyle={styles.container}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshAdsenses} />}
+    >
       {userData ? (
-        <View style={{
-          backgroundColor: 'white',
-          padding: 7,
-          borderRadius: 10,
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 5
-        }}>
-          <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }}
-            style={{ width: 70, height: 70 }}
-          />
+        <View style={styles.userContainer}>
+          <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
           <View>
-            <Text style={{
-              textTransform: 'capitalize',
-              fontWeight: '700',
-              letterSpacing: 0.2,
-              fontFamily: 'Roboto',
-              fontSize: 16
-            }}>
-              {userData?.name}
-            </Text>
-            <Text style={{
-              color: 'grey',
-              letterSpacing: 0.2,
-              fontFamily: 'Roboto',
-              fontSize: 14
-            }}>
-              +{userData?.phone}
-            </Text>
+            <Text style={styles.userName}>{userData?.name}</Text>
+            <Text style={styles.userPhone}>+{userData?.phone}</Text>
           </View>
         </View>
       ) : (
@@ -168,125 +146,30 @@ const ProfileScreen = () => {
         </View>
       )}
 
-      <TouchableOpacity style={{
-        backgroundColor: 'white',
-        marginTop: 20,
-        paddingVertical: 10,
-
-        paddingLeft: 14,
-        borderRadius: 10,
-      }}
-        onPress={() => {
-          navigation.navigate('Добавить объявление')
-        }}
-      >
-        <Text style={{
-          fontWeight: 500,
-          fontSize: 16,
-        }}>
-          Добавить объявление
-        </Text>
+      <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление') }}>
+        <Text style={styles.addButtonText}>Добавить объявление</Text>
       </TouchableOpacity>
 
-      <View style={{
-        backgroundColor: 'white',
-        marginTop: 20,
-        paddingVertical: 10,
-
-        paddingLeft: 14,
-        borderRadius: 10,
-      }}>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingBottom: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>
-          Бонусы
-        </Text>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingVertical: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>Баланс</Text>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingVertical: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>Скидки</Text>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingVertical: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>Брони</Text>
-        <Text style={{
-          paddingTop: 7,
-          fontSize: 16,
-          fontWeight: 500,
-        }}>Чаты</Text>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Бонусы</Text>
+        <Text style={styles.sectionItem}>Баланс</Text>
+        <Text style={styles.sectionItem}>Скидки</Text>
+        <Text style={styles.sectionItem}>Брони</Text>
+        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
       </View>
 
-      <View style={{
-        backgroundColor: 'white',
-        marginTop: 20,
-        paddingVertical: 10,
-
-        paddingLeft: 14,
-        borderRadius: 10,
-      }}>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingBottom: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>
-          Поделиться приложением
-        </Text>
-        <Text style={{
-          borderBottomColor: '#ececec',
-          borderBottomWidth: 1,
-          paddingVertical: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>Язык приложения</Text>
-        <Text style={{
-          paddingTop: 7,
-          fontWeight: 500,
-          fontSize: 16,
-        }}>Служба поддержки</Text>
+      <View style={styles.sectionContainer}>
+        <Text style={styles.sectionTitle}>Поделиться приложением</Text>
+        <Text style={styles.sectionItem}>Язык приложения</Text>
+        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
       </View>
 
-      <View style={{
-        backgroundColor: 'white',
-        marginTop: 20,
-        paddingVertical: 10,
-
-        paddingLeft: 14,
-        borderRadius: 10,
-      }}>
-        <Text style={{
-          fontWeight: 500,
-          fontSize: 16,
-        }}>
-          Версия приложения 1.0.0
-        </Text>
+      <View style={styles.sectionContainer}>
+        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
       </View>
 
-      <View style={{
-        backgroundColor: 'white',
-        marginTop: 20,
-        paddingTop: 20,
-        borderRadius: 10
-      }}>
-        <Text style={styles.title}>Мои объявления</Text>
+      <View style={styles.adsContainer}>
+        {adsenses.length ? <Text style={styles.title}>Мои объявления</Text> : null}
         {adsenses.map(ad => (
           <TouchableOpacity key={ad._id}
             onPress={() => navigation.navigate('Детали объявления', {
@@ -302,37 +185,29 @@ const ProfileScreen = () => {
                   <Text style={styles.adText}>Адрес: {ad.address}</Text>
                   <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
                   <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
+                  <Text style={styles.adText}>Услуги:</Text>
                   {ad.servicesList.map((service, index) => (
-                    <Text key={index} style={styles.adText}>
-                      Часы: {service.hours}, Цена: {service.price}
-                    </Text>
+                    <Text key={index} style={styles.adText}>Часы: {service.hours}, Цена: {service.price}</Text>
                   ))}
                 </View>
               </View>
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
-                <TouchableOpacity
-                  style={styles.button}
-                >
-                  <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Изменить</Text>
+              <View style={styles.adButtonsContainer}>
+                <TouchableOpacity style={styles.button}>
+                  <Text style={styles.buttonText}>Изменить</Text>
                 </TouchableOpacity>
-                <TouchableOpacity
-                  style={{ ...styles.button, backgroundColor: 'red' }}
-                  onPress={() => { deleteAdsense(ad._id) }}
-                >
-                  <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Удалить</Text>
+                <TouchableOpacity style={styles.deleteButton} onPress={() => { deleteAdsense(ad._id) }}>
+                  <Text style={styles.buttonText}>Удалить</Text>
                 </TouchableOpacity>
               </View>
             </View>
           </TouchableOpacity>
         ))}
       </View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={async () => {
-          await AsyncStorage.clear();
-          setUserData(null);
-          setAdsenses([])
-        }}>
+      <TouchableOpacity style={styles.button} onPress={async () => {
+        await AsyncStorage.clear();
+        setUserData(null);
+        setAdsenses([]);
+      }}>
         <Text style={styles.buttonText}>Удалить AsyncStorage</Text>
       </TouchableOpacity>
     </ScrollView>
@@ -368,10 +243,82 @@ const styles = StyleSheet.create({
     borderRadius: 10, // радиус закругления углов
     alignItems: 'center', // центрирование по горизонтали
   },
+  deleteButton: {
+    flexGrow: 1,
+    marginVertical: 10,
+    backgroundColor: 'red',
+    padding: 10,
+    borderRadius: 10,
+    alignItems: 'center',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  addButton: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingLeft: 14,
+    borderRadius: 10,
+  },
+  addButtonText: {
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  sectionContainer: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    paddingVertical: 10,
+    paddingLeft: 14,
+    borderRadius: 10,
+  },
+  sectionTitle: {
+    borderBottomColor: '#ececec',
+    borderBottomWidth: 1,
+    paddingBottom: 7,
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  sectionItem: {
+    borderBottomColor: '#ececec',
+    borderBottomWidth: 1,
+    paddingVertical: 7,
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  adsContainer: {
+    backgroundColor: 'white',
+    marginTop: 20,
+    paddingTop: 20,
+    borderRadius: 10,
+  },
+  userContainer: {
+    backgroundColor: 'white',
+    padding: 7,
+    borderRadius: 10,
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
+  },
+  userImage: {
+    width: 70,
+    height: 70,
+  },
+  userName: {
+    textTransform: 'capitalize',
+    fontWeight: '700',
+    letterSpacing: 0.2,
+    fontFamily: 'Roboto',
+    fontSize: 16,
+  },
+  userPhone: {
+    color: 'grey',
+    letterSpacing: 0.2,
+    fontFamily: 'Roboto',
+    fontSize: 14,
   },
   adContainer: {
     padding: 10,
@@ -381,7 +328,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginBottom: 2,
     maxWidth: '80%',
-    color: 'black'
+    color: 'black',
   },
   adImage: {
     width: '50%',
@@ -395,7 +342,12 @@ const styles = StyleSheet.create({
   infoContainer: {
     paddingHorizontal: 0,
     flexDirection: 'row',
-    gap: 10
+    gap: 10,
+  },
+  adButtonsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    gap: 10,
   },
 });
 

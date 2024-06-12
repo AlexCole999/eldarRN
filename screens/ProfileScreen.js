@@ -43,6 +43,7 @@ const ProfileScreen = () => {
       let userDataString = await AsyncStorage.getItem('userData');
       userDataString = JSON.parse(userDataString)
       console.log(userDataString)
+      refreshAdsenses()
     } catch (error) {
       alert('Ошибка при регистрации');
     }
@@ -93,6 +94,31 @@ const ProfileScreen = () => {
     }
   }
 
+  const profileQuit = () => {
+    Alert.alert(
+      'Подтверждение выхода',
+      'Вы уверены, что хотите выйти из профиля?',
+      [
+        {
+          text: 'Отмена',
+          style: 'cancel',
+        },
+        {
+          text: 'Удалить',
+          onPress: () => accountQuit(),
+          style: 'destructive',
+        },
+      ],
+      { cancelable: true }
+    );
+    async function accountQuit() {
+      await AsyncStorage.clear();
+      setUserData(null);
+      setAdsenses([]);
+      Alert.alert('Выход', 'Вы успешно вышли из своего профиля');
+    }
+  }
+
   const loadUserData = async () => {
     const userDataString = await AsyncStorage.getItem('userData');
     if (userDataString) {
@@ -120,100 +146,109 @@ const ProfileScreen = () => {
         </View>
       ) : (
         <View>
-          <Text style={styles.title}>Регистрация</Text>
+          <Text style={styles.title}>Регистрация и вход</Text>
           <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
+            style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
             placeholder="Имя"
+            onChangeText={setName}
+            value={name}
           />
+
           <TextInput
-            style={styles.input}
+            style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
             value={phone}
             onChangeText={setPhone}
             placeholder="Телефон"
           />
           <TextInput
-            style={styles.input}
+            style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
             value={password}
             onChangeText={setPassword}
             placeholder="Пароль"
             secureTextEntry
           />
           <TouchableOpacity style={styles.button} onPress={handleRegistration}>
-            <Text style={styles.buttonText}>Зарегистрироваться</Text>
+            <Text style={styles.buttonText}>Зарегистрироваться или войти</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление') }}>
-        <Text style={styles.addButtonText}>Добавить объявление</Text>
-      </TouchableOpacity>
+      {userData ?
+        <>
+          <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление') }}>
+            <Text style={styles.addButtonText}>Добавить объявление</Text>
+          </TouchableOpacity>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Бонусы</Text>
-        <Text style={styles.sectionItem}>Баланс</Text>
-        <Text style={styles.sectionItem}>Скидки</Text>
-        <Text style={styles.sectionItem}>Брони</Text>
-        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
-      </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Бонусы</Text>
+            <Text style={styles.sectionItem}>Баланс</Text>
+            <Text style={styles.sectionItem}>Скидки</Text>
+            <Text style={styles.sectionItem}>Брони</Text>
+            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
+          </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Поделиться приложением</Text>
-        <Text style={styles.sectionItem}>Язык приложения</Text>
-        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
-      </View>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Поделиться приложением</Text>
+            <Text style={styles.sectionItem}>Язык приложения</Text>
+            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
+          </View>
 
-      <View style={styles.sectionContainer}>
-        <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
-      </View>
+          <View style={styles.sectionContainer}>
+            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
+          </View>
+        </>
+        : null
+      }
 
-      <View style={styles.adsContainer}>
-        {adsenses.length ? <Text style={styles.title}>Мои объявления</Text> : null}
-        {adsenses.map(ad => (
-          <TouchableOpacity key={ad._id}
-            onPress={() => navigation.navigate('Детали объявления', {
-              adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
-            })}
-          >
-            <View style={styles.adContainer}>
-              <View style={styles.infoContainer}>
-                <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
-                <View style={{ maxWidth: '80%' }}>
-                  <Text style={styles.adText}>Город: {ad.city}</Text>
-                  <Text style={styles.adText}>Категория: {ad.category}</Text>
-                  <Text style={styles.adText}>Адрес: {ad.address}</Text>
-                  <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
-                  <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
-                  <Text style={styles.adText}>Услуги:</Text>
-                  {ad.servicesList.map((service, index) => (
-                    <Text key={index} style={styles.adText}>Часы: {service.hours}, Цена: {service.price}</Text>
-                  ))}
+      {adsenses.length ?
+        <View style={styles.adsContainer}>
+          <Text style={styles.title}>Мои объявления</Text>
+          {adsenses.map(ad => (
+            <TouchableOpacity key={ad._id}
+              onPress={() => navigation.navigate('Детали объявления', {
+                adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+              })}
+            >
+              <View style={styles.adContainer}>
+                <View style={styles.infoContainer}>
+                  <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
+                  <View style={{ maxWidth: '80%' }}>
+                    <Text style={styles.adText}>Город: {ad.city}</Text>
+                    <Text style={styles.adText}>Категория: {ad.category}</Text>
+                    <Text style={styles.adText}>Адрес: {ad.address}</Text>
+                    <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
+                    <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
+                    <Text style={styles.adText}>Услуги:</Text>
+                    {ad.servicesList.map((service, index) => (
+                      <Text key={index} style={styles.adText}>Часы: {service.hours}, Цена: {service.price}</Text>
+                    ))}
+                  </View>
+                </View>
+                <View style={styles.adButtonsContainer}>
+                  <TouchableOpacity style={styles.button}
+                    onPress={() => navigation.navigate('Изменить объявление', {
+                      adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+                    })}
+                  >
+                    <Text style={styles.buttonText}>Изменить</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.deleteButton} onPress={() => { deleteAdsense(ad._id) }}>
+                    <Text style={styles.buttonText}>Удалить</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.adButtonsContainer}>
-                <TouchableOpacity style={styles.button}
-                  onPress={() => navigation.navigate('Изменить объявление', {
-                    adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
-                  })}
-                >
-                  <Text style={styles.buttonText}>Изменить</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.deleteButton} onPress={() => { deleteAdsense(ad._id) }}>
-                  <Text style={styles.buttonText}>Удалить</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </View>
-      <TouchableOpacity style={styles.button} onPress={async () => {
-        await AsyncStorage.clear();
-        setUserData(null);
-        setAdsenses([]);
-      }}>
-        <Text style={styles.buttonText}>Удалить AsyncStorage</Text>
-      </TouchableOpacity>
+            </TouchableOpacity>
+          ))}
+        </View>
+        : null
+      }
+
+      {userData ?
+        <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={profileQuit}>
+          <Text style={styles.buttonText}>Выйти из профиля</Text>
+        </TouchableOpacity>
+        : null
+      }
     </ScrollView>
   );
 };
@@ -223,7 +258,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: '#f3f2f8',
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingVertical: 10,
   },
   title: {
     fontSize: 24,

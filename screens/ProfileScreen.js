@@ -181,7 +181,7 @@ const ProfileScreen = () => {
 
       {userData ?
         <>
-          <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление') }}>
+          <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
             <Text style={styles.addButtonText}>Добавить объявление</Text>
           </TouchableOpacity>
 
@@ -189,7 +189,9 @@ const ProfileScreen = () => {
             <Text style={styles.sectionTitle}>Бонусы</Text>
             <Text style={styles.sectionItem}>Баланс</Text>
             <Text style={styles.sectionItem}>Скидки</Text>
-            <Text style={styles.sectionItem}>Брони</Text>
+            <TouchableOpacity onPress={() => { navigation.navigate("Мои брони") }}>
+              <Text style={styles.sectionItem}>Брони</Text>
+            </TouchableOpacity>
             <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
           </View>
 

@@ -13,6 +13,7 @@ import TestimonialScreen from './screens/TestimonialScreen';
 import OrderScreen from './screens/OrderScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateAdsenseScreen from './screens/UpdateAdsenseScreen';
+import MyOrdersScreen from './screens/MyOrdersScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -100,6 +101,7 @@ export default function App() {
         <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
         <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
         <Stack.Screen name="Забронировать" component={OrderScreen} />
+        <Stack.Screen name="Мои брони" component={MyOrdersScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

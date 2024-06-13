@@ -1,19 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Image, FlatList, Text, TextInput, View, TouchableOpacity, Alert, ScrollView, RefreshControl } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import axios from 'axios';
-import localhosturl from './../localhoststring';
+import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import ProfileAdsenses from '../innerCoponents/Profile_adsenses';
-import ProfileRegistration from '../innerCoponents/Profile_registration';
+import { createStackNavigator } from '@react-navigation/stack';
+import localhosturl from '../localhoststring';
+import { ScrollView } from 'react-native-gesture-handler';
+import StarRating from './StarRating';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const ProfileScreen = () => {
-  const [userData, setUserData] = useState(null);
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [adsenses, setAdsenses] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
+
+axios
+const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPassword, userData, setUserData, refreshAdsenses }) => {
 
   const navigation = useNavigation();
 
@@ -29,21 +26,6 @@ const ProfileScreen = () => {
   const validatedPassword = (password) => {
     const regex = /^(?=.*\d.*\d)[A-Za-z\d]{10,}$/;
     return regex.test(password);
-  }
-
-  const refreshAdsenses = async () => {
-    setRefreshing(true);
-    let user = await AsyncStorage.getItem('userData');
-    if (user) {
-      try {
-        let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
-        console.log("объявления обновлены");
-        setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
-      } catch (error) {
-        console.error("Ошибка при получении объявлений:", error);
-      }
-    }
-    setRefreshing(false);
   }
 
   const handleRegistration = async () => {
@@ -122,103 +104,69 @@ const ProfileScreen = () => {
     }
   };
 
-  const profileQuit = () => {
-    Alert.alert(
-      'Подтверждение выхода',
-      'Вы уверены, что хотите выйти из профиля?',
-      [
-        {
-          text: 'Отмена',
-          style: 'cancel',
-        },
-        {
-          text: 'Выйти',
-          onPress: () => accountQuit(),
-          style: 'destructive',
-        },
-      ],
-      { cancelable: true }
-    );
-    async function accountQuit() {
-      await AsyncStorage.clear();
-      setUserData(null);
-      setAdsenses([]);
-      Alert.alert('Выход', 'Вы успешно вышли из своего профиля');
-    }
-  }
-
-  const loadUserData = async () => {
-    const userDataString = await AsyncStorage.getItem('userData');
-    if (userDataString) {
-      setUserData(JSON.parse(userDataString));
-    }
-  };
-
-  useEffect(() => {
-    loadUserData();
-    refreshAdsenses();
-  }, []);
-
   return (
-    <ScrollView
-      contentContainerStyle={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshAdsenses} />}
-    >
-      {userData
-        ?
-        (
-          <View style={styles.userContainer}>
-            <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
-            <View>
-              <Text style={styles.userName}>{userData?.name}</Text>
-              <Text style={styles.userPhone}>+{userData?.phone}</Text>
-            </View>
-          </View>
-        )
-        :
-        <ProfileRegistration name={name} setName={setName} phone={phone} setPhone={setPhone} password={password} setPassword={setPassword} userData={userData} setUserData={setUserData} refreshAdsenses={refreshAdsenses} />
-      }
+    <View>
+      <Text style={styles.title}>Регистрация и вход</Text>
+      <TextInput
+        style={{
+          borderRadius: 10,
+          backgroundColor: 'white',
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          marginBottom: 10,
+          fontSize: 16,
+          borderWidth: name ? (validatedName(name) ? 2 : 2) : 0,
+          borderColor: name ? (validatedName(name) ? 'green' : 'red') : 'grey'
+        }}
+        placeholder="Имя"
+        onChangeText={(name) => { validatedName(name); setName(name); }}
+        value={name}
+      />
 
-      {userData ?
-        <>
-          <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление') }}>
-            <Text style={styles.addButtonText}>Добавить объявление</Text>
-          </TouchableOpacity>
+      <TextInput
+        style={{
+          borderRadius: 10,
+          backgroundColor: 'white',
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          marginBottom: 10,
+          fontSize: 16,
+          borderWidth: phone ? (validatedPhone(phone) ? 2 : 2) : 0,
+          borderColor: phone ? (validatedPhone(phone) ? 'green' : 'red') : 'grey'
+        }}
+        value={phone}
+        onChangeText={(phone) => { validatedPhone(phone); setPhone(phone); }}
+        placeholder="Телефон"
+      />
+      <TextInput
+        style={{
+          borderRadius: 10,
+          backgroundColor: 'white',
+          paddingHorizontal: 20,
+          paddingVertical: 10,
+          marginBottom: 10,
+          fontSize: 16,
+          borderWidth: password ? (validatedPassword(password) ? 2 : 2) : 0,
+          borderColor: password ? (validatedPassword(password) ? 'green' : 'red') : 'grey'
+        }}
+        value={password}
+        onChangeText={(password) => { validatedPassword(password); setPassword(password) }}
+        placeholder="Пароль"
+        secureTextEntry={false}
+      />
+      {name || phone || password ?
+        <View>
+          {validatedName(name) ? <Text style={{ color: 'green' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
+          {validatedPhone(phone) ? <Text style={{ color: 'green' }}>Телефон введен корректно</Text> : <Text style={{ color: 'red' }}>Телефон должен содержать ровно 12 символов и состоять из цифр</Text>}
+          {validatedPassword(password) ? <Text style={{ color: 'green' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Пароль должен быть длиной минимум 10 символов и содержать минимум 2 цифры</Text>}
+        </View>
+        : null}
 
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Бонусы</Text>
-            <Text style={styles.sectionItem}>Баланс</Text>
-            <Text style={styles.sectionItem}>Скидки</Text>
-            <Text style={styles.sectionItem}>Брони</Text>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
-          </View>
-
-          <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Поделиться приложением</Text>
-            <Text style={styles.sectionItem}>Язык приложения</Text>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
-          </View>
-
-          <View style={styles.sectionContainer}>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
-          </View>
-        </>
-        : null
-      }
-
-      {adsenses.length ?
-        <ProfileAdsenses adsenses={adsenses} userData={userData} refreshAdsenses={refreshAdsenses} />
-        : null
-      }
-
-      {userData ?
-        <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={profileQuit}>
-          <Text style={styles.buttonText}>Выйти из профиля</Text>
-        </TouchableOpacity>
-        : null
-      }
-    </ScrollView>
-  );
+      <TouchableOpacity style={styles.button} onPress={handleRegistration}>
+        <Text style={styles.buttonText}>Зарегистрироваться или войти</Text>
+      </TouchableOpacity>
+    </View>
+  )
 };
 
 const styles = StyleSheet.create({
@@ -358,4 +306,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ProfileScreen;
+export default ProfileRegistration

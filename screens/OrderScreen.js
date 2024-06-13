@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Image } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, Dimensions, Image, Alert } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { useRoute } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
+import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const OrderScreen = ({ route }) => {
 
   const { adId, adServiceParams, adWorkhours } = route.params;
+
+  const navigation = useNavigation();
 
   const timeRange = adWorkhours.split('-');
   const startHour = parseInt(timeRange[0].split(':')[0], 10);
@@ -15,30 +20,37 @@ const OrderScreen = ({ route }) => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedDuration, setSelectedDuration] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
-  const [bookedSlots, setBookedSlots] = useState({
-    '2024-05-16': {
-      8: true,
-      9: true,
-      13: true,
-    }
-  });
-  const [order, setOrder] = useState({});
-
-  const handleDurationSelection = (duration) => {
-    setSelectedDuration(duration);
-  };
 
   const handleTimeSelection = (time) => {
     setSelectedTime(time === selectedTime ? null : time);
   };
 
-  const handleBooking = () => {
-    const newOrder = { ...order };
-    newOrder[selectedDate] = { username: 'testuserred', date: selectedDate, hours: selectedDuration, startTime: selectedTime };
-    setOrder(newOrder);
-  };
-
   const screenHeight = Dimensions.get('window').height;
+
+  const newOrder = async () => {
+    try {
+      let user = await AsyncStorage.getItem('userData');
+      let date = selectedDate;
+      let duration = selectedDuration;
+      let bookingTime = selectedTime;
+      let userPhone = JSON.parse(user).phone;
+      let userName = JSON.parse(user).name;
+      let createdAt = Date.now();
+
+      let response = await axios.post(`${localhosturl}/newOrder`, {
+        adId, date, duration, bookingTime, userPhone, userName, createdAt
+      });
+
+      if (response.data.message) {
+        console.log(response.data)
+        Alert.alert('Бронь зарегистрирована', 'Успешно забронировано');
+        navigation.navigate('Профиль');
+      }
+    } catch (error) {
+      console.error("Ошибка при создании заказа:", error);
+      Alert.alert('Ошибка', 'Не удалось забронировать');
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
@@ -60,7 +72,7 @@ const OrderScreen = ({ route }) => {
             <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16, textAlign: 'center' }}>Выберите длительность</Text>
             <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
               {adServiceParams.map((x, i) =>
-                <TouchableOpacity key={i} onPress={() => handleDurationSelection(x.hours)}>
+                <TouchableOpacity key={i} onPress={() => { setSelectedDuration(x.hours) }}>
                   <View style={{
                     backgroundColor: x.hours == selectedDuration ? 'rgb(0, 191, 255)' : 'white',
                     borderRadius: 10,
@@ -99,14 +111,10 @@ const OrderScreen = ({ route }) => {
           <View>
             <Text style={styles.headerText}>Выберите время</Text>
             <View style={styles.timeContainer}>
-              {Array.from({ length: endHour - startHour + 1 }, (_, i) => i + startHour).map((hour) => (
+              {Array.from({ length: endHour - startHour + 1 - selectedDuration }, (_, i) => i + startHour).map((hour) => (
                 <TouchableOpacity
                   key={hour}
-                  style={[
-                    styles.timeButton,
-                    bookedSlots[selectedDate]?.[hour] ? styles.bookedTimeButton :
-                      selectedTime === hour ? styles.selectedTimeButton : {},
-                  ]}
+                  style={[styles.timeButton, selectedTime === hour ? styles.selectedTimeButton : {},]}
                   onPress={() => handleTimeSelection(hour)}
                 >
                   <Text style={{ fontStyle: 'italic', color: selectedTime === hour ? 'white' : 'black' }}>{hour}:00</Text>
@@ -118,7 +126,7 @@ const OrderScreen = ({ route }) => {
         {selectedDate && selectedDuration && (
           <TouchableOpacity
             style={{ marginVertical: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, alignItems: 'center' }}
-            onPress={() => { console.log(adId) }}
+            onPress={newOrder}
           >
             <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: '600' }}>Забронировать</Text>
           </TouchableOpacity>

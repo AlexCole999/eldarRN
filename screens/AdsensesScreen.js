@@ -36,6 +36,7 @@ const AdsensesScreen = () => {
           imagesList: item.imagesList,
           description: item.description,
           testimonials: item.testimonials,
+          orders: item.orders
         }));
         setData(objects);
       })

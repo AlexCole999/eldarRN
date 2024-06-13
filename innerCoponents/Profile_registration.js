@@ -158,7 +158,7 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
         <View>
           {validatedName(name) ? <Text style={{ color: 'green' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
           {validatedPhone(phone) ? <Text style={{ color: 'green' }}>Телефон введен корректно</Text> : <Text style={{ color: 'red' }}>Телефон должен содержать ровно 12 символов и состоять из цифр</Text>}
-          {validatedPassword(password) ? <Text style={{ color: 'green' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Пароль должен быть длиной минимум 10 символов и содержать минимум 2 цифры</Text>}
+          {validatedPassword(password) ? <Text style={{ color: 'green' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Длина пароля минимум 10 символов, латиницей, минимум 2 цифры</Text>}
         </View>
         : null}
 

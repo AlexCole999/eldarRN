@@ -1,19 +1,22 @@
 import React from 'react';
-import { View, Text, Image, TouchableOpacity, Alert, StyleSheet, ScrollView } from 'react-native';
+import { View, Text, Image, TouchableOpacity, Alert, StyleSheet, ScrollView, LogBox } from 'react-native';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
 import { useNavigation } from '@react-navigation/native';
 
 const MyOrdersScreen = ({ route }) => {
+
   const { adsenses, adsensesWithUserOrders, userData, refreshAdsenses } = route.params;
   const navigation = useNavigation();
+
+  LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.']);
 
   const handleAcceptOrder = async (orderId) => {
     try {
       const response = await axios.post(`${localhosturl}/acceptOrder`, { orderId });
 
       if (response.status === 200) {
-        Alert.alert("Бронь подтверждена", `Бронь успешно создана`);
+        Alert.alert("Бронь подтверждена", `Бронь подтверждена`);
         console.log(`Order ${orderId} accepted successfully`);
         refreshAdsenses()
         navigation.navigate('Профиль');

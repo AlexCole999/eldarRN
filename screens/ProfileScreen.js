@@ -13,114 +13,50 @@ const ProfileScreen = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [adsenses, setAdsenses] = useState([]);
+  const [adsensesWithUserOrders, setAdsensesWithUserOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [newOrdersCount, setNewOrdersCount] = useState(false);
 
   const navigation = useNavigation();
 
-  const validatedName = (name) => {
-    return name.length >= 4
-  }
-
-  const validatedPhone = (phone) => {
-    const regex = /^\d+$/;
-    return regex.test(phone) && phone.length == 12;
-  }
-
-  const validatedPassword = (password) => {
-    const regex = /^(?=.*\d.*\d)[A-Za-z\d]{10,}$/;
-    return regex.test(password);
-  }
-
   const refreshAdsenses = async () => {
+
     setRefreshing(true);
+
     let user = await AsyncStorage.getItem('userData');
+
+    const countNewOrders = (adsenses) => {
+      const pendingCount = adsenses.reduce((count, adsense) => {
+        return count + adsense.orders.filter(order => order.status === "Ожидает подтверждения").length;
+      }, 0);
+
+      return pendingCount
+    };
+
+
+    const countUserOrders = (adsensesWithUserOrders, user) => {
+      return adsensesWithUserOrders.reduce((acc, adsense) => {
+        const userOrders = adsense.orders.filter(order => (order.userPhone === JSON.parse(user).phone && order.status == 'Ожидает подтверждения'));
+        return acc + userOrders.length;
+      }, 0);
+    };
+
+
     if (user) {
       try {
         let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
-        console.log("объявления обновлены");
+        let adsensesWithUserOrders = await axios.post(`${localhosturl}/getUserAdsensesWithHisOrders`, { user });
+
         setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
+        setAdsensesWithUserOrders(adsensesWithUserOrders.data.adsenses); // Устанавливаем полученные объявления в состояние
+        setNewOrdersCount(countNewOrders(response.data.adsenses) + countUserOrders(adsensesWithUserOrders.data.adsenses, user))
       } catch (error) {
         console.error("Ошибка при получении объявлений:", error);
       }
     }
     setRefreshing(false);
+
   }
-
-  const handleRegistration = async () => {
-
-    if (!validatedName(name)) {
-      alert('Некорректное имя. Имя должно содержать только буквы и быть длиной не менее 2 символов.');
-      return;
-    }
-    if (!validatedPhone(phone)) {
-      alert('Некорректный телефон. Телефон должен состоять только из цифр и быть длиной 12 символов.');
-      return;
-    }
-    if (!validatedPassword(password)) {
-      alert('Некорректный пароль. Пароль должен содержать как минимум 2 цифры, только латинские буквы и цифры, длина не менее 10 символов.');
-      return;
-    }
-
-    const newUserRegistration = async () => {
-      try {
-        let response = await axios.post(`${localhosturl}/registrationNewUser`, {
-          name,
-          phone,
-          password
-        });
-        console.log(response.data.registrationResult)
-        await setUserData({ name, phone });
-        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone }));
-        Alert.alert('Регистрация успешна', 'Вы успешно зарегистрировали новый профиль');
-        refreshAdsenses()
-      } catch (error) {
-        alert('Ошибка при регистрации');
-        console.log(error)
-      }
-    }
-
-    try {
-      let response = await axios.post(`${localhosturl}/registrationCheck`, {
-        name,
-        phone,
-        password
-      });
-
-      if (response.data.registrationConfirmation) {
-        Alert.alert(
-          'Регистрация',
-          'Профиль не найден в базе. Зарегистрировать новый на введенные данные?',
-          [
-            {
-              text: 'Отмена',
-              style: 'cancel',
-            },
-            {
-              text: 'Регистрация',
-              onPress: newUserRegistration,
-              style: 'destructive',
-            },
-          ],
-          { cancelable: true }
-        );
-        return
-      }
-
-      if (!response.data.correctPassword) {
-        Alert.alert('Неверный пароль', 'Пользователь с таким номером телефона найден в базе, но введенный вами пароль неверный');
-      }
-
-      if (response.data.correctPassword) {
-        await setUserData({ name, phone });
-        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone }));
-        Alert.alert('Вход', 'Вы успешно вошли в свой профиль');
-        refreshAdsenses()
-      }
-    } catch (error) {
-      alert('Ошибка при регистрации');
-      console.log(error)
-    }
-  };
 
   const profileQuit = () => {
     Alert.alert(
@@ -189,8 +125,16 @@ const ProfileScreen = () => {
             <Text style={styles.sectionTitle}>Бонусы</Text>
             <Text style={styles.sectionItem}>Баланс</Text>
             <Text style={styles.sectionItem}>Скидки</Text>
-            <TouchableOpacity onPress={() => { navigation.navigate("Мои брони") }}>
-              <Text style={styles.sectionItem}>Брони</Text>
+            <TouchableOpacity onPress={() => navigation.navigate("Мои брони", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData })} style={{
+              flexDirection: 'row',
+              borderBottomColor: '#ececec',
+              borderBottomWidth: 1,
+              justifyContent: 'space-between'
+            }}>
+              <Text style={{ ...styles.sectionItem, borderBottomWidth: 0 }}>Брони</Text>
+              <View style={{ backgroundColor: 'rgb(0, 191, 255)' }}>
+                <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingHorizontal: 20, color: 'white' }}>{newOrdersCount}</Text>
+              </View>
             </TouchableOpacity>
             <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
           </View>

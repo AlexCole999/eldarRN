@@ -32,7 +32,7 @@ const ProfileScreen = () => {
 
       return pendingCount
     };
-
+    console.log('refresh')
 
     const countUserOrders = (adsensesWithUserOrders, user) => {
       return adsensesWithUserOrders.reduce((acc, adsense) => {
@@ -125,7 +125,7 @@ const ProfileScreen = () => {
             <Text style={styles.sectionTitle}>Бонусы</Text>
             <Text style={styles.sectionItem}>Баланс</Text>
             <Text style={styles.sectionItem}>Скидки</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Мои брони", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData })} style={{
+            <TouchableOpacity onPress={() => navigation.navigate("Мои брони", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses })} style={{
               flexDirection: 'row',
               borderBottomColor: '#ececec',
               borderBottomWidth: 1,

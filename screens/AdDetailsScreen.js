@@ -21,13 +21,21 @@ const AdDetailsScreen = ({ route }) => {
           <View >
             <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
 
-              <LinearGradient
-                colors={['rgb(0, 110, 204)', 'rgb(80, 130, 200)']}
-                start={[0, 0]}
-                end={[1, 0]}
-                style={{ borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
-                <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
-              </LinearGradient>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Забронировать', {
+                    adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours
+                  })
+                }}
+              >
+                <LinearGradient
+                  colors={['rgb(0, 110, 204)', 'rgb(80, 130, 200)']}
+                  start={[0, 0]}
+                  end={[1, 0]}
+                  style={{ borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
+                  <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
+                </LinearGradient>
+              </TouchableOpacity>
 
               <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 15 }}>
 

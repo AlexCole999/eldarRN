@@ -5,7 +5,7 @@ import localhosturl from './../localhoststring';
 import { useNavigation } from '@react-navigation/native';
 
 const MyOrdersScreen = ({ route }) => {
-  const { adsenses, adsensesWithUserOrders, userData } = route.params;
+  const { adsenses, adsensesWithUserOrders, userData, refreshAdsenses } = route.params;
   const navigation = useNavigation();
 
   const handleAcceptOrder = async (orderId) => {
@@ -13,8 +13,9 @@ const MyOrdersScreen = ({ route }) => {
       const response = await axios.post(`${localhosturl}/acceptOrder`, { orderId });
 
       if (response.status === 200) {
-        Alert.alert("Заказ подтвержден", `ID заказа: ${orderId}`);
+        Alert.alert("Бронь подтверждена", `Бронь успешно создана`);
         console.log(`Order ${orderId} accepted successfully`);
+        refreshAdsenses()
         navigation.navigate('Профиль');
         // Дополнительная логика перенаправления пользователя или обновления интерфейса
       } else {
@@ -33,8 +34,10 @@ const MyOrdersScreen = ({ route }) => {
       const response = await axios.post(`${localhosturl}/deleteOrder`, { id: orderId });
 
       if (response.status === 200) {
-        Alert.alert("Бронь снята", `ID заказа: ${orderId}`);
+        Alert.alert("Бронь снята", `Бронь успешно отменена`);
         console.log(`Order ${orderId} cancelled successfully`);
+        refreshAdsenses()
+
         navigation.navigate('Профиль');
       } else {
         Alert.alert("Ошибка", `Не удалось снять бронь: ${response.data.message}`);
@@ -58,6 +61,7 @@ const MyOrdersScreen = ({ route }) => {
               style={styles.image}
             />
             <Text style={styles.address}>{adsense.address}</Text>
+            <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 10 }}>+{adsense.phone}</Text>
             <View style={styles.infoContainer}>
               {adsense.orders
                 .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортировка заказов
@@ -93,7 +97,7 @@ const MyOrdersScreen = ({ route }) => {
         )
       ))}
       <Text style={{ textAlign: 'center', fontWeight: 700, fontSize: 18 }}>Бронировал я</Text>
-      <>
+      <View style={{ marginBottom: 20 }}>
         {adsensesWithUserOrders.map((adsense) => {
           // Фильтруем заказы, чтобы отобразить только те, в которых userPhone совпадает с user.phone
           const userOrders = adsense.orders.filter(order => order.userPhone === userData.phone);
@@ -110,7 +114,8 @@ const MyOrdersScreen = ({ route }) => {
                 style={styles.image}
               />
               <Text style={styles.address}>{adsense.address}</Text>
-              <Text style={{ fontWeight: '500', textAlign: 'center' }}>{adsense.category}</Text>
+              <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 10 }}>+{adsense.phone}</Text>
+
               <View style={styles.infoContainer}>
                 {userOrders
                   .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортировка заказов
@@ -140,7 +145,7 @@ const MyOrdersScreen = ({ route }) => {
             </View>
           );
         })}
-      </>
+      </View>
     </ScrollView>
   );
 };
@@ -150,13 +155,13 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#f3f2f8',
     paddingHorizontal: 20,
-    paddingVertical: 20
+    paddingTop: 10
   },
   adsenseContainer: {
     width: '100%',
     borderRadius: 10,
     backgroundColor: 'white',
-    marginVertical: 10,
+    marginVertical: 20,
     padding: 0,
   },
   image: {

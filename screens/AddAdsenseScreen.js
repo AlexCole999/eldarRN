@@ -12,6 +12,7 @@ import SelectorImages from '../innerCoponents/Selector_images';
 import SelectorDistrict from './../innerCoponents/Selector_district';
 import localhosturl from './../localhoststring';
 import Screen3 from '../innerCoponents/Selector_categoriesVisual';
+import { Picker } from '@react-native-picker/picker';
 
 const AddAdsenseScreen = () => {
 
@@ -124,8 +125,12 @@ const AddAdsenseScreen = () => {
     return (
       <View style={styles.container}>
         <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Выберите город</Text>
-        <SelectorCity city={city} setCity={setCity} />
-        <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
+        <View style={{
+          marginBottom: 10, overflow: 'hidden', borderRadius: 10
+        }}>
+          <SelectorCity city={city} setCity={setCity} />
+          <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
+        </View>
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
             onPress={() => setStage(stage => stage - 1)}>
@@ -151,7 +156,14 @@ const AddAdsenseScreen = () => {
       <View style={styles.container}>
         <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте информацию о работе</Text>
         <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+
+        <View style={{ flexDirection: 'row' }}>
+          <View style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 10, borderTopLeftRadius: 10, color: 'black', borderBottomLeftRadius: 10, width: '10%', backgroundColor: 'white', marginBottom: 10, fontSize: 16 }} >
+            <Text style={{ color: 'grey', fontSize: 16 }}>+</Text>
+          </View>
+          <TextInput style={{ flexGrow: 1, borderTopRightRadius: 10, borderBottomRightRadius: 10, backgroundColor: 'white', paddingHorizontal: 0, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+        </View>
+
         <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
@@ -168,7 +180,7 @@ const AddAdsenseScreen = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </View >
     )
   }
 
@@ -300,7 +312,7 @@ const AddAdsenseScreen = () => {
         }
       </View>
 
-      <TouchableOpacity style={styles.sendButton} onPress={submitAdsense}>
+      <TouchableOpacity style={styles.sendButton} onPress={() => { submitAdsense(); console.log(city, cityDistrict) }}>
         <Text style={styles.sendButtonText}>Добавить объявление</Text>
       </TouchableOpacity>
 

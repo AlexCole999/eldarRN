@@ -1,38 +1,37 @@
 import React from 'react';
 import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-native';
-
-import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
 
 const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
   return (
     city == 'Ташкент' ? <View style={{
       marginBottom: 10, overflow: 'hidden', borderRadius: 10
     }}>
-      <RNPickerSelect
+      <Picker
+        selectedValue={cityDistrict}
         onValueChange={(value) => setCityDistrict(value)}
-        placeholder={{ label: 'Выберите район', value: null }}
-        items={[
-          { label: 'Алмазарский', value: 'Алмазарский' },
-          { label: 'Бектемирский', value: 'Бектемирский' },
-          { label: 'Мирабадский', value: 'Мирабадский' },
-          { label: 'Мирзо-Улугбекский', value: 'Мирзо-Улугбекский' },
-          { label: 'Сергелийский', value: 'Сергелийский' },
-          { label: 'Учтепинский', value: 'Учтепинский' },
-          { label: 'Чиланзарский', value: 'Чиланзарский' },
-          { label: 'Шайхантахурский', value: 'Шайхантахурский' },
-          { label: 'Юнусабадский', value: 'Юнусабадский' },
-          { label: 'Яккасарайский', value: 'Яккасарайский' },
-        ]}
-        value={cityDistrict}
-        style={{ ...pickerSelectStyles }}
-      />
+        style={pickerSelectStyles.picker}
+      >
+        <Picker.Item label="Выберите район" value={null} />
+        <Picker.Item label="Алмазарский" value="Алмазарский" />
+        <Picker.Item label="Бектемирский" value="Бектемирский" />
+        <Picker.Item label="Мирабадский" value="Мирабадский" />
+        <Picker.Item label="Мирзо-Улугбекский" value="Мирзо-Улугбекский" />
+        <Picker.Item label="Сергелийский" value="Сергелийский" />
+        <Picker.Item label="Учтепинский" value="Учтепинский" />
+        <Picker.Item label="Чиланзарский" value="Чиланзарский" />
+        <Picker.Item label="Шайхантахурский" value="Шайхантахурский" />
+        <Picker.Item label="Юнусабадский" value="Юнусабадский" />
+        <Picker.Item label="Яккасарайский" value="Яккасарайский" />
+        {/* Добавьте больше районов по мере необходимости */}
+      </Picker>
     </View>
       : null
   );
 };
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
+  picker: {
     height: 50,
     width: '100%',
     color: 'black',
@@ -40,11 +39,8 @@ const pickerSelectStyles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5, // Радиус закругления углов
-  },
-  inputAndroid: {
-    color: 'black',
     backgroundColor: 'white'
   },
-})
+});
 
 export default SelectorDistrict;

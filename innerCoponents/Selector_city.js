@@ -1,56 +1,51 @@
 import React from 'react';
 import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-native';
-
-import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
 
 const SelectorCity = ({ city, setCity }) => {
+  console.log(city)
   return (
     <View style={{
       marginBottom: 10, overflow: 'hidden', borderRadius: 10
     }}>
-      <RNPickerSelect
+      <Picker
+        selectedValue={city}
         onValueChange={(value) => setCity(value)}
-        placeholder={{ label: 'Выберите город', value: null }}
-        items={[
-          { label: 'Ташкент', value: 'Ташкент' },
-          { label: 'Ташкентская обл', value: 'Ташкентская обл' },
-          { label: 'Самарканд', value: 'Самарканд' },
-          { label: 'Наманган', value: 'Наманган' },
-          { label: 'Андижан', value: 'Андижан' },
-          { label: 'Фергана', value: 'Фергана' },
-          { label: 'Бухара', value: 'Бухара' },
-          { label: 'Хива', value: 'Хива' },
-          { label: 'Ургенч', value: 'Ургенч' },
-          { label: 'Нукус', value: 'Нукус' },
-          { label: 'Карши', value: 'Карши' },
-          { label: 'Гулистан', value: 'Гулистан' },
-          { label: 'Джизак', value: 'Джизак' },
-          { label: 'Термез', value: 'Термез' },
-          { label: 'Шахрисабз', value: 'Шахрисабз' },
-          { label: 'Сырдарья', value: 'Сырдарья' },
-          // Add more cities as needed
-        ]}
-        value={city}
-        style={{ ...pickerSelectStyles }}
-      />
+        style={pickerSelectStyles.picker}
+      >
+        <Picker.Item label="Выберите город" value={null} />
+        <Picker.Item label="Ташкент" value="Ташкент" />
+        <Picker.Item label="Ташкентская обл" value="Ташкентская обл" />
+        <Picker.Item label="Самарканд" value="Самарканд" />
+        <Picker.Item label="Наманган" value="Наманган" />
+        <Picker.Item label="Андижан" value="Андижан" />
+        <Picker.Item label="Фергана" value="Фергана" />
+        <Picker.Item label="Бухара" value="Бухара" />
+        <Picker.Item label="Хива" value="Хива" />
+        <Picker.Item label="Ургенч" value="Ургенч" />
+        <Picker.Item label="Нукус" value="Нукус" />
+        <Picker.Item label="Карши" value="Карши" />
+        <Picker.Item label="Гулистан" value="Гулистан" />
+        <Picker.Item label="Джизак" value="Джизак" />
+        <Picker.Item label="Термез" value="Термез" />
+        <Picker.Item label="Шахрисабз" value="Шахрисабз" />
+        <Picker.Item label="Сырдарья" value="Сырдарья" />
+        {/* Добавьте больше городов по мере необходимости */}
+      </Picker>
     </View>
   );
 };
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
+  picker: {
     height: 50,
     width: '100%',
-    color: 'black',
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5, // Радиус закругления углов
-  },
-  inputAndroid: {
-    color: 'black',
     backgroundColor: 'white'
   },
-})
+});
 
 export default SelectorCity;

@@ -3,6 +3,7 @@ import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpaci
 import { useNavigation } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
 import StarRating from './../innerCoponents/StarRating';
+import { useSelector } from 'react-redux';
 
 const AdsensesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
@@ -19,8 +20,13 @@ const AdsensesScreen = () => {
     }
   };
 
+  const category = useSelector(state => state.filters.category);
+  const city = useSelector(state => state.filters.city);
+
+  console.log(category, city)
+
   const fetchData = () => {
-    fetch(`${localhosturl}/adsenses?page=${count}`)
+    fetch(`${localhosturl}/adsenses?page=${count}&category=${category}&city=${city}`)
       .then((response) => response.json())
       .then((data) => {
         const objects = data.map((item) => ({
@@ -45,7 +51,7 @@ const AdsensesScreen = () => {
 
   useEffect(() => {
     fetchData();
-  }, [count]);
+  }, [count, city, category]);
 
   const onRefresh = () => {
     setRefreshing(true);

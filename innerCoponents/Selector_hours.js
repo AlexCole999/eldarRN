@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 const generateTimeItems = () => {
   let items = [];
@@ -18,47 +18,45 @@ const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWor
 
   return (
     <>
-      <View style={{
-        marginBottom: 10, overflow: 'hidden', borderRadius: 10
-      }}>
-        <RNPickerSelect
+      <View style={{ marginBottom: 10, overflow: 'hidden', borderRadius: 10 }}>
+        <Picker
+          selectedValue={workhoursStart}
           onValueChange={(value) => { setWorkhoursStart(value); setWorkhours(`${value}-${workhoursEnd}`) }}
-          placeholder={{ label: 'Начало рабочего дня', value: null }}
-          items={generateTimeItems()}
-          value={workhoursStart}
-          style={pickerSelectStyles}
-        />
+          style={pickerSelectStyles.picker}
+        >
+          <Picker.Item label="Начало рабочего дня" value={null} />
+          {generateTimeItems().map((item) => (
+            <Picker.Item key={item.value} label={item.label} value={item.value} />
+          ))}
+        </Picker>
       </View>
-      <View style={{
-        marginBottom: 10, overflow: 'hidden', borderRadius: 10
-      }}>
-        <RNPickerSelect
+      <View style={{ marginBottom: 10, overflow: 'hidden', borderRadius: 10 }}>
+        <Picker
+          selectedValue={workhoursEnd}
           onValueChange={(value) => { setWorkhoursEnd(value); setWorkhours(`${workhoursStart}-${value}`) }}
-          placeholder={{ label: 'Конец рабочего дня', value: null }}
-          items={generateTimeItems()}
-          value={workhoursEnd}
-          style={pickerSelectStyles}
-        />
+          style={pickerSelectStyles.picker}
+        >
+          <Picker.Item label="Конец рабочего дня" value={null} />
+          {generateTimeItems().map((item) => (
+            <Picker.Item key={item.value} label={item.label} value={item.value} />
+          ))}
+        </Picker>
       </View>
     </>
   );
 };
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
+  picker: {
     height: 50,
     width: '100%',
     color: 'black',
-    marginBottom: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5, // Радиус закругления углов
-  },
-  inputAndroid: {
-    color: 'black',
     backgroundColor: 'white'
   },
-})
+});
 
 export default SelectorHours;

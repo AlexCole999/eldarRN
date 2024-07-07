@@ -1,4 +1,4 @@
-import { StyleSheet, FlatList, TouchableOpacity, Image, Text, View, Linking } from 'react-native';
+import { StyleSheet, FlatList, TouchableOpacity, Image, Text, View, Linking, Alert } from 'react-native';
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -13,6 +13,27 @@ const AdDetailsScreen = ({ route }) => {
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
   console.log(route.params)
+
+  const handleCall = () => {
+    Alert.alert(
+      'Подтверждение звонка',
+      `Вы уверены, что хотите позвонить по номеру +${adPhone}?`,
+      [
+        {
+          text: 'Отмена',
+          style: 'cancel'
+        },
+        {
+          text: 'Позвонить',
+          onPress: () => {
+            Linking.openURL(`tel:${adPhone}`);
+          }
+        }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <ScrollView>
       <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 180, borderRadius: 0 }} />
@@ -41,7 +62,7 @@ const AdDetailsScreen = ({ route }) => {
 
 
 
-                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
+                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${'+' + adPhone}`); }}>
                   <Image
                     source={{ uri: `${localhosturl}/userIcons/userMail4.png` }}
                     style={{ width: 45, height: 45 }}
@@ -49,7 +70,7 @@ const AdDetailsScreen = ({ route }) => {
                   />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${adPhone}`); }}>
+                <TouchableOpacity onPress={handleCall}>
                   <Image
                     source={{ uri: `${localhosturl}/userIcons/userPhone8.png` }}
                     style={{ width: 50, height: 50 }}
@@ -92,7 +113,7 @@ const AdDetailsScreen = ({ route }) => {
                   />
                   <Text style={{ paddingLeft: 10 }}>Часов:{x.hours}</Text>
                 </View>
-                <Text style={{ fontStyle: 'italic', color: 'grey' }}>{x.price} UZS</Text>
+                <Text style={{ fontStyle: 'italic', color: 'grey' }}>{x.price} {x?.fiat}</Text>
               </View>
             )}
           </View>

@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
+import { createSlice } from '@reduxjs/toolkit';
 
 const categoriesList = [
   [
@@ -30,13 +32,13 @@ const categoriesList = [
       icon: 'categories_massageAndSpa.jpg'
     },
     {
-      name: 'Тату и пирсинг',
+      name: 'Тату и Пирсинг',
       icon: 'categories_tattooAndPiercing.jpg'
     }
   ],
   [
     {
-      name: 'Коворкинг и Конферент  залы',
+      name: 'Коворкинг и Конферент залы',
       icon: 'categories_coworking.jpg'
     },
     {
@@ -52,11 +54,31 @@ const categoriesList = [
 
 const CategoriesInnerComponent = () => {
 
+  // const counterSlice = createSlice({
+  //   name: 'counter',
+  //   initialState: { value: '' },
+  //   reducers: {
+  //     filtercategory: (state, action) => {
+  //       state.value = action.payload;
+  //     },
+  //   },
+  // });
+
+  // const { increment, decrement, filtercategory } = counterSlice.actions;
+
+  // const dispatch = useDispatch();
+
+  // const count = useSelector(state => state.counter.value);
+
+  const navigation = useNavigation();
+
   const screenWidth = Dimensions.get('window').width;
 
   const renderItem = ({ item }) => (
     <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
-      <TouchableOpacity onPress={() => { console.log(item[0]) }}>
+      <TouchableOpacity
+      // onPress={() => { dispatch(filtercategory(item[0]?.name)); navigation.navigate('Каталог') }}
+      >
         <ImageBackground
           source={{ uri: `${localhosturl}/categoryPhotos/${item[0].icon}` }}
           style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}
@@ -69,7 +91,9 @@ const CategoriesInnerComponent = () => {
         </ImageBackground>
       </TouchableOpacity>
       {item[1]?.name
-        ? <TouchableOpacity onPress={() => { console.log(item[1]) }}>
+        ? <TouchableOpacity
+        // onPress={() => { dispatch(filtercategory(item[1]?.name)); navigation.navigate('Каталог') }}
+        >
           <ImageBackground
             source={{ uri: `${localhosturl}/categoryPhotos/${item[1]?.icon}` }}
             style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}
@@ -83,7 +107,9 @@ const CategoriesInnerComponent = () => {
         </TouchableOpacity>
         : null}
       {item[2]?.name
-        ? <TouchableOpacity onPress={() => { console.log(item[2]) }}>
+        ? <TouchableOpacity
+        // onPress={() => { dispatch(filtercategory(item[2]?.name)); navigation.navigate('Каталог') }}
+        >
           <ImageBackground
             source={{ uri: `${localhosturl}/categoryPhotos/${item[2]?.icon}` }}
             style={{ width: screenWidth * 0.45, height: 100, borderRadius: 5 }}

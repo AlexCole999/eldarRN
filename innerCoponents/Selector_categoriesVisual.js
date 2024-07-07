@@ -16,7 +16,7 @@ const SelectorCategoryVisual = ({ setCategory }) => {
       ]
     },
     {
-      name: 'Лашмейкеры/Бровисты',
+      name: 'Лашмейкеры и Бровисты',
       icon: 'lashmaker.png'
     },
     {
@@ -33,15 +33,15 @@ const SelectorCategoryVisual = ({ setCategory }) => {
       icon: 'mails.png'
     },
     {
-      name: 'Массаж /Спа',
+      name: 'Массаж и Спа',
       icon: 'massagaSpa.png'
     },
     {
-      name: 'Тату/Пирсинг',
+      name: 'Тату и Пирсинг',
       icon: 'tatooPiercing.png'
     },
     {
-      name: 'Коворкинг/Конференц залы',
+      name: 'Коворкинг и Конферент залы',
       icon: 'coworking1.png'
     },
     {
@@ -49,7 +49,11 @@ const SelectorCategoryVisual = ({ setCategory }) => {
       icon: 'photostudy.png'
     },
     {
-      name: 'Рестораны/Банкетные Залы',
+      name: 'Рестораны и Банкетные Залы',
+      icon: 'restraunts.png'
+    },
+    {
+      name: 'Прочее',
       icon: 'restraunts.png'
     }
   ];

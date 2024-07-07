@@ -8,12 +8,16 @@ import ProfileScreen from './screens/ProfileScreen';
 import AdDetailsScreen from './screens/AdDetailsScreen';
 import MainScreen from './screens/MainScreen';
 import SearchComponent from './innerCoponents/SearchComponent';
-import TestScreen from './screens/TestScreen';
 import TestimonialScreen from './screens/TestimonialScreen';
 import OrderScreen from './screens/OrderScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateAdsenseScreen from './screens/UpdateAdsenseScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
+
+import { Provider } from 'react-redux';
+import store from './storage/store'
+import FiltersScreen from './screens/FiltersScreen';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -47,7 +51,7 @@ const Tabs = () => {
         options={{
           headerTitle: () => <SearchComponent />,
           headerStyle: {
-            height: 140,
+            height: 170,
             backgroundColor: '#f3f2f8',
           },
         }}
@@ -58,7 +62,7 @@ const Tabs = () => {
         options={{
           headerTitle: () => <SearchComponent />,
           headerStyle: {
-            height: 140,
+            height: 170,
             backgroundColor: '#f3f2f8',
           },
         }}
@@ -66,11 +70,6 @@ const Tabs = () => {
       <Tab.Screen
         name="Профиль"
         component={ProfileScreen}
-        options={navigationOptions}
-      />
-      <Tab.Screen
-        name="TEST"
-        component={TestScreen}
         options={navigationOptions}
       />
     </Tab.Navigator>
@@ -93,16 +92,19 @@ const navigationOptions = {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-        <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
-        <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
-        <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
-        <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
-        <Stack.Screen name="Забронировать" component={OrderScreen} />
-        <Stack.Screen name="Мои брони" component={MyOrdersScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
+          <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
+          <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
+          <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
+          <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
+          <Stack.Screen name="Забронировать" component={OrderScreen} />
+          <Stack.Screen name="Мои брони" component={MyOrdersScreen} />
+          <Stack.Screen name="Фильтр" component={FiltersScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 }

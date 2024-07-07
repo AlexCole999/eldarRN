@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "AwesomeProject",
+    "name": "ArendaGo",
     "slug": "AwesomeProject",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/ArendaGoIcon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/ArendaGoIcon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,18 +19,32 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/ArendaGoIcon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.leonid25071993.AwesomeProject"
+      "package": "com.leonid25071993.AwesomeProject",
+      "permissions": [
+        "INTERNET",
+        "ACCESS_NETWORK_STATE"
+      ]
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/ArendaGoIcon.png"
     },
     "extra": {
       "eas": {
         "projectId": "60e8073e-a671-4835-8785-2c577a25302e"
       }
-    }
+    },
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ]
   }
 }

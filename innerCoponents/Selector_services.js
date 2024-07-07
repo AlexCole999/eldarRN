@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
-import RNPickerSelect from 'react-native-picker-select';
+import { Picker } from '@react-native-picker/picker';
 
 const SelectorServices = ({ servicesList, setServicesList }) => {
   const [showInputs, setShowInputs] = useState(false);
   const [newServiceHours, setNewServiceHours] = useState(null);
   const [newServicePrice, setNewServicePrice] = useState('');
+  const [newServiceFiat, setNewServiceFiat] = useState('');
 
   const addNewServiceParam = () => {
-    if (newServiceHours && newServicePrice) {
-      const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice }];
+    if (newServiceHours && newServicePrice && newServiceFiat) {
+      const newServicesList = [...servicesList, { hours: newServiceHours, price: newServicePrice, fiat: newServiceFiat }];
       setServicesList(newServicesList);
       setNewServiceHours(null);
       setNewServicePrice('');
+      setNewServiceFiat('');
       setShowInputs(false);
     }
   };
@@ -50,7 +52,7 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
           >
             <View style={styles.serviceParam}>
               <Text style={styles.serviceTextLeft}>Часов: {param.hours}</Text>
-              <Text style={styles.serviceTextRight}>Цена: {param.price}</Text>
+              <Text style={styles.serviceTextRight}>Цена: {param.price} {param.fiat}</Text>
             </View>
           </TouchableHighlight>
         ))
@@ -60,25 +62,24 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
           <View style={{
             marginBottom: 10, overflow: 'hidden', borderRadius: 10
           }}>
-            <RNPickerSelect
+            <Picker
+              selectedValue={newServiceHours}
               onValueChange={(value) => setNewServiceHours(value)}
-              placeholder={{ label: 'Часы новой услуги', value: null }}
-              items={[
-                { label: '1 час', value: 1 },
-                { label: '2 часа', value: 2 },
-                { label: '3 часа', value: 3 },
-                { label: '4 часа', value: 4 },
-                { label: '5 часов', value: 5 },
-                { label: '6 часов', value: 6 },
-                { label: '7 часов', value: 7 },
-                { label: '8 часов', value: 8 },
-                { label: '9 часов', value: 9 },
-                { label: '10 часов', value: 10 },
-                { label: '1 день', value: 24 },
-              ]}
-              value={newServiceHours}
-              style={pickerSelectStyles}
-            />
+              style={pickerSelectStyles.picker}
+            >
+              <Picker.Item label="Часы новой услуги" value={null} />
+              <Picker.Item label="1 час" value={1} />
+              <Picker.Item label="2 часа" value={2} />
+              <Picker.Item label="3 часа" value={3} />
+              <Picker.Item label="4 часа" value={4} />
+              <Picker.Item label="5 часов" value={5} />
+              <Picker.Item label="6 часов" value={6} />
+              <Picker.Item label="7 часов" value={7} />
+              <Picker.Item label="8 часов" value={8} />
+              <Picker.Item label="9 часов" value={9} />
+              <Picker.Item label="10 часов" value={10} />
+              <Picker.Item label="1 день" value={24} />
+            </Picker>
           </View>
           <TextInput
             style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
@@ -87,6 +88,19 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
             value={newServicePrice}
             keyboardType="numeric"
           />
+          <View style={{
+            marginBottom: 10, overflow: 'hidden', borderRadius: 10
+          }}>
+            <Picker
+              selectedValue={newServiceFiat}
+              onValueChange={(value) => setNewServiceFiat(value)}
+              style={pickerSelectStyles.picker}
+            >
+              <Picker.Item label="Валюта" value={null} />
+              <Picker.Item label="UZS" value={"UZS"} />
+              <Picker.Item label="USD" value={"USD"} />
+            </Picker>
+          </View>
           <TouchableOpacity
             style={{
               backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
@@ -149,19 +163,15 @@ const styles = StyleSheet.create({
 });
 
 const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
+  picker: {
     height: 50,
     width: '100%',
     color: 'black',
-    marginBottom: 10,
     paddingHorizontal: 10,
     borderWidth: 1,
     borderColor: 'gray',
     borderRadius: 5,
-  },
-  inputAndroid: {
-    color: 'black',
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
 });
 

@@ -100,7 +100,7 @@ const OrderScreen = ({ route }) => {
                       fontStyle: 'italic',
                       color: 'grey',
                       color: x.hours == selectedDuration ? 'white' : 'black',
-                    }}>{x.price} UZS</Text>
+                    }}>{x.price} {x?.fiat}</Text>
                   </View>
                 </TouchableOpacity>
               )}

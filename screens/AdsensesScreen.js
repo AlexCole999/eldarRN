@@ -20,13 +20,18 @@ const AdsensesScreen = () => {
     }
   };
 
-  const category = useSelector(state => state.filters.category);
   const city = useSelector(state => state.filters.city);
+  const district = useSelector(state => state.filters.district);
+  const category = useSelector(state => state.filters.category);
+  const subcategory = useSelector(state => state.filters.subcategory);
+  const priceFrom = useSelector(state => state.filters.priceFrom);
+  const priceTo = useSelector(state => state.filters.priceTo);
+  const currency = useSelector(state => state.filters.currency);
 
   console.log(category, city)
 
   const fetchData = () => {
-    fetch(`${localhosturl}/adsenses?page=${count}&category=${category}&city=${city}`)
+    fetch(`${localhosturl}/adsenses?page=${count}&city=${city}&district=${district}&category=${category}&subcategory=${subcategory}&priceFrom=${priceFrom}&priceTo=${priceTo}&currency=${currency}`)
       .then((response) => response.json())
       .then((data) => {
         const objects = data.map((item) => ({
@@ -51,7 +56,7 @@ const AdsensesScreen = () => {
 
   useEffect(() => {
     fetchData();
-  }, [count, city, category]);
+  }, [count, city, category, subcategory, priceFrom, priceTo, currency]);
 
   const onRefresh = () => {
     setRefreshing(true);

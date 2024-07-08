@@ -54,7 +54,7 @@ const SelectorCategoryVisual = ({ setCategory }) => {
     },
     {
       name: 'Прочее',
-      icon: 'restraunts.png'
+      icon: 'other.png'
     }
   ];
 

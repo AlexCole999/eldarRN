@@ -4,10 +4,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import filterSlice from '../storage/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
 const FiltersScreen = () => {
   const dispatch = useDispatch();
   const { city, district, category, subcategory, priceFrom, priceTo, currency } = useSelector(state => state.filters);
+
+  const navigation = useNavigation();
 
   // Локальные состояния для хранения выбранных значений
   const [localCity, setLocalCity] = useState(city);
@@ -27,8 +30,7 @@ const FiltersScreen = () => {
   // Обработчик для применения фильтров
   const applyFilters = () => {
     dispatch(filterSlice.actions.filterCity(localCity));
-    dispatch(filterSlice.actions.filterDistrict(localDistrict));
-    dispatch(filterSlice.actions.filterDistrict(localDistrict));
+    dispatch(filterSlice.actions.filterDistrict(localCity == "Ташкент" ? localDistrict : ''));
     dispatch(filterSlice.actions.filterCategory(localCategory));
     dispatch(filterSlice.actions.filterSubcategory(localSubcategory));
     dispatch(filterSlice.actions.filterPriceFrom(localPriceFrom));
@@ -242,13 +244,13 @@ const FiltersScreen = () => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={applyFilters}>
+      <TouchableOpacity style={styles.addButton} onPress={() => { applyFilters(); navigation.navigate('Каталог') }}>
         <Text style={{ ...styles.addButtonText, color: 'rgb(0, 191, 255)' }}>Применить</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.addButton} onPress={() => console.log(localCity, localDistrict, localCategory, localSubcategory, localPriceFrom, localPriceTo, localCurrency)}>
+      {/* <TouchableOpacity style={styles.addButton} onPress={() => console.log(localCity, localDistrict, localCategory, localSubcategory, localPriceFrom, localPriceTo, localCurrency)}>
         <Text style={{ ...styles.addButtonText, color: 'rgb(0, 191, 255)' }}>Консоль</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
 
       <TouchableOpacity style={{ ...styles.addButton, marginBottom: 40 }} onPress={resetFilters}>
         <Text style={{ ...styles.addButtonText, color: 'red' }}>Сбросить фильтр</Text>

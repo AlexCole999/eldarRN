@@ -6,17 +6,24 @@ import localhosturl from '../localhoststring';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
 import { useNavigation } from '@react-navigation/native';
+import filterSlice from '../storage/filterSlice';
 
 const screenWidth = Dimensions.get('window').width;
 
-const SearchComponent = () => {
-
+const SearchComponent = ({ filtersVisible }) => {
+  console.log(filtersVisible)
   const navigation = useNavigation();
 
   const dispatch = useDispatch();
 
-  // const category = useSelector(state => state.counter);
-  // console.log(category)
+  const city = useSelector(state => state.filters.city);
+  const district = useSelector(state => state.filters.district);
+  const category = useSelector(state => state.filters.category);
+  const subcategory = useSelector(state => state.filters.subcategory);
+  const priceFrom = useSelector(state => state.filters.priceFrom);
+  const priceTo = useSelector(state => state.filters.priceTo);
+  const currency = useSelector(state => state.filters.currency);
+
   const route = useRoute();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: '#007FFF', marginHorizontal: -16 }}>
@@ -28,31 +35,93 @@ const SearchComponent = () => {
 
         <SafeAreaView style={{ flex: 1, paddingTop: 15 }}>
           <Text style={{ color: 'white', fontSize: 16, fontWeight: 700, textAlign: 'center' }}>{route.name}</Text>
-          <View style={{ flex: 1, paddingTop: 15, alignItems: 'center', flexDirection: 'column' }}>
-            <View style={styles.searchContainer}>
-              <Image source={{ uri: `${localhosturl}/others/search.png` }} style={styles.icon} />
-              <TextInput
+
+          {filtersVisible ?
+            <View style={{ flex: 1, paddingTop: 5, alignItems: 'center', flexDirection: 'column' }}>
+              <TouchableOpacity
+                style={{ flexDirection: 'row', backgroundColor: 'rgba(0,140,255,0.3)', paddingHorizontal: 8, paddingVertical: 5, borderRadius: 8, gap: 8, alignItems: 'center' }}
                 onPress={() => navigation.navigate('Фильтр')}
-                style={styles.input}
-                placeholder={'Город, категория или услуга'}
-                placeholderTextColor={'rgba(255, 255, 255, 1)'}
-              />
-            </View>
+              >
+                <Text style={{ color: 'white', fontSize: 12 }}>Фильтр</Text>
+                <Image source={{ uri: `${localhosturl}/others/filterIcon1.png` }} style={styles.icon} />
+              </TouchableOpacity>
 
-            <View style={{ flexDirection: 'row', paddingVertical: 5 }}>
-              {/* <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, alignItems: 'center', }}              >
-                <Text style={{ color: 'white' }}>Ташкент</Text>
-              </View> */}
-              {
-                // category ?
-                <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 10, alignItems: 'center', }}              >
-                  <TouchableOpacity ><Text style={{ color: 'white' }}>{123}</Text></TouchableOpacity>
-                </View>
-                // : null
-              }
-            </View>
+              <View style={{ flexDirection: 'row', paddingVertical: 5, flexWrap: 'wrap', rowGap: 5, marginHorizontal: 20 }}>
+                {
+                  city ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterCity('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>{city}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  district ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterDistrict('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>{district}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  category ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterCategory('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>{category}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  subcategory ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterSubcategory('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>{subcategory}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  priceFrom ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterPriceFrom('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>От {priceFrom}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  priceTo ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterPriceTo('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>До {priceTo}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+                {
+                  currency ?
+                    <View style={{ marginHorizontal: 3, backgroundColor: 'rgba(0, 70, 255,0.2)', paddingVertical: 4, paddingHorizontal: 8, borderRadius: 8, alignItems: 'center', }}              >
+                      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }} onPress={() => { dispatch(filterSlice.actions.filterCurrency('')) }}>
+                        <Text style={{ color: 'white', fontSize: 8 }}>Валюта: {currency}</Text>
+                        <Image source={{ uri: `${localhosturl}/others/closeIcon.png` }} style={{ height: 5, width: 5, marginTop: 2 }} />
+                      </TouchableOpacity>
+                    </View>
+                    : null
+                }
+              </View>
 
-          </View>
+            </View>
+            : null
+          }
         </SafeAreaView>
 
         <StatusBar barStyle="light-content" backgroundColor="#74f8fa" />
@@ -74,8 +143,8 @@ const styles = StyleSheet.create({
     paddingVertical: 8,
   },
   icon: {
-    width: 20,
-    height: 20,
+    width: 15,
+    height: 15,
     marginRight: 8,
   },
   input: {

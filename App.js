@@ -49,9 +49,9 @@ const Tabs = () => {
         name="Главная"
         component={MainScreen}
         options={{
-          headerTitle: () => <SearchComponent />,
+          headerTitle: () => <SearchComponent filtersVisible={false} />,
           headerStyle: {
-            height: 170,
+            height: 80,
             backgroundColor: '#f3f2f8',
           },
         }}
@@ -60,7 +60,7 @@ const Tabs = () => {
         name="Каталог"
         component={AdsensesScreen}
         options={{
-          headerTitle: () => <SearchComponent />,
+          headerTitle: () => <SearchComponent filtersVisible={true} />,
           headerStyle: {
             height: 170,
             backgroundColor: '#f3f2f8',

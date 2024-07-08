@@ -6,6 +6,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { createSlice } from '@reduxjs/toolkit';
+import filterSlice from '../storage/filterSlice';
 
 const categoriesList = [
   [
@@ -54,30 +55,14 @@ const categoriesList = [
 
 const CategoriesInnerComponent = () => {
 
-  // const counterSlice = createSlice({
-  //   name: 'counter',
-  //   initialState: { value: '' },
-  //   reducers: {
-  //     filtercategory: (state, action) => {
-  //       state.value = action.payload;
-  //     },
-  //   },
-  // });
-
-  // const { increment, decrement, filtercategory } = counterSlice.actions;
-
-  // const dispatch = useDispatch();
-
-  // const count = useSelector(state => state.counter.value);
-
+  const dispatch = useDispatch();
   const navigation = useNavigation();
-
   const screenWidth = Dimensions.get('window').width;
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item, index }) => (
     <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
       <TouchableOpacity
-      // onPress={() => { dispatch(filtercategory(item[0]?.name)); navigation.navigate('Каталог') }}
+        onPress={() => { dispatch(filterSlice.actions.filterCategory(item[0]?.name)); navigation.navigate('Каталог') }}
       >
         <ImageBackground
           source={{ uri: `${localhosturl}/categoryPhotos/${item[0].icon}` }}
@@ -92,7 +77,7 @@ const CategoriesInnerComponent = () => {
       </TouchableOpacity>
       {item[1]?.name
         ? <TouchableOpacity
-        // onPress={() => { dispatch(filtercategory(item[1]?.name)); navigation.navigate('Каталог') }}
+          onPress={() => { dispatch(filterSlice.actions.filterCategory(item[1]?.name)); navigation.navigate('Каталог') }}
         >
           <ImageBackground
             source={{ uri: `${localhosturl}/categoryPhotos/${item[1]?.icon}` }}
@@ -108,7 +93,7 @@ const CategoriesInnerComponent = () => {
         : null}
       {item[2]?.name
         ? <TouchableOpacity
-        // onPress={() => { dispatch(filtercategory(item[2]?.name)); navigation.navigate('Каталог') }}
+          onPress={() => { dispatch(filterSlice.actions.filterCategory(item[2]?.name)); navigation.navigate('Каталог') }}
         >
           <ImageBackground
             source={{ uri: `${localhosturl}/categoryPhotos/${item[2]?.icon}` }}
@@ -122,22 +107,31 @@ const CategoriesInnerComponent = () => {
           </ImageBackground>
         </TouchableOpacity>
         : null}
-
     </View>
+  );
+
+  // Добавляем компонент во всю высоту
+  const renderLastItem = () => (
+    <TouchableOpacity style={{ width: screenWidth * 0.4, backgroundColor: 'rgba(128, 128, 128, 0.5)', justifyContent: 'center', alignItems: 'center', borderRadius: 5 }}
+      onPress={() => { dispatch(filterSlice.actions.filterCategory('Прочее')); navigation.navigate('Каталог') }}
+    >
+      <Text style={{ color: 'white', padding: 10, textAlign: 'center', fontWeight: 600 }}>Прочее</Text>
+    </TouchableOpacity>
   );
 
   return (
     <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
       <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Категории</Text>
       <FlatList
-        data={categoriesList}
-        renderItem={renderItem}
-        keyExtractor={(item) => item[0].name}
+        data={[...categoriesList, null]} // Добавляем null как последний элемент для рендера
+        renderItem={({ item, index }) => item ? renderItem({ item, index }) : renderLastItem()}
+        keyExtractor={(item, index) => item ? item[0].name : `last-item-${index}`}
         horizontal
         showsHorizontalScrollIndicator={false}
       />
     </View>
   );
 };
+
 
 export default CategoriesInnerComponent

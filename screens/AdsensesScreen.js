@@ -55,8 +55,13 @@ const AdsensesScreen = () => {
   };
 
   useEffect(() => {
+    if (count !== 1) { setCount(1) }
     fetchData();
-  }, [count, city, category, subcategory, priceFrom, priceTo, currency]);
+  }, [city, district, category, subcategory, priceFrom, priceTo, currency]);
+
+  useEffect(() => {
+    fetchData();
+  }, [count]);
 
   const onRefresh = () => {
     setRefreshing(true);

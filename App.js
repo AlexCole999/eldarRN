@@ -1,4 +1,30 @@
 import React from 'react';
+import { Image, View, StyleSheet, Text } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import {
+  useFonts,
+  Manrope_100Thin,
+  Manrope_200ExtraLight,
+  Manrope_300Light,
+  Manrope_400Regular,
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+  Manrope_800ExtraBold,
+  Manrope_900Black
+} from '@expo-google-fonts/manrope';
+import {
+  Montserrat_100Thin,
+  Montserrat_200ExtraLight,
+  Montserrat_300Light,
+  Montserrat_400Regular,
+  Montserrat_500Medium,
+  Montserrat_600SemiBold,
+  Montserrat_700Bold,
+  Montserrat_800ExtraBold,
+  Montserrat_900Black,
+} from '@expo-google-fonts/montserrat';
+import LinearGradient from 'react-native-linear-gradient';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -13,7 +39,6 @@ import OrderScreen from './screens/OrderScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateAdsenseScreen from './screens/UpdateAdsenseScreen';
 import MyOrdersScreen from './screens/MyOrdersScreen';
-
 import { Provider } from 'react-redux';
 import store from './storage/store'
 import FiltersScreen from './screens/FiltersScreen';
@@ -26,85 +51,197 @@ const Tabs = () => {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
+        tabBarIcon: ({ focused, size }) => {
+          let iconPath;
 
           if (route.name === 'Главная') {
-            iconName = focused ? 'home' : 'home-outline';
+            iconPath = focused
+              ? require('./assets/Home.png')
+              : require('./assets/Home.png');
           } else if (route.name === 'Каталог') {
-            iconName = focused ? 'list' : 'list-outline';
+            iconPath = focused
+              ? require('./assets/Catalog.png')
+              : require('./assets/Catalog.png');
+          } else if (route.name === 'Чат') {
+            iconPath = focused
+              ? require('./assets/Chat.png')
+              : require('./assets/Chat.png');
           } else if (route.name === 'Профиль') {
-            iconName = focused ? 'person' : 'person-outline';
-          } else if (route.name === 'TEST') {
-            iconName = focused ? 'flask' : 'flask-outline';
+            iconPath = focused
+              ? require('./assets/Profile.png')
+              : require('./assets/Profile.png');
           }
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return (
+            <View>
+              <Image
+                source={iconPath}
+                style={{
+                  width: size,
+                  height: size,
+                  opacity: focused ? 1 : 0.5, // Прозрачность 50% если не активен
+                }}
+              />
+            </View>
+          );
         },
-        tabBarActiveTintColor: 'rgb(0, 191, 255)',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.5)',
+        tabBarLabelStyle: {
+          paddingTop: 0,  // Добавляет расстояние между иконкой и текстом
+          fontSize: 14,
+          fontWeight: 500
+        },
+        tabBarStyle: {
+          backgroundColor: 'rgba(0, 148, 255,1);', // Задний фон
+          opacity: 0.9,
+          paddingTop: 20,             // padding сверху
+          paddingLeft: 20,            // padding слева
+          paddingRight: 20,           // padding справа
+          paddingBottom: 40,           // padding снизу
+          borderTopLeftRadius: 16,    // Радиус слева вверху
+          borderTopRightRadius: 16,   // Радиус справа вверху
+          height: 110,
+
+        }
       })}
     >
       <Tab.Screen
         name="Главная"
         component={MainScreen}
         options={{
-          headerTitle: () => <SearchComponent filtersVisible={false} />,
-          headerStyle: {
-            height: 80,
-            backgroundColor: '#f3f2f8',
-          },
+          headerShown: false, // Отключает отображение заголовка
         }}
       />
       <Tab.Screen
         name="Каталог"
         component={AdsensesScreen}
+        // }}
+        options={{
+          headerShown: false, // Отключает отображение заголовка
+        }}
+      />
+      <Tab.Screen
+        name="Чат"
+        component={AdsensesScreen}
         options={{
           headerTitle: () => <SearchComponent filtersVisible={true} />,
           headerStyle: {
-            height: 170,
-            backgroundColor: '#f3f2f8',
+            height: 74,
+            backgroundColor: 'white',
+
           },
         }}
       />
       <Tab.Screen
         name="Профиль"
         component={ProfileScreen}
-        options={navigationOptions}
+        options={{
+          headerStyle: {
+            backgroundColor: 'rgba(0, 148, 255,1)', // Change this to your desired color
+            borderBottomEndRadius: 15,
+            borderBottomStartRadius: 15
+          },
+          headerTintColor: '#fff', // Color of the header text and icons
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       />
     </Tab.Navigator>
   );
 };
 
-const navigationOptions = {
-  headerStyle: {
-    backgroundColor: '#f3f2f8',
-  },
-  headerTintColor: 'black',
-  headerTitleStyle: {
-    fontWeight: '700',
-    fontSize: 14,
-    letterSpacing: 0.2,
-    fontFamily: 'Roboto',
-  },
-  headerTitleAlign: 'center',
-};
-
 export default function App() {
+
+  const [fontsLoaded] = useFonts({
+    Manrope_100Thin,
+    Manrope_200ExtraLight,
+    Manrope_300Light,
+    Manrope_400Regular,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
+    Manrope_800ExtraBold,
+    Manrope_900Black,
+    Montserrat_100Thin,
+    Montserrat_200ExtraLight,
+    Montserrat_300Light,
+    Montserrat_400Regular,
+    Montserrat_500Medium,
+    Montserrat_600SemiBold,
+    Montserrat_700Bold,
+    Montserrat_800ExtraBold,
+    Montserrat_900Black
+  });
+
   return (
+
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator>
+
+      <StatusBar barStyle="light-content" backgroundColor="rgba(0, 155, 255,1)" />
+
+      <NavigationContainer style={{ backgroundColor: 'white' }}>
+        <Stack.Navigator
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: 'rgba(0, 148, 255, 0.9)',
+              opacity: 0.9,
+              height: 132,
+              borderBottomLeftRadius: 24,
+              borderBottomRightRadius: 24
+            },
+            headerTintColor: 'white',
+            headerTitleStyle: {
+              fontFamily: 'Manrope_600SemiBold',
+              fontSize: 22,
+              letterSpacing: 1.5
+            },
+            headerTitleAlign: 'center',
+          }}
+        >
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
           <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
           <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
-          <Stack.Screen name="Детали объявления" component={AdDetailsScreen} />
-          <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
+          <Stack.Screen
+            options={{
+              headerTitle: () => (
+                <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                  <Text style={{ textAlign: 'center', fontSize: 22, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold' }}>
+                    Детали{'\n'}объявления
+                  </Text>
+                </View>
+              ),
+              headerStyle: {
+                backgroundColor: 'rgba(0, 148, 255, 0.9)', // Цвет фона заголовкаб
+                height: 112
+              },
+              headerTintColor: 'white', // Цвет текста и иконок заголовка
+              headerTitleAlign: 'center', // Выравнивание заголовка по центру
+            }}
+            name="Детали объявления" component={AdDetailsScreen} />
+          <Stack.Screen name="Оставить отзыв" component={TestimonialScreen}
+          // options={{
+          //   headerTitle: () => (
+          //     <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold' }}>
+          //       Оставить отзыв
+          //     </Text>
+          //   ),
+          //   headerStyle: {
+          //     backgroundColor: 'rgba(0, 148, 255, 1)', // Цвет фона заголовка
+          //     height: 132,
+          //   },
+          //   headerTintColor: 'white', // Цвет текста и иконок заголовка
+          //   headerTitleAlign: 'center', // Выравнивание заголовка по центру
+          // }}
+          />
           <Stack.Screen name="Забронировать" component={OrderScreen} />
           <Stack.Screen name="Мои брони" component={MyOrdersScreen} />
           <Stack.Screen name="Фильтр" component={FiltersScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-    </Provider>
+
+
+    </Provider >
   );
 }

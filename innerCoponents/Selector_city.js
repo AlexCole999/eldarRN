@@ -49,3 +49,55 @@ const pickerSelectStyles = StyleSheet.create({
 });
 
 export default SelectorCity;
+
+// import React from 'react';
+// import { View, StyleSheet, Text } from 'react-native';
+// import { Picker } from '@react-native-picker/picker';
+// import { BoxShadow } from 'react-native-shadow';
+
+// const SelectorCity = ({ city, setCity }) => {
+//   console.log(city);
+
+//   // Настройка параметров тени
+//   const shadowOpt = {
+//     width: 300, // Ширина контейнера
+//     height: 50, // Высота контейнера
+//     color: '#0A309B', // Цвет тени
+//     border: 2, // Распространение тени (аналог spread в CSS)
+//     radius: 12, // Закругление углов
+//     opacity: 0.16, // Непрозрачность тени (16%)
+//     x: 0, // Смещение по оси X
+//     y: 2, // Смещение по оси Y
+//     style: { marginBottom: 10 },
+//   };
+
+//   return (
+//     <BoxShadow setting={shadowOpt}>
+//       <View style={styles.container}>
+//         <Text>123</Text>
+//       </View>
+//     </BoxShadow>
+//   );
+// };
+
+// const styles = StyleSheet.create({
+//   container: {
+//     marginHorizontal: 0,
+//     width: 300,
+//     height: 50,
+//     borderRadius: 12, // Закругление углов
+//     backgroundColor: 'white', // Белый фон, чтобы тень была видна
+//   },
+// });
+
+// const pickerSelectStyles = StyleSheet.create({
+//   picker: {
+//     height: 50,
+//     width: 300,
+//     borderColor: 'gray',
+//     borderRadius: 12, // Закругление углов
+//     backgroundColor: 'white',
+//   },
+// });
+
+// export default SelectorCity;

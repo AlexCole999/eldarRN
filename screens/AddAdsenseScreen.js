@@ -326,7 +326,7 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     display: 'flex',
     flexDirection: 'column',
-    backgroundColor: '#f3f2f8'
+    backgroundColor: 'white'
   },
   input: {
     height: 40,

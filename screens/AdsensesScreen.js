@@ -75,7 +75,7 @@ const AdsensesScreen = () => {
     } else {
       return (
         <TouchableOpacity
-          style={styles.itemContainer}
+          style={{ ...styles.itemContainer, elevation: 4 }}
           key={item.id}
           onPress={() => navigation.navigate('Детали объявления', {
             adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
@@ -89,8 +89,8 @@ const AdsensesScreen = () => {
             <View style={styles.textContainer}>
               <Text style={styles.category}>{item.category}</Text>
               <Text style={styles.city}>{item.city}</Text>
-              <Text style={styles.address}>{item.address}</Text>
-              <View style={styles.ratingContainer}>
+              {/* <Text style={styles.address}>{item.address}</Text> */}
+              {/* <View style={styles.ratingContainer}>
                 <StarRating
                   rating={item.testimonials.length
                     ? item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length
@@ -102,7 +102,7 @@ const AdsensesScreen = () => {
                     ? (item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length).toFixed(2)
                     : 0}
                 </Text>
-              </View>
+              </View> */}
             </View>
           </View>
         </TouchableOpacity>
@@ -133,24 +133,23 @@ const AdsensesScreen = () => {
 
   const styles = StyleSheet.create({
     itemContainer: {
-      width: (screenWidth - 60) * 0.5,
-      marginLeft: 20,
+      width: (screenWidth - 60) * 0.52,
+      marginLeft: 8,
       backgroundColor: 'white',
-      borderRadius: 5,
+      borderRadius: 12,
     },
     image: {
       width: "100%",
-      height: 160,
-      borderRadius: 5,
-      borderBottomLeftRadius: 0,
-      borderBottomRightRadius: 0,
+      height: 100,
+      borderRadius: 8
     },
     textContainer: {
       padding: 10,
     },
     category: {
-      fontWeight: '700',
+      fontWeight: '500',
       fontSize: 14,
+      color: 'rgb(51,51,51)'
     },
     city: {
       fontSize: 12,
@@ -203,10 +202,12 @@ const AdsensesScreen = () => {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#f3f2f8', paddingTop: 20 }}>
+    <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 0, paddingLeft: 10 }}>
+      <View style={{ position: 'absolute', width: screenWidth, height: 24, backgroundColor: 'rgb(0, 148, 255)', borderBottomLeftRadius: 22, borderBottomRightRadius: 22, top: 0, left: 0, zIndex: -1 }} />
+
       <FlatList
         ref={flatListRef}
-        contentContainerStyle={{ paddingHorizontal: 0, gap: 20, paddingBottom: 20 }}
+        contentContainerStyle={{ gap: 8, paddingBottom: 20 }}
         data={[...data]}
         renderItem={renderItem}
         keyExtractor={(item) => item.id.toString()}

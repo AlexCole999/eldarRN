@@ -53,7 +53,7 @@ const AdDetailsScreen = ({ route }) => {
                   colors={['rgb(0, 110, 204)', 'rgb(80, 130, 200)']}
                   start={[0, 0]}
                   end={[1, 0]}
-                  style={{ borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
+                  style={{ elevation: 4, borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
                   <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
                 </LinearGradient>
               </TouchableOpacity>
@@ -94,7 +94,7 @@ const AdDetailsScreen = ({ route }) => {
         <Text style={{ marginTop: 7, fontSize: 14, fontStyle: 'italic' }}>{adCategory}</Text>
         <View style={{ width: '100%', marginVertical: 10 }}>
           <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Описание</Text>
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10 }}>
+          <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10, elevation: 4 }}>
             <Text style={{ color: 'grey' }}>{adDescription}</Text>
           </View>
         </View>
@@ -102,7 +102,7 @@ const AdDetailsScreen = ({ route }) => {
 
         <View style={{ width: '100%', marginVertical: 10 }}>
           <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Услуги</Text>
-          <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
+          <View style={{ borderRadius: 10, backgroundColor: 'white', elevation: 4 }}>
             {adServiceParams.map((x, i) =>
               <View key={i} style={{ paddingVertical: 10, paddingHorizontal: 20, borderBottomWidth: adServiceParams.length - 1 == i ? 0 : 1, borderColor: 'lightgrey', display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
                 <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: '',
-    backgroundColor: '#f3f2f8',
+    backgroundColor: 'white',
     paddingHorizontal: 20,
     marginTop: 10,
     marginBottom: 20

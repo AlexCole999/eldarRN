@@ -2,15 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, ScrollView, Image, Alert } from 'react-native';
 import localhosturl from './../localhoststring';
 import axios from 'axios';
+import starFill from '../assets/starFill.png'
+import starNull from '../assets/starNull.png'
 
 const Star = ({ filled, size }) => (
   <Image
-    source={{ uri: filled ? `${localhosturl}/others/star.png` : `${localhosturl}/others/starnull.png` }}
+    source={filled ? starFill : starNull}
     style={{ width: size, height: size }}
   />
 );
 
 const Rating = ({ size, onStarPress }) => {
+
   const [rating, setRating] = useState(0);
 
   const handleStarPress = (starIndex) => {
@@ -20,11 +23,11 @@ const Rating = ({ size, onStarPress }) => {
 
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-      <Text style={{ marginRight: 10, fontWeight: 400, fontSize: 16, color: 'grey' }}>Ваша оценка</Text>
+      <Text style={{ fontSize: 16, color: 'rgb(51, 51, 51)', fontFamily: 'Manrope_600SemiBold', lineHeight: 22, letterSpacing: 0 }}>Ваша оценка</Text>
       <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-        <Text style={{ color: 'grey', fontSize: 16, paddingRight: 4 }}>{rating}</Text>
+        <Text style={{ color: 'rgb(243, 203, 43)', fontSize: 16, paddingRight: 6, fontFamily: 'Montserrat_600SemiBold', fontSize: 18 }}>{rating + '.0'}</Text>
         {[...Array(5)].map((_, index) => (
-          <TouchableOpacity key={index} onPress={() => handleStarPress(index)}>
+          <TouchableOpacity key={index} onPress={() => handleStarPress(index)} style={{ paddingLeft: 4 }}>
             <Star filled={index < rating} size={size} />
           </TouchableOpacity>
         ))}
@@ -34,6 +37,7 @@ const Rating = ({ size, onStarPress }) => {
 };
 
 const TestimonialScreen = ({ route }) => {
+
   const [reviewText, setReviewText] = useState('');
   const [rating, setRating] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -55,20 +59,29 @@ const TestimonialScreen = ({ route }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 20, paddingVertical: 20, backgroundColor: '#f3f2f8' }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 24, paddingBottom: 40, backgroundColor: 'white' }}>
       {!submitted && (
-        <>
-          <Rating size={30} onStarPress={setRating} />
-          <TextInput
-            style={{ textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16 }}
-            multiline={true} placeholder="Напишите, что вы думаете об оказанной услуге" onChangeText={setReviewText} value={reviewText} />
-          <TouchableOpacity
-            style={{ marginVertical: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, alignItems: 'center' }}
-            onPress={sendTestimonial}
-          >
-            <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: '600' }}>Отправить отзыв</Text>
-          </TouchableOpacity>
-        </>
+        <View style={{ height: '100%', justifyContent: 'space-between' }}>
+
+          <View>
+            <Rating size={22} onStarPress={setRating} />
+            <Text style={{ paddingTop: 16, fontSize: 16, color: 'rgb(51, 51, 51)', fontFamily: 'Manrope_600SemiBold', lineHeight: 22, letterSpacing: 0 }}>Описание</Text>
+            <TextInput
+              style={{ fontSize: 14, fontFamily: 'Manrope_400Regular', elevation: 2, textAlignVertical: 'top', borderRadius: 10, height: 112, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 10, marginTop: 4 }}
+              placeholderTextColor='rgb(196, 196, 196)'
+              multiline={true} placeholder="Введите, что Вы думаете об указанной услуге" onChangeText={setReviewText} value={reviewText} />
+          </View>
+
+          <View>
+            <TouchableOpacity
+              style={{ backgroundColor: 'rgb(0, 148, 255)', borderRadius: 12, alignItems: 'center', height: 36, alignItems: 'center', justifyContent: 'center' }}
+              onPress={sendTestimonial}
+            >
+              <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold', letterSpacing: 0.5 }}>Отправить отзыв</Text>
+            </TouchableOpacity>
+          </View>
+
+        </View>
       )}
       {submitted && (
         <View style={{ alignItems: 'center' }}>

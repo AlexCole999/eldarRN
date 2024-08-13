@@ -24,6 +24,17 @@ import {
   Montserrat_800ExtraBold,
   Montserrat_900Black,
 } from '@expo-google-fonts/montserrat';
+import {
+  Inter_100Thin,
+  Inter_200ExtraLight,
+  Inter_300Light,
+  Inter_400Regular,
+  Inter_500Medium,
+  Inter_600SemiBold,
+  Inter_700Bold,
+  Inter_800ExtraBold,
+  Inter_900Black,
+} from '@expo-google-fonts/inter';
 import LinearGradient from 'react-native-linear-gradient';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
@@ -172,7 +183,16 @@ export default function App() {
     Montserrat_600SemiBold,
     Montserrat_700Bold,
     Montserrat_800ExtraBold,
-    Montserrat_900Black
+    Montserrat_900Black,
+    Inter_100Thin,
+    Inter_200ExtraLight,
+    Inter_300Light,
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Inter_800ExtraBold,
+    Inter_900Black,
   });
 
   return (
@@ -187,7 +207,7 @@ export default function App() {
             headerStyle: {
               backgroundColor: 'rgba(0, 148, 255, 0.9)',
               opacity: 0.9,
-              height: 132,
+              height: 100,
               borderBottomLeftRadius: 24,
               borderBottomRightRadius: 24
             },

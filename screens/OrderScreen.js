@@ -6,6 +6,8 @@ import localhosturl from './../localhoststring';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
+import { Ionicons } from '@expo/vector-icons';
+import time from '../assets/time.png'
 
 const OrderScreen = ({ route }) => {
 
@@ -58,49 +60,78 @@ const OrderScreen = ({ route }) => {
         <Text style={styles.headerText}>Выберите дату</Text>
         <Calendar
           style={{
-            paddingBottom: 10,
-            borderRadius: 10
+            paddingVertical: 12,
+            paddingRight: 25,
+            paddingLeft: 25,
+            borderRadius: 10,
+            elevation: 4
           }}
+          hideExtraDays={true}
           onDayPress={(day) => setSelectedDate(day.dateString)}
           markedDates={{
-            [selectedDate]: { selected: true, selectedColor: 'rgb(0, 191, 255)' }
+            [selectedDate]: { selected: true, selectedColor: '#0094FF' }
           }}
           minDate={new Date().toISOString().split('T')[0]}
+          renderArrow={(direction) => (
+            <Ionicons
+              name={direction === 'left' ? 'chevron-back' : 'chevron-forward'}
+              size={18}
+              color="black"
+            />
+          )}
+          theme={{
+            textDayFontFamily: 'Inter_400Regular',
+            textMonthFontFamily: 'Inter_700Bold',
+            textDayHeaderFontFamily: 'Inter_400Regular',
+            textDayHeaderFontSize: 14,
+            arrowColor: 'black',
+            todayTextColor: 'black',
+            selectedDayBackgroundColor: 'rgb(0, 191, 255)',
+            selectedDayTextColor: '#ffffff',
+          }}
         />
         {selectedDate && (
-          <View style={{ width: '100%', marginVertical: 10 }}>
-            <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16, textAlign: 'center' }}>Выберите длительность</Text>
-            <View style={{ borderRadius: 10, backgroundColor: 'white' }}>
+          <View style={{ width: '100%', marginTop: 24, marginBottom: 20 }}>
+            <Text style={{ ...styles.headerText }}>Выберите длительность</Text>
+            <View style={{ borderRadius: 10, backgroundColor: 'white', gap: 6 }}>
               {adServiceParams.map((x, i) =>
-                <TouchableOpacity key={i} onPress={() => { setSelectedDuration(x.hours) }}>
+                <TouchableOpacity key={i} onPress={() => { setSelectedDuration(x.hours); console.log(x) }}>
                   <View style={{
-                    backgroundColor: x.hours == selectedDuration ? 'rgb(0, 191, 255)' : 'white',
-                    borderRadius: 10,
-                    paddingVertical: 10,
-                    paddingHorizontal: 20,
-                    borderBottomWidth: adServiceParams.length - 1 == i ? 0 : 1,
+                    backgroundColor: 'white',
+                    borderRadius: 12,
+                    paddingTop: 10,
+                    paddingRight: 12,
+                    paddingBottom: 10,
+                    paddingLeft: 8,
                     borderColor: 'lightgrey',
                     display: 'flex',
                     justifyContent: 'space-between',
-                    flexDirection: 'row'
+                    flexDirection: 'row',
+                    elevation: 4,
+                    borderWidth: 1,
+                    borderColor: x.hours == selectedDuration ? 'rgb(0, 191, 255)' : 'white'
                   }}>
-                    <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
 
+                    <Text style={{
+                      fontSize: 14,
+                      color: 'grey',
+                      color: 'black',
+                      fontFamily: 'Manrope_400Regular'
+                    }}>Цена: {x.price} {x.fiat}</Text>
+                    <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row', gap: 4 }}>
                       <Image
-                        source={{ uri: `${localhosturl}/userIcons/serviceTimeIcon.png` }}
-                        style={{ width: 20, height: 20 }}
+                        source={time}
+                        style={{ width: 16, height: 16 }}
 
                       />
                       <Text style={{
-                        paddingLeft: 10,
-                        color: x.hours == selectedDuration ? 'white' : 'black',
-                      }}>Часов:{x.hours}</Text>
+                        fontSize: 14,
+                        color: 'black',
+                        fontFamily: 'Manrope_400Regular'
+                      }}>Часов:
+                      </Text>
+                      <Text style={{ fontFamily: 'Manrope_500Medium' }}>{x.hours}</Text>
                     </View>
-                    <Text style={{
-                      fontStyle: 'italic',
-                      color: 'grey',
-                      color: x.hours == selectedDuration ? 'white' : 'black',
-                    }}>{x.price} {x?.fiat}</Text>
                   </View>
                 </TouchableOpacity>
               )}
@@ -109,7 +140,7 @@ const OrderScreen = ({ route }) => {
         )}
         {selectedDuration && (
           <View>
-            <Text style={styles.headerText}>Выберите время</Text>
+            <Text style={{ ...styles.headerText }}>Выберите время</Text>
             <View style={styles.timeContainer}>
               {Array.from({ length: endHour - startHour + 1 - selectedDuration }, (_, i) => i + startHour).map((hour) => (
                 <TouchableOpacity
@@ -117,7 +148,7 @@ const OrderScreen = ({ route }) => {
                   style={[styles.timeButton, selectedTime === hour ? styles.selectedTimeButton : {},]}
                   onPress={() => handleTimeSelection(hour)}
                 >
-                  <Text style={{ fontStyle: 'italic', color: selectedTime === hour ? 'white' : 'black' }}>{hour}:00</Text>
+                  <Text style={{ color: selectedTime === hour ? 'white' : 'black', fontFamily: 'Manrope_400Regular', fontSize: 14 }}>{hour.toString().padStart(2, '0')}.00</Text>
                 </TouchableOpacity>
               ))}
             </View>
@@ -125,10 +156,12 @@ const OrderScreen = ({ route }) => {
         )}
         {selectedDate && selectedDuration && (
           <TouchableOpacity
-            style={{ marginVertical: 10, backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, alignItems: 'center' }}
+            style={{
+              marginTop: 36, backgroundColor: 'rgb(0, 148, 255)', paddingVertical: 10, borderRadius: 12, alignItems: 'center', fontFamily: 'Manrope_600SemiBold'
+            }}
             onPress={newOrder}
           >
-            <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: '600' }}>Забронировать</Text>
+            <Text style={{ color: 'white', fontWeight: '600', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 1 }}>Забронировать</Text>
           </TouchableOpacity>
         )}
       </View>
@@ -139,15 +172,17 @@ const OrderScreen = ({ route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
-    paddingTop: 40,
+    paddingTop: 31,
+    paddingRight: 22,
+    paddingBottom: 40,
+    paddingLeft: 26,
     backgroundColor: 'white',
   },
   headerText: {
-    textAlign: 'center',
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 10,
+    textAlign: 'left',
+    fontSize: 24,
+    marginBottom: 12,
+    fontFamily: 'Manrope_600SemiBold'
   },
   durationContainer: {
     flexDirection: 'row',
@@ -160,27 +195,29 @@ const styles = StyleSheet.create({
   durationButton: {
     padding: 10,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius: 12,
     borderColor: 'gray',
-    flexGrow: 1
+    flexGrow: 1,
+    elevation: 4
   },
   selectedDurationButton: {
-    backgroundColor: 'rgb(0, 191, 255)',
+    backgroundColor: '#0094FF',
   },
   timeContainer: {
-    marginTop: 20,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    rowGap: 10,
-    columnGap: 5,
-    justifyContent: 'space-between'
+    rowGap: 8,
+    columnGap: 6,
   },
   timeButton: {
-    padding: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 10,
     backgroundColor: 'white',
-    borderRadius: 8,
+    borderRadius: 12,
     alignItems: 'center',
-    flexGrow: 1
+    elevation: 4,
+    fontSize: 14,
+    width: 54
   },
   selectedTimeButton: {
     backgroundColor: 'rgb(0, 191, 255)',
@@ -189,8 +226,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
   },
   bookButton: {
-    marginTop: 20,
-    padding: 15,
+    marginTop: 36,
+    padding: 10,
     backgroundColor: 'blue',
     alignItems: 'center',
     borderRadius: 5,

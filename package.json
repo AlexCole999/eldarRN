@@ -11,6 +11,7 @@
     "build": "eas build -p android"
   },
   "dependencies": {
+    "@expo-google-fonts/inter": "^0.2.3",
     "@expo-google-fonts/manrope": "^0.2.3",
     "@expo-google-fonts/montserrat": "^0.2.3",
     "@expo/vector-icons": "^14.0.0",

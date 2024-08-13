@@ -122,7 +122,7 @@ const ProfileScreen = () => {
           </TouchableOpacity>
 
           <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Бонусы</Text>
+            <Text style={styles.sectionTitle} onPress={() => { Alert.alert('Бронь зарегистрирована', 'Успешно забронировано'); }}>Бонусы</Text>
             <Text style={styles.sectionItem}>Баланс</Text>
             <Text style={styles.sectionItem}>Скидки</Text>
             <TouchableOpacity onPress={() => navigation.navigate("Мои брони", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses })} style={{

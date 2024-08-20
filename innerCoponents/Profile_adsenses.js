@@ -5,6 +5,9 @@ import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from '../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
 import StarRating from './StarRating';
+import profile_adsenses_place from '../assets/profile_adsenses_place.png'
+import profile_adsenses_phone from '../assets/profile_adsenses_phone.png'
+import profile_adsenses_other from '../assets/profile_adsenses_other.png'
 
 const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
 
@@ -57,7 +60,6 @@ const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
 
   return (
     <View style={styles.adsContainer}>
-      <Text style={styles.title}>Мои объявления</Text>
       {adsenses.map(ad => (
         <TouchableOpacity key={ad._id}
           onPress={() => navigation.navigate('Детали объявления', {
@@ -65,34 +67,58 @@ const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
           })}
         >
           <View style={styles.adContainer}>
+
+            <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
+
             <View style={styles.infoContainer}>
-              <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
-              <View style={{ maxWidth: '80%' }}>
-                <Text style={styles.adText}>Город: {ad.city}</Text>
-                <Text style={styles.adText}>Категория: {ad.category}</Text>
-                <Text style={styles.adText}>Адрес: {ad.address}</Text>
-                <Text style={styles.adText}>Телефон: {ad?.phone}</Text>
-                <Text style={styles.adText}>Часы работы: {ad.workhours}</Text>
-                <Text style={styles.adText}>Услуги:</Text>
+
+              <View style={{ maxWidth: '100%' }}>
+                <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.category}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Image source={profile_adsenses_place} style={{ width: 16, height: 16 }} />
+                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>г. {ad.city}, {ad.address}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Image source={profile_adsenses_phone} style={{ width: 16, height: 16 }} />
+                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>+ {ad?.phone.toString().replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5')}</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                  <Image source={profile_adsenses_other} style={{ width: 16, height: 16 }} />
+                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>Прочее</Text>
+                </View>
+
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы работы</Text>
+                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.workhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
+                </View>
                 {ad.servicesList.map((service, index) => (
-                  <Text key={index} style={styles.adText}>Часы: {service.hours}, Цена: {service.price}</Text>
+                  <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
+                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы {service.hours}:</Text>
+                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{service.price.toLocaleString('ru-RU')}</Text>
+                  </View>
                 ))}
               </View>
             </View>
-            <View style={styles.adButtonsContainer}>
-              <TouchableOpacity style={styles.button}
-                onPress={() => navigation.navigate('Изменить объявление', {
-                  adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
-                })}
-              >
-                <Text style={styles.buttonText}>Изменить</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.deleteButton} onPress={() => { deleteAdsense(ad._id) }}>
-                <Text style={styles.buttonText}>Удалить</Text>
-              </TouchableOpacity>
-            </View>
+
+          </View>
+
+          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#C4C4C4', paddingBottom: 24, gap: 20 }}>
+            <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }} onPress={() => { deleteAdsense(ad._id) }}>
+              <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Удалить</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={{ backgroundColor: 'rgba(0,148,255,0.5)', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
+              onPress={() => navigation.navigate('Изменить объявление', {
+                adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+              })}
+            >
+              <Text style={{ color: 'white', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Изменить</Text>
+            </TouchableOpacity>
+
           </View>
         </TouchableOpacity>
+
       ))}
     </View>
   )
@@ -101,7 +127,7 @@ const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#f3f2f8',
+    backgroundColor: '#F5FFFF',
     paddingHorizontal: 20,
     paddingVertical: 10,
   },
@@ -129,7 +155,6 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     flexGrow: 1,
-    marginVertical: 10,
     backgroundColor: 'red',
     padding: 10,
     borderRadius: 10,
@@ -142,8 +167,6 @@ const styles = StyleSheet.create({
   },
   addButton: {
     backgroundColor: 'white',
-    marginTop: 20,
-    paddingVertical: 10,
     paddingLeft: 14,
     borderRadius: 10,
   },
@@ -173,10 +196,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   adsContainer: {
-    backgroundColor: 'white',
-    marginTop: 20,
     paddingTop: 20,
-    borderRadius: 10,
+
   },
   userContainer: {
     backgroundColor: 'white',
@@ -205,33 +226,43 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   adContainer: {
-    padding: 10,
-    marginBottom: 20,
+    marginBottom: 16,
+    backgroundColor: 'white',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
+    elevation: 4
   },
   adText: {
     fontSize: 12,
     marginBottom: 2,
     maxWidth: '80%',
-    color: 'black',
+    color: '#333333',
   },
   adImage: {
-    width: '50%',
-    height: '100%',
+    width: '100%',
+    height: 134,
     resizeMode: 'cover',
-    marginBottom: 10,
-    borderRadius: 10,
-    borderWidth: 1,
     borderColor: 'lightgray',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12
   },
   infoContainer: {
-    paddingHorizontal: 0,
-    flexDirection: 'row',
-    gap: 10,
+    paddingHorizontal: 8,
+    paddingVertical: 10,
+    marginTop: -12,
+    width: '100%',
+    backgroundColor: 'white',
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   adButtonsContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     gap: 10,
+    height: 36
   },
 });
 

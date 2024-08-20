@@ -135,6 +135,11 @@ const ProfileScreen = () => {
       {userData ?
         <>
           <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <Text style={styles.addButtonText}>Мои объявления</Text>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>0</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
             <Text style={styles.addButtonText}>Добавить объявление</Text>
             <Image source={profile_plus} style={{ width: 18, height: 18 }} />
           </TouchableOpacity>
@@ -240,6 +245,10 @@ const ProfileScreen = () => {
         </>
         : null
       }
+
+
+      {/* !!!!!!!!!!!!!!!!!!!!!ADSENSES */}
+
 
       {adsenses.length ?
         <ProfileAdsenses adsenses={adsenses} userData={userData} refreshAdsenses={refreshAdsenses} />

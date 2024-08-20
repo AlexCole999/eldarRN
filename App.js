@@ -149,14 +149,17 @@ const Tabs = () => {
         component={ProfileScreen}
         options={{
           headerStyle: {
-            backgroundColor: 'rgba(0, 148, 255,1)', // Change this to your desired color
-            borderBottomEndRadius: 15,
-            borderBottomStartRadius: 15
+            backgroundColor: 'rgba(0, 148, 255,0.9)', // Change this to your desired color
+            borderBottomEndRadius: 24,
+            borderBottomStartRadius: 24,
+            height: 102
           },
           headerTintColor: '#fff', // Color of the header text and icons
           headerTitleStyle: {
-            fontWeight: 'bold',
+            fontFamily: 'Manrope_600SemiBold',
+            fontSize: 24
           },
+          headerTitleAlign: 'center'
         }}
       />
     </Tab.Navigator>

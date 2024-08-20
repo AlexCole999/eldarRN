@@ -7,6 +7,18 @@ import { useNavigation } from '@react-navigation/native';
 import ProfileAdsenses from '../innerCoponents/Profile_adsenses';
 import ProfileRegistration from '../innerCoponents/Profile_registration';
 
+import profile_arrow from '../assets/profile_arrow.png'
+import profile_balance from '../assets/profile_balance.png'
+import profile_bonuses from '../assets/profile_bonuses.png'
+import profile_calendar from '../assets/profile_calendar.png'
+import profile_language from '../assets/profile_language.png'
+import profile_pencil from '../assets/profile_pencil.png'
+import profile_percent from '../assets/profile_percent.png'
+import profile_plus from '../assets/profile_plus.png'
+import profile_ring from '../assets/profile_ring.png'
+import profile_sendapp from '../assets/profile_sendapp.png'
+import profile_support from '../assets/profile_support.png'
+
 const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
   const [name, setName] = useState('');
@@ -104,10 +116,15 @@ const ProfileScreen = () => {
         ?
         (
           <View style={styles.userContainer}>
-            <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
-            <View>
-              <Text style={styles.userName}>{userData?.name}</Text>
-              <Text style={styles.userPhone}>+{userData?.phone}</Text>
+            <View style={{ flexDirection: 'row', gap: 8 }}>
+              <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
+              <View>
+                <Text style={styles.userName}>{userData?.name}</Text>
+                <Text style={styles.userPhone}>+ {userData?.phone}</Text>
+              </View>
+            </View>
+            <View style={{ paddingBottom: 20 }}>
+              <Image source={profile_pencil} style={{ width: 24, height: 24 }} />
             </View>
           </View>
         )
@@ -119,9 +136,81 @@ const ProfileScreen = () => {
         <>
           <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
             <Text style={styles.addButtonText}>Добавить объявление</Text>
+            <Image source={profile_plus} style={{ width: 18, height: 18 }} />
           </TouchableOpacity>
 
-          <View style={styles.sectionContainer}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <Text style={styles.addButtonText}>Платные услуги</Text>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_bonuses} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Бонусы</Text>
+            </View>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
+              <Image source={profile_balance} style={{ width: 22, height: 19 }} />
+              <Text style={styles.addButtonText}>Баланс</Text>
+            </View>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_percent} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Скидки</Text>
+            </View>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_calendar} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Бронь</Text>
+            </View>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_ring} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Уведомления</Text>
+            </View>
+            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_sendapp} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Поделиться приложением</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_language} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Язык приложения</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_support} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>Служба поддержки</Text>
+            </View>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+            <Text style={styles.addButtonText}>Версия приложения</Text>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>1.0.0</Text>
+          </TouchableOpacity>
+
+          {/* <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle} onPress={() => { Alert.alert('Бронь зарегистрирована', 'Успешно забронировано'); }}>Бонусы</Text>
             <Text style={styles.sectionItem}>Баланс</Text>
             <Text style={styles.sectionItem}>Скидки</Text>
@@ -137,9 +226,9 @@ const ProfileScreen = () => {
               </View>
             </TouchableOpacity>
             <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
-          </View>
+          </View> */}
 
-          <View style={styles.sectionContainer}>
+          {/* <View style={styles.sectionContainer}>
             <Text style={styles.sectionTitle}>Поделиться приложением</Text>
             <Text style={styles.sectionItem}>Язык приложения</Text>
             <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
@@ -147,7 +236,7 @@ const ProfileScreen = () => {
 
           <View style={styles.sectionContainer}>
             <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
-          </View>
+          </View> */}
         </>
         : null
       }
@@ -157,12 +246,12 @@ const ProfileScreen = () => {
         : null
       }
 
-      {userData ?
+      {/* {userData ?
         <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={profileQuit}>
           <Text style={styles.buttonText}>Выйти из профиля</Text>
         </TouchableOpacity>
         : null
-      }
+      } */}
     </ScrollView>
   );
 };
@@ -170,9 +259,9 @@ const ProfileScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#f3f2f8',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
+    backgroundColor: '#F5FFFF',
+    paddingHorizontal: 24,
+    paddingVertical: 24,
   },
   title: {
     fontSize: 24,
@@ -210,22 +299,26 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   addButton: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     backgroundColor: 'white',
-    marginTop: 20,
-    paddingVertical: 10,
-    paddingLeft: 14,
-    borderRadius: 10,
+    marginTop: 24,
+    padding: 8,
+    borderRadius: 12,
+    elevation: 3
   },
   addButtonText: {
-    fontWeight: '500',
+    fontFamily: 'Manrope_500Medium',
     fontSize: 16,
+    color: '#333333'
   },
   sectionContainer: {
     backgroundColor: 'white',
     marginTop: 20,
     paddingVertical: 10,
     paddingLeft: 14,
-    borderRadius: 10,
+    borderRadius: 10
   },
   sectionTitle: {
     borderBottomColor: '#ececec',
@@ -249,29 +342,30 @@ const styles = StyleSheet.create({
   },
   userContainer: {
     backgroundColor: 'white',
-    padding: 7,
-    borderRadius: 10,
+    padding: 8,
+    borderRadius: 12,
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     gap: 5,
+    elevation: 4
   },
   userImage: {
-    width: 70,
-    height: 70,
+    width: 44,
+    height: 44,
   },
   userName: {
     textTransform: 'capitalize',
     fontWeight: '700',
     letterSpacing: 0.2,
-    fontFamily: 'Roboto',
+    fontFamily: 'Manrope_600SemiBold',
     fontSize: 16,
   },
   userPhone: {
-    color: 'grey',
     letterSpacing: 0.2,
-    fontFamily: 'Roboto',
-    fontSize: 14,
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 16,
   },
   adContainer: {
     padding: 10,

@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     paddingRight: 22,
     paddingBottom: 40,
     paddingLeft: 26,
-    backgroundColor: 'white',
+    backgroundColor: '#F5FFFF',
   },
   headerText: {
     textAlign: 'left',
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     columnGap: 6,
   },
   timeButton: {
-    paddingHorizontal: 8,
+    paddingHorizontal: 6,
     paddingVertical: 10,
     backgroundColor: 'white',
     borderRadius: 12,

@@ -1,41 +1,30 @@
 import React from 'react';
 import { Text, View, Image } from 'react-native';
 import localhosturl from '../localhoststring';
-
+import starFill from '../assets/starFill.png'
+import starNull from '../assets/starNull.png'
 
 const Star = ({ filled, size }) => (
-  <View>{
-    filled
-      ?
-      < Image source={{ uri: `${localhosturl}/others/star.png` }}
-        style={{ width: size, height: size }}
-      />
-      : < Image source={{ uri: `${localhosturl}/others/starnull.png` }}
-        style={{ width: size, height: size }}
-      />
-  }</View>
-);
-
-const HalfStar = ({ size }) => (
-  <Image
-    source={{ uri: `${localhosturl}/others/starHalf.png` }}
-    style={{ width: size, height: size }}
-  />
+  <View>
+    {filled ? (
+      <Image source={starFill} style={{ width: size, height: size }} />
+    ) : (
+      <Image source={starNull} style={{ width: size, height: size }} />
+    )}
+  </View>
 );
 
 const StarRating = ({ rating, size }) => {
-  const filledStars = Math.floor(rating);
-  const hasHalfStar = rating % 1 !== 0;
-  const remainingStars = 5 - filledStars - (hasHalfStar ? 1 : 0);
+  const roundedRating = Math.ceil(rating); // Округляем рейтинг в большую сторону
+  const remainingStars = 5 - roundedRating;
 
   return (
-    <View style={{ flexDirection: 'row' }}>
-      {[...Array(filledStars)].map((_, index) => (
+    <View style={{ flexDirection: 'row', gap: 2 }}>
+      {[...Array(roundedRating)].map((_, index) => (
         <Star key={index} size={size} filled />
       ))}
-      {hasHalfStar && <HalfStar size={size} />}
       {[...Array(remainingStars)].map((_, index) => (
-        <Star key={index + filledStars + (hasHalfStar ? 1 : 0)} filled={false} size={size} />
+        <Star key={index + roundedRating} filled={false} size={size} />
       ))}
     </View>
   );

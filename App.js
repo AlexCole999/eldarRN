@@ -53,6 +53,11 @@ import MyOrdersScreen from './screens/MyOrdersScreen';
 import { Provider } from 'react-redux';
 import store from './storage/store'
 import FiltersScreen from './screens/FiltersScreen';
+import BonusesScreen from './screens/BonusesScreen';
+import BalanceScreen from './screens/BalanceScreen';
+import ActionsScreen from './screens/ActionsScreen';
+import NotificationScreen from './screens/NotificationScreen';
+
 
 
 const Stack = createStackNavigator();
@@ -209,7 +214,6 @@ export default function App() {
           screenOptions={{
             headerStyle: {
               backgroundColor: 'rgba(0, 148, 255, 0.9)',
-              opacity: 0.9,
               height: 100,
               borderBottomLeftRadius: 24,
               borderBottomRightRadius: 24
@@ -230,7 +234,7 @@ export default function App() {
             options={{
               headerTitle: () => (
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ textAlign: 'center', fontSize: 22, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold' }}>
+                  <Text style={{ textAlign: 'center', fontSize: 22, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold', letterSpacing: 1 }}>
                     Детали{'\n'}объявления
                   </Text>
                 </View>
@@ -241,6 +245,7 @@ export default function App() {
               },
               headerTintColor: 'white', // Цвет текста и иконок заголовка
               headerTitleAlign: 'center', // Выравнивание заголовка по центру
+              headerShadowVisible: false
             }}
             name="Детали объявления" component={AdDetailsScreen} />
           <Stack.Screen name="Оставить отзыв" component={TestimonialScreen}
@@ -259,8 +264,12 @@ export default function App() {
           // }}
           />
           <Stack.Screen name="Забронировать" component={OrderScreen} />
-          <Stack.Screen name="Мои брони" component={MyOrdersScreen} />
+          <Stack.Screen name="Бронь" component={MyOrdersScreen} />
           <Stack.Screen name="Фильтр" component={FiltersScreen} />
+          <Stack.Screen name="Бонусы" component={BonusesScreen} />
+          <Stack.Screen name="Баланс" component={BalanceScreen} />
+          <Stack.Screen name="Скидки" component={ActionsScreen} />
+          <Stack.Screen name="Уведомления" component={NotificationScreen} />
         </Stack.Navigator>
       </NavigationContainer>
 

@@ -6,7 +6,11 @@ import StarRating from './../innerCoponents/StarRating';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 
-
+import addetails_message from '../assets/addetails_message.png'
+import addetails_phone from '../assets/addetails_phone.png'
+import time from '../assets/time.png'
+import profile_adsenses_place from '../assets/profile_adsenses_place.png'
+import user from '../assets/user.png'
 
 const AdDetailsScreen = ({ route }) => {
   const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
@@ -35,168 +39,168 @@ const AdDetailsScreen = ({ route }) => {
   };
 
   return (
-    <ScrollView>
-      <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 180, borderRadius: 0 }} />
-      <View style={styles.container}>
-        <View>
-          <View >
-            <View style={{ display: 'flex', flexDirection: 'row', gap: 10, alignItems: 'center', justifyContent: 'space-between' }}>
+    <ScrollView style={{ backgroundColor: '#F5FFFF' }}>
 
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate('Забронировать', {
-                    adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours
-                  })
-                }}
-              >
-                <LinearGradient
-                  colors={['rgb(0, 110, 204)', 'rgb(80, 130, 200)']}
-                  start={[0, 0]}
-                  end={[1, 0]}
-                  style={{ elevation: 4, borderWidth: 1, borderColor: 'lightblue', height: 40, display: 'flex', justifyContent: 'center', paddingVertical: 5, paddingHorizontal: 35, borderRadius: 50 }}>
-                  <Text style={{ color: 'white', fontWeight: 700, fontSize: 12 }} >Записаться</Text>
-                </LinearGradient>
-              </TouchableOpacity>
+      <View style={{ padding: 24, paddingTop: 0, backgroundColor: 'rgba(0, 148, 255, 0.9)', borderBottomLeftRadius: 24, borderBottomRightRadius: 24 }}>
+        <Image source={{ uri: `${localhosturl}/${adUser}/${adImagesList[0]}` }} style={{ width: '100%', height: 134, borderRadius: 12 }} />
+      </View>
 
-              <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 15 }}>
+      <View style={{ marginHorizontal: 24, marginTop: 16, backgroundColor: 'white', padding: 8, borderRadius: 12, elevation: 4 }}>
 
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16 }}>{adCategory}</Text>
+        </View>
 
+        <View style={{ flexDirection: 'row', marginTop: 12, gap: 4, alignItems: 'center' }}>
+          <Image source={profile_adsenses_place} style={{ width: 16, height: 16, fontFamily: 'Manrope_400Regular', fontSize: 14 }} />
+          <Text style={{ fontFamily: 'Manrope_500Medium', fontSize: 14 }}>{adCity}, {adAddress}</Text>
+        </View>
 
-                <TouchableOpacity onPress={() => { Linking.openURL(`tel:${'+' + adPhone}`); }}>
-                  <Image
-                    source={{ uri: `${localhosturl}/userIcons/userMail4.png` }}
-                    style={{ width: 45, height: 45 }}
+        <View style={{ flexDirection: 'row', marginTop: 6, gap: 4, alignItems: 'center' }}>
+          <Image source={time} style={{ width: 16, height: 16 }} />
+          <Text style={{ fontFamily: 'Manrope_500Medium', fontSize: 14 }}>{adWorkhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
+        </View>
 
-                  />
-                </TouchableOpacity>
+      </View>
 
-                <TouchableOpacity onPress={handleCall}>
-                  <Image
-                    source={{ uri: `${localhosturl}/userIcons/userPhone8.png` }}
-                    style={{ width: 50, height: 50 }}
+      <View style={{ marginHorizontal: 24, marginTop: 24, flexDirection: 'row', gap: 12 }}>
 
-                  />
-                </TouchableOpacity>
+        <View style={{ backgroundColor: 'white', borderRadius: 12, gap: 23, paddingVertical: 6, paddingLeft: 13, paddingRight: 8, flexDirection: 'row', justifyContent: 'space-between', elevation: 4 }}>
+          <TouchableOpacity onPress={handleCall}>
+            <Image
+              source={addetails_message}
+              style={{ width: 24, height: 24 }}
+
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={handleCall}>
+            <Image
+              source={addetails_phone}
+              style={{ width: 25, height: 24 }}
+
+            />
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity
+          style={{ backgroundColor: '#0094FF', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
+          onPress={() => { navigation.navigate('Забронировать', { adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours }) }}
+        >
+          <Text style={{ color: 'white' }}>Забронировать</Text>
+        </TouchableOpacity>
+
+      </View>
+
+      <View style={{ marginHorizontal: 24, marginTop: 24, gap: 8 }}>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Описание</Text>
+        <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 4, minHeight: 92 }}>
+          <Text style={{ color: '#C4C4C4', paddingVertical: 10, paddingHorizontal: 8 }}>{adDescription}</Text>
+        </View>
+      </View>
+
+      <View style={{ marginHorizontal: 24, marginTop: 24, gap: 12 }}>
+        <View style={{ flexDirection: 'row' }}>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Услуги</Text>
+          <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 16, color: 'rgb(123, 126, 127)', paddingTop: 2 }}> ({adServiceParams.length})</Text>
+        </View>
+
+        {adServiceParams.map((x, i) =>
+          <View key={i} style={{ elevation: 4, paddingVertical: 10, paddingHorizontal: 8, borderColor: 'lightgrey', display: 'flex', justifyContent: 'space-between', flexDirection: 'row', backgroundColor: 'white', borderRadius: 12 }}>
+
+            <Text style={{ color: '#333333', fontFamily: 'Montserrat_400Regular', fontSize: 14 }}>
+              {x?.fiat} {x.price.toLocaleString('ru-RU')}
+            </Text>
+
+            <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
+              <Image source={time} style={{ width: 16, height: 16 }}
+              />
+              <View style={{ flexDirection: 'row' }}>
+                <Text style={{ paddingLeft: 4, color: '#333333', fontFamily: 'Montserrat_400Regular', fontSize: 14 }}>
+                  Часов:
+                </Text>
+                <Text style={{ paddingLeft: 4, color: '#333333', fontFamily: 'Montserrat_500Medium', fontSize: 14 }}>
+                  {x.hours}
+                </Text>
 
               </View>
-
-
-
             </View>
+
           </View>
-        </View>
+        )}
+      </View>
 
+      <View style={{ marginLeft: 24, marginTop: 24 }}>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Фотографии</Text>
+        <FlatList
+          style={{ paddingTop: 28, paddingBottom: 35, borderRadius: 12, width: '100%' }}
+          data={adImagesList}
+          keyExtractor={(item, index) => index.toString()}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              style={{ paddingRight: 8, elevation: 4 }}
+              onPress={() => console.log(`${localhosturl}/${adUser}/${item}`)}>
+              <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 138, height: 73, borderRadius: 12 }} />
+            </TouchableOpacity>
+          )}
+        />
+      </View>
 
+      <View style={{ paddingHorizontal: 24, paddingTop: 12, gap: 12, marginBottom: 24, backgroundColor: 'white' }}>
 
-        <Text style={{ marginTop: 10, fontWeight: 700, fontSize: 16 }}>{adCity}, {adDistrict}</Text>
-        <Text style={{ fontWeight: 700, fontSize: 14 }}>{adAddress}</Text>
-        <Text style={{ marginTop: 2, color: 'grey', fontSize: 12 }}>{adWorkhours}</Text>
-        <Text style={{ marginTop: 7, fontSize: 14, fontStyle: 'italic' }}>{adCategory}</Text>
-        <View style={{ width: '100%', marginVertical: 10 }}>
-          <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Описание</Text>
-          <View style={{ paddingHorizontal: 20, paddingVertical: 10, backgroundColor: 'white', borderRadius: 10, elevation: 4 }}>
-            <Text style={{ color: 'grey' }}>{adDescription}</Text>
-          </View>
-        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
 
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Отзывы</Text>
 
-        <View style={{ width: '100%', marginVertical: 10 }}>
-          <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Услуги</Text>
-          <View style={{ borderRadius: 10, backgroundColor: 'white', elevation: 4 }}>
-            {adServiceParams.map((x, i) =>
-              <View key={i} style={{ paddingVertical: 10, paddingHorizontal: 20, borderBottomWidth: adServiceParams.length - 1 == i ? 0 : 1, borderColor: 'lightgrey', display: 'flex', justifyContent: 'space-between', flexDirection: 'row' }}>
-                <View style={{ display: 'flex', alignItems: 'center', flexDirection: 'row' }}>
-                  <Image
-                    source={{ uri: `${localhosturl}/userIcons/serviceTimeIcon.png` }}
-                    style={{ width: 20, height: 20 }}
-
-                  />
-                  <Text style={{ paddingLeft: 10 }}>Часов:{x.hours}</Text>
-                </View>
-                <Text style={{ fontStyle: 'italic', color: 'grey' }}>{x.price} {x?.fiat}</Text>
-              </View>
-            )}
-          </View>
-        </View>
-
-        <View style={{ width: '100%', marginVertical: 10 }}>
-          <Text style={{ fontWeight: 700, marginBottom: 10, fontSize: 16 }}>Фотографии</Text>
-          <FlatList
-            style={{ paddingHorizontal: 20, paddingVertical: 20, backgroundColor: 'white', borderRadius: 10, width: '100%' }}
-            data={adImagesList}
-            keyExtractor={(item, index) => index.toString()}
-            horizontal
-            renderItem={({ item }) => (
-              <TouchableOpacity
-                style={{ paddingRight: 40 }}
-                onPress={() => console.log(`${localhosturl}/${adUser}/${item}`)}>
-                <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 160, height: 160, borderRadius: 10 }} />
-              </TouchableOpacity>
-            )}
-          />
-
-        </View>
-
-
-        <View style={{ width: '100%', marginVertical: 10 }}>
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-            <Text style={{ fontWeight: 700, fontSize: 16 }}>Отзывы</Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
-              <Text style={{ fontSize: 12, fontStyle: 'italic' }}>Рейтинг: </Text>
-              <StarRating rating={averageRating} size={10} />
-              <Text style={{ fontSize: 8, fontStyle: 'italic' }}>{averageRating.toFixed(2)}</Text>
+          <View style={{ alignItems: 'center', gap: 4 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <Text style={{ color: '#333333', fontSize: 14, fontFamily: 'Montserrat_400Regular' }}>Рейтинг </Text>
+              <Text style={{ color: '#F3CB2B', fontSize: 14, fontFamily: 'Montserrat_600SemiBold' }}>{averageRating.toFixed(1).toString()}</Text>
             </View>
+            <StarRating rating={averageRating} size={12} />
           </View>
-          <View style={{ paddingHorizontal: 10, paddingVertical: 15, backgroundColor: 'white', borderRadius: 10, minHeight: 150 }}>
-            {adTestimonials.length
+
+        </View>
+
+        <View style={{ borderRadius: 10, minHeight: 102 }}>
+
+          {
+            adTestimonials.length
               ?
               <FlatList
-                style={{ backgroundColor: 'white', borderRadius: 10, width: '100%' }}
+                style={{ width: '100%' }}
                 data={adTestimonials}
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 renderItem={({ item }) => (
-                  <TouchableOpacity
-                    style={{ padding: 10, borderRadius: 10, marginHorizontal: 10, paddingHorizontal: 20, minWidth: 160, maxWidth: 240, backgroundColor: '#f3f2f8', justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <View style={{ alignItems: 'center', paddingBottom: 10 }}>
-                      <StarRating rating={item.rating} size={35} />
-                      <Text style={{ color: 'grey', fontSize: 12, fontStyle: 'italic', textAlign: 'center', paddingTop: 4 }}>{item.text}</Text>
-                    </View>
-                  </TouchableOpacity>
+                  <View style={{}}>
+                    <TouchableOpacity style={{ padding: 6, paddingRight: 7, borderRadius: 8, backgroundColor: '#DCF1FF', width: 220, marginRight: 8, elevation: 2, minHeight: 98 }}>
+
+                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                          <Image source={user} style={{ width: 32, height: 32 }} />
+                          <Text style={{ color: '#333333', fontFamily: 'Manrope_300Light', fontSize: 8 }}>Пользователь</Text>
+                        </View>
+
+                        <StarRating rating={item.rating} size={12} />
+
+                      </View>
+                      <Text style={{ color: '#333333', fontSize: 12, paddingTop: 4 }}>{item.text}</Text>
+                    </TouchableOpacity>
+                  </View>
                 )}
               />
-              : <Text style={{ color: 'grey', fontWeight: 600 }}>У этого объявления пока нет отзывов</Text>}
-          </View>
+              : <Text style={{ color: 'grey', fontWeight: 600 }}>У этого объявления пока нет отзывов</Text>
+          }
+
         </View>
 
-
-
-        <TouchableOpacity onPress={() => {
-          navigation.navigate('Оставить отзыв', {
-            adId: adId
-          })
-        }}>
-          <Text style={{ color: 'rgb(0, 191, 255)', textAlign: 'right' }}>Оставить отзыв</Text>
-        </TouchableOpacity>
-
-
-
         <TouchableOpacity
-          style={{
-            marginVertical: 10,
-            backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
-            padding: 10, // отступы
-            borderRadius: 10, // радиус закругления углов
-            alignItems: 'center', // центрирование по горизонтали
-          }}
-          onPress={() => {
-            navigation.navigate('Забронировать', {
-              adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours
-            })
-          }}
-        >
-          <Text style={{ color: 'white', textTransform: 'uppercase', fontWeight: 600 }}>Забронировать</Text>
+          onPress={() => { navigation.navigate('Оставить отзыв', { adId: adId }) }}
+          style={{ marginTop: 10, marginBottom: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(0, 148, 255,0.9)', padding: 8, borderRadius: 12 }}>
+          <Text style={{ color: 'rgba(0, 148, 255,0.9)', fontFamily: 'Manrope_700Bold', fontSize: 16 }}>Оставить отзыв</Text>
         </TouchableOpacity>
 
       </View>
@@ -210,10 +214,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: '',
-    backgroundColor: 'white',
-    paddingHorizontal: 20,
-    marginTop: 10,
-    marginBottom: 20
+    backgroundColor: 'white'
   },
 })
 

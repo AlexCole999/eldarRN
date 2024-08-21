@@ -149,7 +149,7 @@ const ProfileScreen = () => {
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Бонусы') }}>
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_bonuses} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Бонусы</Text>
@@ -157,7 +157,7 @@ const ProfileScreen = () => {
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Баланс') }}>
             <View style={{ flexDirection: 'row', gap: 2, alignItems: 'center' }}>
               <Image source={profile_balance} style={{ width: 22, height: 19 }} />
               <Text style={styles.addButtonText}>Баланс</Text>
@@ -165,7 +165,7 @@ const ProfileScreen = () => {
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Скидки') }}>
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_percent} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Скидки</Text>
@@ -173,44 +173,46 @@ const ProfileScreen = () => {
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate("Бронь", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses }) }}>
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_calendar} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Бронь</Text>
             </View>
-            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+            <View style={{ backgroundColor: 'rgb(0, 148, 255)', paddingHorizontal: 12, paddingVertical: 2, borderRadius: 6 }}>
+              <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>{newOrdersCount}</Text>
+            </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Уведомления') }}>
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_ring} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Уведомления</Text>
             </View>
-            <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>0</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} >
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_sendapp} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Поделиться приложением</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} >
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_language} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Язык приложения</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} >
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_support} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>Служба поддержки</Text>
             </View>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} >
             <Text style={styles.addButtonText}>Версия приложения</Text>
             <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>1.0.0</Text>
           </TouchableOpacity>

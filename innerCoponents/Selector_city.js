@@ -1,103 +1,125 @@
-import React from 'react';
-import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, Image } from 'react-native';
+import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
 
 const SelectorCity = ({ city, setCity }) => {
-  console.log(city)
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const cities = [
+    "Ташкент", "Ташкентская обл", "Самарканд", "Наманган", "Андижан", "Фергана", "Бухара",
+    "Хива", "Ургенч", "Нукус", "Карши", "Гулистан", "Джизак", "Термез", "Шахрисабз", "Сырдарья"
+  ];
+
+  const handleCitySelection = (selectedCity) => {
+    setCity(selectedCity);
+    setModalVisible(false);
+  };
+
   return (
-    <View style={{
-      marginBottom: 10, overflow: 'hidden', borderRadius: 10
-    }}>
-      <Picker
-        selectedValue={city}
-        onValueChange={(value) => setCity(value)}
-        style={pickerSelectStyles.picker}
+    <View style={{ marginTop: 12 }}>
+      <Text style={styles.label}>Город</Text>
+
+      <TouchableOpacity
+        style={styles.openButton}
+        onPress={() => setModalVisible(true)}
       >
-        <Picker.Item label="Выберите город" value={null} />
-        <Picker.Item label="Ташкент" value="Ташкент" />
-        <Picker.Item label="Ташкентская обл" value="Ташкентская обл" />
-        <Picker.Item label="Самарканд" value="Самарканд" />
-        <Picker.Item label="Наманган" value="Наманган" />
-        <Picker.Item label="Андижан" value="Андижан" />
-        <Picker.Item label="Фергана" value="Фергана" />
-        <Picker.Item label="Бухара" value="Бухара" />
-        <Picker.Item label="Хива" value="Хива" />
-        <Picker.Item label="Ургенч" value="Ургенч" />
-        <Picker.Item label="Нукус" value="Нукус" />
-        <Picker.Item label="Карши" value="Карши" />
-        <Picker.Item label="Гулистан" value="Гулистан" />
-        <Picker.Item label="Джизак" value="Джизак" />
-        <Picker.Item label="Термез" value="Термез" />
-        <Picker.Item label="Шахрисабз" value="Шахрисабз" />
-        <Picker.Item label="Сырдарья" value="Сырдарья" />
-        {/* Добавьте больше городов по мере необходимости */}
-      </Picker>
+        <Text style={{ ...styles.openButtonText, color: city ? '#333333' : '#C4C4C4' }}>
+          {city || 'Выберите город'}
+        </Text>
+        <Image source={arrow_down} style={styles.arrowIcon} />
+      </TouchableOpacity>
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+              {cities.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.cityButton}
+                  onPress={() => handleCitySelection(item)}
+                >
+                  <Text style={styles.cityText}>{item}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Закрыть</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 };
 
-const pickerSelectStyles = StyleSheet.create({
-  picker: {
-    height: 50,
-    width: '100%',
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5, // Радиус закругления углов
-    backgroundColor: 'white'
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 16,
+    color: '#333333',
+  },
+  openButton: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12,
+  },
+  openButtonText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  scrollViewContent: {
+    paddingBottom: 20,
+  },
+  cityButton: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  cityText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  closeButton: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.3)',
   },
 });
 
 export default SelectorCity;
-
-// import React from 'react';
-// import { View, StyleSheet, Text } from 'react-native';
-// import { Picker } from '@react-native-picker/picker';
-// import { BoxShadow } from 'react-native-shadow';
-
-// const SelectorCity = ({ city, setCity }) => {
-//   console.log(city);
-
-//   // Настройка параметров тени
-//   const shadowOpt = {
-//     width: 300, // Ширина контейнера
-//     height: 50, // Высота контейнера
-//     color: '#0A309B', // Цвет тени
-//     border: 2, // Распространение тени (аналог spread в CSS)
-//     radius: 12, // Закругление углов
-//     opacity: 0.16, // Непрозрачность тени (16%)
-//     x: 0, // Смещение по оси X
-//     y: 2, // Смещение по оси Y
-//     style: { marginBottom: 10 },
-//   };
-
-//   return (
-//     <BoxShadow setting={shadowOpt}>
-//       <View style={styles.container}>
-//         <Text>123</Text>
-//       </View>
-//     </BoxShadow>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: {
-//     marginHorizontal: 0,
-//     width: 300,
-//     height: 50,
-//     borderRadius: 12, // Закругление углов
-//     backgroundColor: 'white', // Белый фон, чтобы тень была видна
-//   },
-// });
-
-// const pickerSelectStyles = StyleSheet.create({
-//   picker: {
-//     height: 50,
-//     width: 300,
-//     borderColor: 'gray',
-//     borderRadius: 12, // Закругление углов
-//     backgroundColor: 'white',
-//   },
-// });
-
-// export default SelectorCity;

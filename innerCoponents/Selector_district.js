@@ -1,45 +1,130 @@
-import React from 'react';
-import { View, TextInput, ScrollView, Button, StyleSheet, Text } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, Image } from 'react-native';
+import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
 
 const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const districts = [
+    "Алмазарский", "Бектемирский", "Мирабадский", "Мирзо-Улугбекский",
+    "Сергелийский", "Учтепинский", "Чиланзарский", "Шайхантахурский",
+    "Юнусабадский", "Яккасарайский"
+  ];
+
+  const handleDistrictSelection = (selectedDistrict) => {
+    setCityDistrict(selectedDistrict);
+    setModalVisible(false);
+  };
+
   return (
-    city == 'Ташкент' ? <View style={{
-      marginBottom: 10, overflow: 'hidden', borderRadius: 10
-    }}>
-      <Picker
-        selectedValue={cityDistrict}
-        onValueChange={(value) => setCityDistrict(value)}
-        style={pickerSelectStyles.picker}
-      >
-        <Picker.Item label="Выберите район" value={null} />
-        <Picker.Item label="Алмазарский" value="Алмазарский" />
-        <Picker.Item label="Бектемирский" value="Бектемирский" />
-        <Picker.Item label="Мирабадский" value="Мирабадский" />
-        <Picker.Item label="Мирзо-Улугбекский" value="Мирзо-Улугбекский" />
-        <Picker.Item label="Сергелийский" value="Сергелийский" />
-        <Picker.Item label="Учтепинский" value="Учтепинский" />
-        <Picker.Item label="Чиланзарский" value="Чиланзарский" />
-        <Picker.Item label="Шайхантахурский" value="Шайхантахурский" />
-        <Picker.Item label="Юнусабадский" value="Юнусабадский" />
-        <Picker.Item label="Яккасарайский" value="Яккасарайский" />
-        {/* Добавьте больше районов по мере необходимости */}
-      </Picker>
+    <View>
+      {city === 'Ташкент' && (
+        <>
+          <Text style={styles.label}>Район</Text>
+
+          <TouchableOpacity
+            style={styles.openButton}
+            onPress={() => setModalVisible(true)}
+          >
+            <Text style={{ ...styles.openButtonText, color: cityDistrict ? '#333333' : '#C4C4C4' }}>
+              {cityDistrict || 'Выберите район'}
+            </Text>
+            <Image source={arrow_down} style={styles.arrowIcon} />
+          </TouchableOpacity>
+
+          <Modal
+            visible={modalVisible}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                  {districts.map((item, index) => (
+                    <TouchableOpacity
+                      key={index}
+                      style={styles.districtButton}
+                      onPress={() => handleDistrictSelection(item)}
+                    >
+                      <Text style={styles.districtText}>{item}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setModalVisible(false)}
+                >
+                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+        </>
+      )}
     </View>
-      : null
   );
 };
 
-const pickerSelectStyles = StyleSheet.create({
-  picker: {
-    height: 50,
-    width: '100%',
+const styles = StyleSheet.create({
+  label: {
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 16,
+    color: '#333333',
+    marginTop: 12
+  },
+  openButton: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12,
+  },
+  openButtonText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  scrollViewContent: {
+    paddingBottom: 20,
+  },
+  districtButton: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  districtText: {
+    fontSize: 16,
     color: 'black',
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5, // Радиус закругления углов
-    backgroundColor: 'white'
+  },
+  closeButton: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.3)',
   },
 });
 

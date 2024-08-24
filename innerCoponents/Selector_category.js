@@ -87,8 +87,8 @@ const SelectorCategory = ({ category, setCategory }) => {
   };
 
   return (
-    <View>
-      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, marginHorizontal: 24, color: '#333333' }}>Специализация</Text>
+    <View >
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Специализация</Text>
 
       <TouchableOpacity
         style={styles.openButton}
@@ -102,7 +102,7 @@ const SelectorCategory = ({ category, setCategory }) => {
 
       {selectedCategory && (
         <View>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, marginHorizontal: 24, paddingTop: 12, color: '#333333' }}>Вид деятельности</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, paddingTop: 12, color: '#333333' }}>Вид деятельности</Text>
           <TouchableOpacity
             style={styles.openButton}
             onPress={() => setSubModalVisible(true)}
@@ -185,7 +185,6 @@ const styles = StyleSheet.create({
     elevation: 4,
     paddingVertical: 8,
     paddingHorizontal: 12,
-    marginHorizontal: 24,
     marginTop: 4,
     flexDirection: 'row',
     alignItems: 'center',

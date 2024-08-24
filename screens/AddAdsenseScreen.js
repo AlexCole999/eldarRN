@@ -115,17 +115,17 @@ const AddAdsenseScreen = () => {
 
   if (stage == 1) {
     return (
-      <View style={{ ...styles.container, paddingHorizontal: 0 }}>
+      <View style={{ ...styles.container, paddingHorizontal: 24 }}>
 
         <SelectorCategory category={category} setCategory={setCategory} />
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 24, marginBottom: 24, gap: 20 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, gap: 20 }}>
           <TouchableOpacity
             style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             onPress={() => setStage(stage => stage - 1)}
             disabled={true}
           >
-            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Montserrat_600SemiBold' }}>
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
               Отмена
             </Text>
           </TouchableOpacity>
@@ -134,7 +134,7 @@ const AddAdsenseScreen = () => {
             style={{ backgroundColor: !category ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             disabled={!category}
             onPress={() => setStage(stage => stage + 1)}        >
-            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Montserrat_600SemiBold' }}>
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
               Далее
             </Text>
           </TouchableOpacity>
@@ -146,46 +146,28 @@ const AddAdsenseScreen = () => {
 
   if (stage == 2) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Выберите город</Text>
-        <View style={{
-          marginBottom: 10, overflow: 'hidden', borderRadius: 10
-        }}>
+      <View style={{ ...styles.container, paddingHorizontal: 24 }}>
+
+        <View>
           <SelectorCity city={city} setCity={setCity} />
           <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
         </View>
 
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-            onPress={() => setStage(stage => stage - 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Назад
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: !(city && (city !== 'Ташкент' || cityDistrict)) ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
-            disabled={!(city && (city !== 'Ташкент' || cityDistrict))}
-            onPress={() => setStage(stage => stage + 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Дальше
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 24, marginBottom: 24, gap: 20 }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, gap: 20 }}>
           <TouchableOpacity
             style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             onPress={() => setStage(stage => stage - 1)}
           >
-            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Montserrat_600SemiBold' }}>
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
               Отмена
             </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={{ backgroundColor: !category ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
-            disabled={!category}
+            style={{ backgroundColor: !(city && (city !== 'Ташкент' || cityDistrict)) ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            disabled={!(city && (city !== 'Ташкент' || cityDistrict))}
             onPress={() => setStage(stage => stage + 1)}        >
-            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Montserrat_600SemiBold' }}>
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
               Далее
             </Text>
           </TouchableOpacity>
@@ -198,33 +180,66 @@ const AddAdsenseScreen = () => {
 
   if (stage == 3) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте информацию о работе</Text>
-        <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
+      <View style={{ ...styles.container, paddingHorizontal: 24 }}>
 
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ justifyContent: 'center', alignItems: 'center', paddingLeft: 10, borderTopLeftRadius: 10, color: 'black', borderBottomLeftRadius: 10, width: '10%', backgroundColor: 'white', marginBottom: 10, fontSize: 16 }} >
-            <Text style={{ color: 'grey', fontSize: 16 }}>+</Text>
+        <View>
+
+          <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
+
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
+
+          <View style={{ flexDirection: 'row', marginTop: 4 }}>
+
+            <View style={{ elevation: 4, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 10, color: 'black', borderBottomLeftRadius: 10, width: '10%', backgroundColor: 'white', marginBottom: 10, fontSize: 16 }} >
+              <Text style={{ color: 'grey', fontSize: 16, color: '#C4C4C4' }}>+</Text>
+            </View>
+
+            <TextInput
+              placeholderTextColor="#C4C4C4"
+              style={{
+                fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, flexGrow: 1, borderTopRightRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 12, marginBottom: 10, fontSize: 14
+              }}
+              placeholder="XXX XX XXX XX XX"
+              onChangeText={setPhone}
+              value={phone} />
+
           </View>
-          <TextInput style={{ flexGrow: 1, borderTopRightRadius: 10, borderBottomRightRadius: 10, backgroundColor: 'white', paddingHorizontal: 0, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
+
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Адрес*</Text>
+
+          <View style={{ marginTop: 4 }}>
+            <TextInput
+              placeholderTextColor="#C4C4C4"
+              style={{
+                fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+              }}
+              placeholder="Укажите адрес"
+              onChangeText={setAddress}
+              value={address} />
+          </View>
+
         </View>
 
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-            onPress={() => setStage(stage => stage - 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Назад
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, marginBottom: 24, gap: 20 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            onPress={() => setStage(stage => stage - 1)}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: !(phone && address && workhours) ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+
+          <TouchableOpacity
+            style={{ backgroundColor: !(phone && address && workhours) ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             disabled={!(phone && address && workhours)}
-            onPress={() => setStage(stage => stage + 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Дальше
+            onPress={() => setStage(stage => stage + 1)}        >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Далее
             </Text>
           </TouchableOpacity>
         </View>
+
       </View >
     )
   }
@@ -278,28 +293,54 @@ const AddAdsenseScreen = () => {
 
   if (stage == 6) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте описание</Text>
-        <TextInput
-          style={{
-            textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
-          }}
-          multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-            onPress={() => setStage(stage => stage - 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Назад
+      <View style={{ ...styles.container, paddingHorizontal: 24 }}>
+        <View>
+          <Text style={{ textAlign: 'start', marginBottom: 24, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
+            Описание
+          </Text>
+
+          <TextInput
+            style={{
+              textAlignVertical: 'top',
+              borderRadius: 12,
+              height: 140,
+              backgroundColor: 'white',
+              paddingHorizontal: 8,
+              paddingVertical: 10,
+              marginBottom: 10,
+              fontSize: 14,
+              fontFamily: 'Manrope_500Medium',
+              color: '#1C4C4C',
+              elevation: 4,
+            }}
+            multiline={true}
+            placeholder="Введите описание вашей услуги"
+            placeholderTextColor="#C4C4C4"
+            onChangeText={setDescription}
+            value={description}
+          />
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, marginBottom: 24, gap: 20 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            onPress={() => setStage(stage => stage - 1)}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: !description ? 'lightgreya' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+
+          <TouchableOpacity
+            style={{ backgroundColor: !description ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             disabled={!description}
-            onPress={() => setStage(stage => stage + 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Дальше
+            onPress={() => setStage(stage => stage + 1)}        >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Далее
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
     )
   }
@@ -311,8 +352,38 @@ const AddAdsenseScreen = () => {
         <SelectorCity city={city} setCity={setCity} />
         <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
         <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
+
+        <View style={{ flexDirection: 'row', marginTop: 4 }}>
+
+          <View style={{ elevation: 4, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 10, color: 'black', borderBottomLeftRadius: 10, width: '10%', backgroundColor: 'white', marginBottom: 10, fontSize: 16 }} >
+            <Text style={{ color: 'grey', fontSize: 16, color: '#C4C4C4' }}>+</Text>
+          </View>
+
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, flexGrow: 1, borderTopRightRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 12, marginBottom: 10, fontSize: 14
+            }}
+            placeholder="XXX XX XXX XX XX"
+            onChangeText={setPhone}
+            value={phone} />
+
+        </View>
+
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Адрес*</Text>
+
+        <View style={{ marginTop: 4 }}>
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+            }}
+            placeholder="Укажите адрес"
+            onChangeText={setAddress}
+            value={address} />
+        </View>
+
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
         <SelectorImages images={images} setImages={setImages} />
         <TouchableOpacity style={styles.sendButton} onPress={() => { submitAdsense(); console.log(city, cityDistrict) }}>

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
-import StarRating from './../innerCoponents/StarRating';
+import Catalog_star from '../assets/Catalog_star.png';
 import { useSelector } from 'react-redux';
 
 const AdsensesScreen = () => {
@@ -87,8 +87,27 @@ const AdsensesScreen = () => {
               source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
             />
             <View style={styles.textContainer}>
-              <Text style={styles.category}>{item.category}</Text>
+
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', minWidth: 36 }}>
+                <Text style={{ ...styles.category, minHeight: 34, maxWidth: '70%' }}>{item.category}</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'start', gap: 4 }}>
+                  <Image
+                    style={{ width: 12, height: 12, marginTop: 2 }}
+                    source={Catalog_star}
+                  />
+                  <Text style={{ color: '#747474', fontSize: 12, color: '#D3B331', fontFamily: 'Montserrat_600SemiBold' }}>
+                    {
+                      item.testimonials.length ?
+                        (item.testimonials.reduce((accumulator, review) => { return accumulator + review.rating; }, 0) / item.testimonials.length).toFixed(1)
+                        : '0.0'
+                    }
+                  </Text>
+                </View>
+              </View>
+
               <Text style={styles.city}>{item.city}</Text>
+              <Text style={{ ...styles.city, color: '#747474', marginTop: 2, fontFamily: 'Manrope_300Light', }}>{item.district}</Text>
+
               {/* <Text style={styles.address}>{item.address}</Text> */}
               {/* <View style={styles.ratingContainer}>
                 <StarRating
@@ -144,16 +163,20 @@ const AdsensesScreen = () => {
       borderRadius: 8
     },
     textContainer: {
-      padding: 10,
+      paddingHorizontal: 8,
+      paddingTop: 6,
+      paddingBottom: 6
     },
     category: {
-      fontWeight: '500',
-      fontSize: 14,
-      color: 'rgb(51,51,51)'
+      fontFamily: 'Manrope_600SemiBold',
+      fontSize: 12,
+      color: '#333333'
     },
     city: {
-      fontSize: 12,
-      color: 'grey',
+      marginTop: 4,
+      fontFamily: 'Manrope_500Medium',
+      fontSize: 10,
+      color: '#333333',
     },
     address: {
       fontSize: 12,
@@ -202,7 +225,7 @@ const AdsensesScreen = () => {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'white', paddingTop: 0, paddingLeft: 10 }}>
+    <View style={{ flex: 1, backgroundColor: '#F5FFFF', paddingTop: 0, paddingLeft: 10 }}>
       <View style={{ position: 'absolute', width: screenWidth, height: 24, backgroundColor: 'rgb(0, 148, 255)', borderBottomLeftRadius: 22, borderBottomRightRadius: 22, top: 0, left: 0, zIndex: -1 }} />
 
       <FlatList

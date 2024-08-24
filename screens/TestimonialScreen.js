@@ -59,7 +59,7 @@ const TestimonialScreen = ({ route }) => {
   }
 
   return (
-    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 24, paddingBottom: 40, backgroundColor: 'white' }}>
+    <ScrollView contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 24, paddingBottom: 40, backgroundColor: '#F5FFFF' }}>
       {!submitted && (
         <View style={{ height: '100%', justifyContent: 'space-between' }}>
 

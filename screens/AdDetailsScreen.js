@@ -12,7 +12,10 @@ import time from '../assets/time.png'
 import profile_adsenses_place from '../assets/profile_adsenses_place.png'
 import user from '../assets/user.png'
 
+
+
 const AdDetailsScreen = ({ route }) => {
+
   const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
@@ -86,7 +89,7 @@ const AdDetailsScreen = ({ route }) => {
           style={{ backgroundColor: '#0094FF', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
           onPress={() => { navigation.navigate('Забронировать', { adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours }) }}
         >
-          <Text style={{ color: 'white' }}>Забронировать</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold' }}>Забронировать</Text>
         </TouchableOpacity>
 
       </View>
@@ -129,20 +132,22 @@ const AdDetailsScreen = ({ route }) => {
         )}
       </View>
 
-      <View style={{ marginLeft: 24, marginTop: 24 }}>
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Фотографии</Text>
+      <View style={{ marginLeft: 20, marginTop: 24 }}>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)', marginLeft: 4 }}>Фотографии</Text>
         <FlatList
-          style={{ paddingTop: 28, paddingBottom: 35, borderRadius: 12, width: '100%' }}
+          style={{ paddingBottom: 0, borderRadius: 12, width: '100%' }}
           data={adImagesList}
           keyExtractor={(item, index) => index.toString()}
           horizontal
           showsHorizontalScrollIndicator={false}
           renderItem={({ item }) => (
-            <TouchableOpacity
-              style={{ paddingRight: 8, elevation: 4 }}
-              onPress={() => console.log(`${localhosturl}/${adUser}/${item}`)}>
-              <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 138, height: 73, borderRadius: 12 }} />
-            </TouchableOpacity>
+
+            <View style={{ paddingBottom: 35, paddingTop: 28, paddingLeft: 4, paddingRight: 4 }}>
+              <TouchableOpacity style={{ paddingRight: 7, borderRadius: 12, backgroundColor: '#DCF1FF', width: 138, elevation: 4, minHeight: 73 }}>
+                <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 138, height: 73, borderRadius: 12 }} />
+              </TouchableOpacity>
+            </View>
+
           )}
         />
       </View>

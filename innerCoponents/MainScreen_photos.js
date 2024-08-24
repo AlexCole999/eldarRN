@@ -26,21 +26,19 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
   const screenWidth = Dimensions.get('window').width;
 
   const renderItem = ({ item }) => (
-    <View style={{ gap: 10 }}>
-      <TouchableOpacity>
+    <View style={{ gap: 8, marginBottom: 40 }}>
+      <TouchableOpacity style={{ elevation: 4, backgroundColor: 'white', borderRadius: 12 }}>
         <Image
           source={{ uri: `${localhosturl}/${item[0]?.user}/${item[0]?.imagesList[0]}` }}
-          style={{ width: screenWidth * 0.43, height: 120, borderRadius: 5 }}
+          style={{ width: (screenWidth - 52) / 2, height: 137, borderRadius: 12 }}
           resizeMode='cover'
-          imageStyle={{ borderRadius: 5, width: 100, height: '100%' }}
         />
       </TouchableOpacity>
-      <TouchableOpacity>
+      <TouchableOpacity style={{ elevation: 4, backgroundColor: 'white', borderRadius: 12 }}>
         <Image
           source={{ uri: `${localhosturl}/${item[1]?.user}/${item[1]?.imagesList[0]}` }}
-          style={{ width: screenWidth * 0.43, height: 120, borderRadius: 5 }}
+          style={{ width: (screenWidth - 52) / 2, height: 137, borderRadius: 12 }}
           resizeMode='cover'
-          imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         />
       </TouchableOpacity >
     </View>
@@ -48,13 +46,13 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
   );
 
   return (
-    <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-      <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Примеры интерьеров</Text>
+    <View style={{ paddingLeft: 24, paddingRight: 15, paddingTop: 40 }}>
+      <Text style={{ fontSize: 24, paddingBottom: 10, fontFamily: 'Manrope_700Bold', color: '#333333' }}>Примеры интерьеров</Text>
 
-      <View style={{ gap: 10 }}>
+      <View style={{ gap: 8 }}>
 
         <FlatList
-          contentContainerStyle={{ gap: 10 }}
+          contentContainerStyle={{ gap: 8 }}
           data={data}
           renderItem={renderItem}
           keyExtractor={(item, index) => index.toString()}

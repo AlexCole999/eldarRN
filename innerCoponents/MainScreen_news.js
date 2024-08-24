@@ -12,9 +12,9 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
   const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
-    <View style={{ display: 'flex', rowGap: 10, marginRight: 10 }}>
+    <View style={{ display: 'flex', rowGap: 10, marginBottom: 40, marginLeft: 8, marginTop: 8, alignItems: 'flex-start' }}>
       <TouchableOpacity
-        style={{ gap: 10, flexDirection: 'row', backgroundColor: 'white', padding: 10, borderRadius: 10, width: screenWidth * 0.7 }}
+        style={{ gap: 6, flexDirection: 'column', backgroundColor: 'white', padding: 8, paddingBottom: 8, borderRadius: 12, width: screenWidth * 0.36, elevation: 4, minHeight: 124 }}
         // onPress={() => { console.log(item) }}
         onPress={() => navigation.navigate('Детали объявления', {
           adId: item._id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
@@ -22,14 +22,12 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
       >
         <Image
           source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
-          style={{ width: 90, height: 80, borderRadius: 5 }}
+          style={{ width: '100%', height: 68, borderRadius: 8 }}
           resizeMode='cover'
-          imageStyle={{ borderRadius: 5, width: '100%', height: '100%' }}
         >
         </Image>
-        <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'center', borderRadius: 5, gap: 10 }}>
-          <Text style={{ color: 'black', fontWeight: 700 }}>{item.category}</Text>
-          <Text style={{ color: 'grey', fontSize: 12 }}>{item.address}</Text>
+        <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'start', borderRadius: 5, gap: 10 }}>
+          <Text style={{ color: 'black', fontWeight: 600, fontSize: 14, fontFamily: 'Roboto_500Medium', letterSpacing: 0.2 }}>{item.category}</Text>
         </View>
       </TouchableOpacity >
 
@@ -37,8 +35,8 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
   );
 
   return (
-    <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-      <Text style={{ fontSize: 16, paddingBottom: 10, fontWeight: 700 }}>Недавние</Text>
+    <View style={{ marginLeft: 14 }}>
+      <Text style={{ fontSize: 24, fontFamily: 'Manrope_700Bold', color: '#333333', marginLeft: 10 }}>Недавно добавлены</Text>
       <FlatList
         data={newestAdsenses}
         renderItem={renderItem}

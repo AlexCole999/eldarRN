@@ -1,47 +1,237 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TouchableOpacity, Modal, StyleSheet, Image, ScrollView } from 'react-native';
+
+import arrow_down from '../assets/arrow_down.png';
 
 const SelectorCategory = ({ category, setCategory }) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [subModalVisible, setSubModalVisible] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+
+  const categories = [
+    {
+      name: 'Косметология',
+      icon: 'cosmetologyIcon.png',
+      subcategories: [
+        { name: 'Эстетическая косметология', icon: 'subcategory.png' },
+        { name: 'Аппаратная косметология', icon: 'subcategory.png' },
+        { name: 'Инъекционная косметология', icon: 'subcategory.png' },
+        { name: 'Депиляция, шугаринг', icon: 'subcategory.png' },
+        { name: 'Перманентный макияж', icon: 'subcategory.png' }
+      ]
+    },
+    { name: 'Лашмейкеры и Бровисты', icon: 'lashmaker.png' },
+    {
+      name: 'Стилисты',
+      icon: 'stylists.png',
+      subcategories: [
+        { name: 'Стилисты по волосам', icon: 'stylistHair.png' },
+        { name: 'Визаж', icon: 'visage.png' },
+        { name: 'Барбершоп', icon: 'barber1.png' }
+      ]
+    },
+    { name: 'Ногтевой сервис', icon: 'mails.png' },
+    { name: 'Массаж и Спа', icon: 'massagaSpa.png' },
+    { name: 'Тату и Пирсинг', icon: 'tatooPiercing.png' },
+    { name: 'Коворкинг и Конферент залы', icon: 'coworking1.png' },
+    { name: 'Фотостудия', icon: 'photostudy.png' },
+    { name: 'Рестораны и Банкетные Залы', icon: 'restraunts.png' },
+    { name: 'Прочее', icon: 'other.png' }
+  ];
+
+  useEffect(() => {
+    if (category) {
+      // Ищем категорию и её родительскую категорию
+      const foundCategory = categories.find(cat =>
+        cat.subcategories
+          ? cat.subcategories.some(sub => sub.name === category)
+          : cat.name === category
+      );
+
+      if (foundCategory) {
+        if (foundCategory.subcategories) {
+          // Если категория имеет субкатегории, устанавливаем её как выбранную категорию
+          setSelectedCategory(foundCategory);
+          setSelectedSubcategory(category); // Устанавливаем выбранную субкатегорию
+        } else {
+          // Если категория не имеет субкатегорий
+          setSelectedCategory(null);
+          setSelectedSubcategory(null);
+        }
+      } else {
+        setSelectedCategory(null);
+        setSelectedSubcategory(null);
+      }
+    }
+  }, [category]);
+
+  const handleCategorySelection = (item) => {
+    if (item.subcategories) {
+      setSelectedCategory(item);
+      setSelectedSubcategory(null); // Сброс подкатегории при выборе новой категории
+      setSubModalVisible(true);
+    } else {
+      setCategory(item.name);
+      setSelectedCategory(null);
+      setSelectedSubcategory(null);
+      setModalVisible(false);
+    }
+  };
+
+  const handleSubcategorySelection = (subItem) => {
+    setCategory(subItem.name);
+    setSelectedSubcategory(subItem.name);
+    setSubModalVisible(false);
+    setModalVisible(false);
+  };
+
   return (
-    <View style={{ marginBottom: 10, overflow: 'hidden', borderRadius: 10 }}>
-      <Picker
-        selectedValue={category}
-        onValueChange={(value) => setCategory(value)}
-        style={pickerSelectStyles.picker}
+    <View>
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, marginHorizontal: 24, color: '#333333' }}>Специализация</Text>
+
+      <TouchableOpacity
+        style={styles.openButton}
+        onPress={() => setModalVisible(true)}
       >
-        <Picker.Item label="Выберите категорию" value={null} />
-        <Picker.Item label="Эстетическая косметология" value="Эстетическая косметология" />
-        <Picker.Item label="Аппаратная косметология" value="Аппаратная косметология" />
-        <Picker.Item label="Инъекционная косметология" value="Инъекционная косметология" />
-        <Picker.Item label="Депиляция, шугаринг" value="Депиляция, шугаринг" />
-        <Picker.Item label="Перманентный макияж" value="Перманентный макияж" />
-        <Picker.Item label="Лашмейкеры и Бровисты" value="Лашмейкеры и Бровисты" />
-        <Picker.Item label="Стилисты по волосам" value="Стилисты по волосам" />
-        <Picker.Item label="Визаж" value="Визаж" />
-        <Picker.Item label="Барбершоп" value="Барбершоп" />
-        <Picker.Item label="Ногтевой сервис" value="Ногтевой сервис" />
-        <Picker.Item label="Массаж и Спа" value="Массаж и Спа" />
-        <Picker.Item label="Тату и Пирсинг" value="Тату и Пирсинг" />
-        <Picker.Item label="Коворкинг и Конферент залы" value="Коворкинг и Конферент залы" />
-        <Picker.Item label="Фотостудия" value="Фотостудия" />
-        <Picker.Item label="Рестораны и Банкетные Залы" value="Рестораны и Банкетные Залы" />
-        <Picker.Item label="Прочее" value="Прочее" />
-      </Picker>
+        <Text style={{ ...styles.openButtonText, color: category ? '#333333' : '#C4C4C4' }}>
+          {selectedCategory ? selectedCategory.name : category || 'Выберите специализацию'}
+        </Text>
+        <Image source={arrow_down} style={styles.arrowIcon} />
+      </TouchableOpacity>
+
+      {selectedCategory && (
+        <View>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, marginHorizontal: 24, paddingTop: 12, color: '#333333' }}>Вид деятельности</Text>
+          <TouchableOpacity
+            style={styles.openButton}
+            onPress={() => setSubModalVisible(true)}
+          >
+            <Text style={{ ...styles.openButtonText, color: category ? '#333333' : '#C4C4C4' }}>
+              {selectedSubcategory || 'Выберите вид деятельности'}
+            </Text>
+            <Image source={arrow_down} style={styles.arrowIcon} />
+          </TouchableOpacity>
+        </View>
+      )}
+
+      <Modal
+        visible={modalVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView contentContainerStyle={styles.scrollViewContent}>
+              {categories.map((item, index) => (
+                <TouchableOpacity
+                  key={index}
+                  style={styles.categoryButton}
+                  onPress={() => handleCategorySelection(item)}
+                >
+                  <Text style={styles.categoryText}>{item.name}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Закрыть</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
+
+      {selectedCategory && (
+        <Modal
+          visible={subModalVisible}
+          transparent={true}
+          animationType="slide"
+          onRequestClose={() => setSubModalVisible(false)}
+        >
+          <View style={styles.modalContainer}>
+            <View style={styles.modalContent}>
+              <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                {selectedCategory.subcategories.map((subItem, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    style={styles.categoryButton}
+                    onPress={() => handleSubcategorySelection(subItem)}
+                  >
+                    <Text style={styles.categoryText}>{subItem.name}</Text>
+                  </TouchableOpacity>
+                ))}
+              </ScrollView>
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={() => setSubModalVisible(false)}
+              >
+                <Text style={styles.closeButtonText}>Закрыть</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      )}
     </View>
   );
 };
 
-const pickerSelectStyles = StyleSheet.create({
-  picker: {
-    height: 50,
-    width: '100%',
+const styles = StyleSheet.create({
+  openButton: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    marginHorizontal: 24,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12,
+  },
+  openButtonText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  scrollViewContent: {
+    paddingBottom: 20,
+  },
+  categoryButton: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  categoryText: {
+    fontSize: 16,
     color: 'black',
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
-    backgroundColor: 'white'
+  },
+  closeButton: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.3)',
   },
 });
 

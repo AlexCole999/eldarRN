@@ -1,13 +1,20 @@
 
-import { StyleSheet, Modal, View, TouchableOpacity, Text, TextInput } from 'react-native';
+import { StyleSheet, Modal, View, TouchableOpacity, Text, TextInput, Image, Dimensions } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import filterSlice from '../storage/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+
+
 const FiltersScreen = () => {
+
+  const screenWidth = Dimensions.get('window').width;
+
   const dispatch = useDispatch();
+
   const { city, district, category, subcategory, priceFrom, priceTo, currency } = useSelector(state => state.filters);
 
   const navigation = useNavigation();
@@ -51,6 +58,7 @@ const FiltersScreen = () => {
 
   return (
     <ScrollView style={styles.container}>
+
       <Modal
         transparent={true}
         visible={isCityModalVisible}
@@ -93,12 +101,20 @@ const FiltersScreen = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Город</Text>
-        <TouchableOpacity style={styles.sectionItem} onPress={() => setCityModalVisible(true)}>
-          <Text>{localCity || 'Выберите город'}</Text>
+
+      <View style={{ marginHorizontal: 24, marginTop: 24 }}>
+        <Text style={styles.label}>Город</Text>
+        <TouchableOpacity
+          style={{ ...styles.openButton }}
+          onPress={() => setCityModalVisible(true)}
+        >
+          <Text style={{ ...styles.openButtonText, color: localCity ? '#333333' : '#C4C4C4' }}>
+            {localCity || 'Выберите город'}
+          </Text>
+          <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>
       </View>
+
 
       <Modal
         transparent={true}
@@ -137,10 +153,16 @@ const FiltersScreen = () => {
         </View>
       </Modal>
       {localCity === "Ташкент" && (
-        <View style={styles.sectionContainer}>
-          <Text style={styles.sectionTitle}>Район</Text>
-          <TouchableOpacity style={styles.sectionItem} onPress={() => setDistrictModalVisible(true)}>
-            <Text>{localDistrict || 'Выберите район'}</Text>
+        <View style={{ marginHorizontal: 24, marginTop: 12 }}>
+          <Text style={styles.label}>Район</Text>
+          <TouchableOpacity
+            style={{ ...styles.openButton }}
+            onPress={() => setDistrictModalVisible(true)}
+          >
+            <Text style={{ ...styles.openButtonText, color: localDistrict ? '#333333' : '#C4C4C4' }}>
+              {localDistrict || 'Выберите район'}
+            </Text>
+            <Image source={arrow_down} style={styles.arrowIcon} />
           </TouchableOpacity>
         </View>
       )}
@@ -187,10 +209,17 @@ const FiltersScreen = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Категория</Text>
-        <TouchableOpacity style={styles.sectionItem} onPress={() => setCategoryModalVisible(true)}>
-          <Text>{localCategory || 'Выберите категорию'}</Text>
+
+      <View style={{ marginHorizontal: 24, marginTop: 12 }}>
+        <Text style={styles.label}>Категория</Text>
+        <TouchableOpacity
+          style={{ ...styles.openButton }}
+          onPress={() => setCategoryModalVisible(true)}
+        >
+          <Text style={{ ...styles.openButtonText, color: localCategory ? '#333333' : '#C4C4C4' }}>
+            {localCategory || 'Выберите категорию'}
+          </Text>
+          <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>
       </View>
 
@@ -223,38 +252,65 @@ const FiltersScreen = () => {
           </View>
         </View>
       </Modal>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Цена</Text>
-        <TextInput
-          style={styles.sectionItem}
-          value={localPriceFrom}
-          placeholder="От"
-          keyboardType="numeric"
-          onChangeText={text => setLocalPriceFrom(text)}
-        />
-        <TextInput
-          style={styles.sectionItem}
-          value={localPriceTo}
-          placeholder="До"
-          keyboardType="numeric"
-          onChangeText={text => setLocalPriceTo(text)}
-        />
-        <TouchableOpacity style={styles.sectionItem} onPress={() => setCurrencyModalVisible(true)}>
-          <Text>{localCurrency || 'Валюта'}</Text>
-        </TouchableOpacity>
+
+      <View style={{ flexDirection: 'row', gap: 20, marginRight: 24 }}>
+
+        <View style={{ flexGrow: 1 }}>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginLeft: 24, marginTop: 12 }}>Цена</Text>
+          <View style={{ flexDirection: 'row', marginTop: 4, marginLeft: 24, gap: 4 }}>
+            <TextInput
+              placeholderTextColor="#C4C4C4"
+              style={{
+                fontFamily: 'Manrope_500Medium', fontSize: 12, height: 42, elevation: 4, flexGrow: 1, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 6, paddingVertical: 13, marginBottom: 10, minWidth: screenWidth * 0.19
+              }}
+              placeholder="От"
+              onChangeText={text => setLocalPriceFrom(text)}
+              value={localPriceFrom} />
+            <TextInput
+              placeholderTextColor="#C4C4C4"
+              style={{
+                fontFamily: 'Manrope_500Medium', fontSize: 12, height: 42, elevation: 4, flexGrow: 1, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 6, paddingVertical: 13, marginBottom: 10, minWidth: screenWidth * 0.19
+              }}
+              placeholder="До"
+              onChangeText={text => setLocalPriceTo(text)}
+              value={localPriceTo} />
+          </View>
+        </View>
+
+        <View style={{ flexGrow: 1 }}>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>Валюта</Text>
+          <TouchableOpacity
+            style={{ ...styles.openButton, paddingHorizontal: 6, paddingVertical: 13 }}
+            onPress={() => setCurrencyModalVisible(true)}
+          >
+            <Text style={{ ...styles.openButtonText, color: localCurrency ? '#333333' : '#C4C4C4', fontSize: 12 }}>
+              {localCurrency || 'Выберите валюту'}
+            </Text>
+            <Image source={arrow_down} style={styles.arrowIcon} />
+          </TouchableOpacity>
+        </View>
+
       </View>
 
-      <TouchableOpacity style={styles.addButton} onPress={() => { applyFilters(); navigation.navigate('Каталог') }}>
-        <Text style={{ ...styles.addButtonText, color: 'rgb(0, 191, 255)' }}>Применить</Text>
-      </TouchableOpacity>
 
-      {/* <TouchableOpacity style={styles.addButton} onPress={() => console.log(localCity, localDistrict, localCategory, localSubcategory, localPriceFrom, localPriceTo, localCurrency)}>
-        <Text style={{ ...styles.addButtonText, color: 'rgb(0, 191, 255)' }}>Консоль</Text>
-      </TouchableOpacity> */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, gap: 20, marginHorizontal: 24 }}>
+        <TouchableOpacity
+          style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+          onPress={resetFilters}
+        >
+          <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+            Сбросить
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity style={{ ...styles.addButton, marginBottom: 40 }} onPress={resetFilters}>
-        <Text style={{ ...styles.addButtonText, color: 'red' }}>Сбросить фильтр</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={{ backgroundColor: 'rgba(0, 148, 255, 1)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+          onPress={() => { applyFilters(); navigation.navigate('Каталог') }}>
+          <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+            Применить
+          </Text>
+        </TouchableOpacity>
+      </View>
 
     </ScrollView>
   );
@@ -264,9 +320,33 @@ const FiltersScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: '#f3f2f8',
-    paddingHorizontal: 20,
-    paddingVertical: 10
+    backgroundColor: '#F5FFFF'
+  },
+  label: {
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 16,
+    color: '#333333',
+  },
+  openButton: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12,
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
+  },
+  openButtonText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
   },
   sectionContainer: {
     backgroundColor: 'white',

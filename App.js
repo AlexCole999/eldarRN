@@ -27,6 +27,7 @@ import BonusesScreen from './screens/BonusesScreen';
 import BalanceScreen from './screens/BalanceScreen';
 import ActionsScreen from './screens/ActionsScreen';
 import NotificationScreen from './screens/NotificationScreen';
+import TestScreen from './screens/TestScreen';
 
 
 
@@ -109,14 +110,9 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="Чат"
-        component={AdsensesScreen}
+        component={TestScreen}
         options={{
-          headerTitle: () => <SearchComponent filtersVisible={true} />,
-          headerStyle: {
-            height: 74,
-            backgroundColor: 'white',
-
-          },
+          headerShown: false, // Отключает отображение заголовка
         }}
       />
       <Tab.Screen

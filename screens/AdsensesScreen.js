@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
 import Catalog_star from '../assets/Catalog_star.png';
 import { useSelector } from 'react-redux';
+import SearchComponent from './../innerCoponents/SearchComponent';
 
 const AdsensesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
@@ -69,83 +70,30 @@ const AdsensesScreen = () => {
     setRefreshing(false);
   };
 
-  const renderItem = ({ item }) => {
-    if (item.id === 'buttons') {
-      return <Buttons />;
-    } else {
-      return (
-        <TouchableOpacity
-          style={{ ...styles.itemContainer, elevation: 4 }}
-          key={item.id}
-          onPress={() => navigation.navigate('Детали объявления', {
-            adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
-          })}
-        >
-          <View>
-            <Image
-              style={styles.image}
-              source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
-            />
-            <View style={styles.textContainer}>
-
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', minWidth: 36 }}>
-                <Text style={{ ...styles.category, minHeight: 34, maxWidth: '70%' }}>{item.category}</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'start', gap: 4 }}>
-                  <Image
-                    style={{ width: 12, height: 12, marginTop: 2 }}
-                    source={Catalog_star}
-                  />
-                  <Text style={{ color: '#747474', fontSize: 12, color: '#D3B331', fontFamily: 'Montserrat_600SemiBold' }}>
-                    {
-                      item.testimonials.length ?
-                        (item.testimonials.reduce((accumulator, review) => { return accumulator + review.rating; }, 0) / item.testimonials.length).toFixed(1)
-                        : '0.0'
-                    }
-                  </Text>
-                </View>
-              </View>
-
-              <Text style={styles.city}>{item.city}</Text>
-              <Text style={{ ...styles.city, color: '#747474', marginTop: 2, fontFamily: 'Manrope_300Light', }}>{item.district}</Text>
-
-              {/* <Text style={styles.address}>{item.address}</Text> */}
-              {/* <View style={styles.ratingContainer}>
-                <StarRating
-                  rating={item.testimonials.length
-                    ? item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length
-                    : 0}
-                  size={10}
-                />
-                <Text style={styles.ratingText}>
-                  {item.testimonials.length
-                    ? (item.testimonials.reduce((acc, obj) => acc + obj.rating, 0) / item.testimonials.length).toFixed(2)
-                    : 0}
-                </Text>
-              </View> */}
-            </View>
-          </View>
-        </TouchableOpacity>
-      );
-    }
-  };
-
   const Buttons = () => {
     return (
       <View style={styles.buttonsContainer}>
+
         <TouchableOpacity
+          style={{ backgroundColor: count < 2 ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
           disabled={count < 2}
-          style={[styles.button, count < 2 ? styles.disabledButton : null]}
-          onPress={() => { setCount(count - 1); handleScrollToTop(); }}
-        >
-          <Text style={styles.buttonText}>Предыдущие</Text>
+          onPress={() => { setCount(count - 1); handleScrollToTop(); }}        >
+          <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+            Назад
+          </Text>
         </TouchableOpacity>
+
         <Text style={styles.componentText}>{count}</Text>
+
         <TouchableOpacity
-          style={styles.button}
-          onPress={() => { setCount(count + 1); handleScrollToTop(); }}
-        >
-          <Text style={styles.buttonText}>Следующие</Text>
+          style={{ backgroundColor: 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+          // disabled={}
+          onPress={() => { setCount(count + 1); handleScrollToTop() }}        >
+          <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+            Далее
+          </Text>
         </TouchableOpacity>
+
       </View>
     );
   };
@@ -153,7 +101,7 @@ const AdsensesScreen = () => {
   const styles = StyleSheet.create({
     itemContainer: {
       width: (screenWidth - 60) * 0.52,
-      marginLeft: 8,
+      marginLeft: 0,
       backgroundColor: 'white',
       borderRadius: 12,
     },
@@ -200,10 +148,12 @@ const AdsensesScreen = () => {
     },
     buttonsContainer: {
       paddingHorizontal: 20,
+      paddingVertical: 40,
+      paddingTop: 40,
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      width: '100%',
+      width: '100%'
     },
     button: {
       backgroundColor: '#0c6694',
@@ -225,25 +175,67 @@ const AdsensesScreen = () => {
   });
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#F5FFFF', paddingTop: 0, paddingLeft: 10 }}>
-      <View style={{ position: 'absolute', width: screenWidth, height: 24, backgroundColor: 'rgb(0, 148, 255)', borderBottomLeftRadius: 22, borderBottomRightRadius: 22, top: 0, left: 0, zIndex: -1 }} />
+    <ScrollView
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />
+      }
+      style={{ flex: 0, backgroundColor: '#F5FFFF', paddingTop: 0, paddingLeft: 0, paddingTop: 24 }}>
 
-      <FlatList
-        ref={flatListRef}
-        contentContainerStyle={{ gap: 8, paddingBottom: 20 }}
-        data={[...data]}
-        renderItem={renderItem}
-        keyExtractor={(item) => item.id.toString()}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-          />
+
+      <SearchComponent />
+
+      <View style={{ flexDirection: 'row', flexWrap: 'wrap', paddingLeft: 18, gap: 8, zIndex: 1, marginTop: -24 }}>
+        {
+          data.map(item => {
+            return (
+              <TouchableOpacity
+                style={{ ...styles.itemContainer, elevation: 4 }}
+                key={item.id}
+                onPress={() => navigation.navigate('Детали объявления', {
+                  adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+                })}
+              >
+                <View>
+                  <Image
+                    style={styles.image}
+                    source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
+                  />
+                  <View style={styles.textContainer}>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', minWidth: 36 }}>
+                      <Text style={{ ...styles.category, minHeight: 34, maxWidth: '70%' }}>{item.category}</Text>
+                      <View style={{ flexDirection: 'row', alignItems: 'start', gap: 4 }}>
+                        <Image
+                          style={{ width: 12, height: 12, marginTop: 2 }}
+                          source={Catalog_star}
+                        />
+                        <Text style={{ color: '#747474', fontSize: 12, color: '#D3B331', fontFamily: 'Montserrat_600SemiBold' }}>
+                          {
+                            item.testimonials.length ?
+                              (item.testimonials.reduce((accumulator, review) => { return accumulator + review.rating; }, 0) / item.testimonials.length).toFixed(1)
+                              : '0.0'
+                          }
+                        </Text>
+                      </View>
+                    </View>
+
+                    <Text style={styles.city}>{item.city}</Text>
+                    <Text style={{ ...styles.city, color: '#747474', marginTop: 2, fontFamily: 'Manrope_300Light', }}>{item.district}</Text>
+
+                  </View>
+                </View>
+              </TouchableOpacity>
+            )
+          })
         }
-        numColumns={numColumns}
-      />
+      </View>
+
       <Buttons />
-    </View>
+
+    </ScrollView>
   );
 };
 

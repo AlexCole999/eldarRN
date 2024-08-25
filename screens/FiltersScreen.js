@@ -12,6 +12,7 @@ import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что
 const FiltersScreen = () => {
 
   const screenWidth = Dimensions.get('window').width;
+  const screenHeight = Dimensions.get('window').height;
 
   const dispatch = useDispatch();
 
@@ -292,8 +293,7 @@ const FiltersScreen = () => {
 
       </View>
 
-
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, gap: 20, marginHorizontal: 24 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, gap: 20, marginHorizontal: 24, marginTop: 12 }}>
         <TouchableOpacity
           style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
           onPress={resetFilters}
@@ -311,7 +311,6 @@ const FiltersScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
     </ScrollView>
   );
 };
@@ -319,8 +318,8 @@ const FiltersScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
-    backgroundColor: '#F5FFFF'
+    backgroundColor: '#F5FFFF',
+    height: '100%'
   },
   label: {
     fontFamily: 'Manrope_600SemiBold',

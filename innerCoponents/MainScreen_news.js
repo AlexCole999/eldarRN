@@ -12,7 +12,7 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
   const navigation = useNavigation();
 
   const renderItem = ({ item }) => (
-    <View style={{ display: 'flex', rowGap: 10, marginBottom: 40, marginLeft: 8, marginTop: 8, alignItems: 'flex-start' }}>
+    <View style={{ display: 'flex', rowGap: 10, marginBottom: 40, marginLeft: 4, marginRight: 4, marginTop: 8, alignItems: 'flex-start' }}>
       <TouchableOpacity
         style={{ gap: 6, flexDirection: 'column', backgroundColor: 'white', padding: 8, paddingBottom: 8, borderRadius: 12, width: screenWidth * 0.36, elevation: 4, minHeight: 124 }}
         // onPress={() => { console.log(item) }}
@@ -21,13 +21,13 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
         })}
       >
         <Image
-          source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
+          source={{ uri: `${localhosturl}/${item?.user}/${item?.imagesList[0]}` }}
           style={{ width: '100%', height: 68, borderRadius: 8 }}
           resizeMode='cover'
         >
         </Image>
         <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'start', borderRadius: 5, gap: 10 }}>
-          <Text style={{ color: 'black', fontWeight: 600, fontSize: 14, fontFamily: 'Roboto_500Medium', letterSpacing: 0.2 }}>{item.category}</Text>
+          <Text style={{ color: 'black', fontWeight: 600, fontSize: 14, fontFamily: 'Roboto_500Medium', letterSpacing: 0.2 }}>{item?.category}</Text>
         </View>
       </TouchableOpacity >
 
@@ -35,8 +35,8 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
   );
 
   return (
-    <View style={{ marginLeft: 14 }}>
-      <Text style={{ fontSize: 24, fontFamily: 'Manrope_700Bold', color: '#333333', marginLeft: 10 }}>Недавно добавлены</Text>
+    <View style={{ marginLeft: 18 }}>
+      <Text style={{ fontSize: 24, fontFamily: 'Manrope_700Bold', color: '#333333', marginLeft: 6 }}>Недавно добавлены</Text>
       <FlatList
         data={newestAdsenses}
         renderItem={renderItem}

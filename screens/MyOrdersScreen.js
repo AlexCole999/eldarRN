@@ -59,7 +59,7 @@ const MyOrdersScreen = ({ route }) => {
 
   return (
     <ScrollView style={styles.container}>
-      <Text style={{ textAlign: 'center', fontWeight: 700, fontSize: 18 }}>Бронировали другие</Text>
+      <Text style={{ textAlign: 'center', fontWeight: 700, fontSize: 18 }} onPress={() => { console.log(adsenses.map(x => x.orders)) }}>Бронировали другие</Text>
       {/* {adsenses.map((adsense) => (
         adsense.orders.length > 0 && (
           <View key={adsense._id} style={styles.adsenseContainer}>
@@ -157,7 +157,9 @@ const MyOrdersScreen = ({ route }) => {
               </View>
 
               <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#C4C4C4', paddingBottom: 24, gap: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}>
+                <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
+                  onPress={() => { handleDeleteOrder(adsense.orders[0]._id) }}
+                >
                   <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Отменить бронирование</Text>
                 </TouchableOpacity>
               </View>

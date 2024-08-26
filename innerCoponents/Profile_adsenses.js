@@ -8,8 +8,13 @@ import StarRating from './StarRating';
 import profile_adsenses_place from '../assets/profile_adsenses_place.png'
 import profile_adsenses_phone from '../assets/profile_adsenses_phone.png'
 import profile_adsenses_other from '../assets/profile_adsenses_other.png'
+import { useRoute } from '@react-navigation/native';
 
-const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
+const ProfileAdsenses = () => {
+
+  const route = useRoute();
+
+  const { adsenses, userData, refreshAdsenses } = route.params || {};
 
   const navigation = useNavigation();
 
@@ -59,68 +64,74 @@ const ProfileAdsenses = ({ adsenses, userData, refreshAdsenses }) => {
   }
 
   return (
-    <View style={styles.adsContainer}>
-      {adsenses.map(ad => (
-        <TouchableOpacity key={ad._id}
-          onPress={() => navigation.navigate('Детали объявления', {
-            adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
-          })}
-        >
-          <View style={styles.adContainer}>
-
-            <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
-
-            <View style={styles.infoContainer}>
-
-              <View style={{ maxWidth: '100%' }}>
-                <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.category}</Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Image source={profile_adsenses_place} style={{ width: 16, height: 16 }} />
-                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>г. {ad.city}, {ad.address}</Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Image source={profile_adsenses_phone} style={{ width: 16, height: 16 }} />
-                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>+ {ad?.phone.toString().replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5')}</Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                  <Image source={profile_adsenses_other} style={{ width: 16, height: 16 }} />
-                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>Прочее</Text>
-                </View>
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
-                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы работы</Text>
-                  <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.workhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
-                </View>
-                {ad.servicesList.map((service, index) => (
-                  <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
-                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы {service.hours}:</Text>
-                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{service.price.toLocaleString('ru-RU')}</Text>
-                  </View>
-                ))}
-              </View>
-            </View>
-
-          </View>
-
-          <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#C4C4C4', paddingBottom: 24, gap: 20 }}>
-            <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }} onPress={() => { deleteAdsense(ad._id) }}>
-              <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Удалить</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={{ backgroundColor: 'rgba(0,148,255,0.5)', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
-              onPress={() => navigation.navigate('Изменить объявление', {
+    <ScrollView>
+      <View style={styles.adsContainer}>
+        {adsenses ?
+          adsenses.map(ad => (
+            <TouchableOpacity key={ad._id}
+              onPress={() => navigation.navigate('Детали объявления', {
                 adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
               })}
             >
-              <Text style={{ color: 'white', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Изменить</Text>
+              <View style={styles.adContainer}>
+
+                <Image source={{ uri: `${localhosturl}/${userData?.phone}/${ad?.imagesList[0]}` }} style={styles.adImage} />
+
+                <View style={styles.infoContainer}>
+
+                  <View style={{ maxWidth: '100%' }}>
+                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.category}</Text>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      <Image source={profile_adsenses_place} style={{ width: 16, height: 16 }} />
+                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>г. {ad.city}, {ad.address}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      <Image source={profile_adsenses_phone} style={{ width: 16, height: 16 }} />
+                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>+ {ad?.phone.toString().replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5')}</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
+                      <Image source={profile_adsenses_other} style={{ width: 16, height: 16 }} />
+                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>Прочее</Text>
+                    </View>
+
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
+                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы работы</Text>
+                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{ad.workhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
+                    </View>
+                    {ad.servicesList.map((service, index) => (
+                      <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
+                        <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы {service.hours}:</Text>
+                        <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{service.price.toLocaleString('ru-RU')}</Text>
+                      </View>
+                    ))}
+                  </View>
+                </View>
+
+              </View>
+
+              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#C4C4C4', paddingBottom: 24, gap: 20 }}>
+                <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }} onPress={() => { deleteAdsense(ad._id) }}>
+                  <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Удалить</Text>
+                </TouchableOpacity>
+
+                <TouchableOpacity style={{ backgroundColor: 'rgba(0,148,255,0.5)', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
+                  onPress={() => navigation.navigate('Изменить объявление', {
+                    adId: ad._id, adUser: ad.user, adCity: ad.city, adDistrict: ad.district, adCategory: ad.category, adPhone: ad.phone, adAddress: ad.address, adWorkhours: ad.workhours, adServiceParams: ad.servicesList, adImagesList: ad.imagesList, adDescription: ad.description, adTestimonials: ad.testimonials
+                  })}
+                >
+                  <Text style={{ color: 'white', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Изменить</Text>
+                </TouchableOpacity>
+
+              </View>
             </TouchableOpacity>
 
-          </View>
-        </TouchableOpacity>
-
-      ))}
-    </View>
+          ))
+          : <Text>123</Text>
+        }
+      </View>
+    </ScrollView>
   )
 };
 
@@ -197,7 +208,7 @@ const styles = StyleSheet.create({
   },
   adsContainer: {
     paddingTop: 20,
-
+    paddingHorizontal: 24
   },
   userContainer: {
     backgroundColor: 'white',

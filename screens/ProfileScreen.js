@@ -44,6 +44,7 @@ const ProfileScreen = () => {
 
       return pendingCount
     };
+
     console.log('refresh')
 
     const countUserOrders = (adsensesWithUserOrders, user) => {
@@ -134,9 +135,11 @@ const ProfileScreen = () => {
 
       {userData ?
         <>
-          <TouchableOpacity style={styles.addButton} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={styles.addButton} onPress={() => {
+            navigation.navigate('Мои объявления', { adsenses: adsenses, userData: userData, refreshAdsenses: refreshAdsenses })
+          }}>
             <Text style={styles.addButtonText}>Мои объявления</Text>
-            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>0</Text>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>{adsenses.length}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
@@ -216,46 +219,10 @@ const ProfileScreen = () => {
             <Text style={styles.addButtonText}>Версия приложения</Text>
             <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>1.0.0</Text>
           </TouchableOpacity>
-
-          {/* <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle} onPress={() => { Alert.alert('Бронь зарегистрирована', 'Успешно забронировано'); }}>Бонусы</Text>
-            <Text style={styles.sectionItem}>Баланс</Text>
-            <Text style={styles.sectionItem}>Скидки</Text>
-            <TouchableOpacity onPress={() => navigation.navigate("Мои брони", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses })} style={{
-              flexDirection: 'row',
-              borderBottomColor: '#ececec',
-              borderBottomWidth: 1,
-              justifyContent: 'space-between'
-            }}>
-              <Text style={{ ...styles.sectionItem, borderBottomWidth: 0 }}>Брони</Text>
-              <View style={{ backgroundColor: 'rgb(0, 191, 255)' }}>
-                <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingHorizontal: 20, color: 'white' }}>{newOrdersCount}</Text>
-              </View>
-            </TouchableOpacity>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Чаты</Text>
-          </View> */}
-
-          {/* <View style={styles.sectionContainer}>
-            <Text style={styles.sectionTitle}>Поделиться приложением</Text>
-            <Text style={styles.sectionItem}>Язык приложения</Text>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingBottom: 0 }}>Служба поддержки</Text>
-          </View>
-
-          <View style={styles.sectionContainer}>
-            <Text style={{ ...styles.sectionItem, borderBottomWidth: 0, paddingVertical: 0 }}>Версия приложения 1.0.0</Text>
-          </View> */}
         </>
         : null
       }
 
-
-      {/* !!!!!!!!!!!!!!!!!!!!!ADSENSES */}
-
-
-      {adsenses.length ?
-        <ProfileAdsenses adsenses={adsenses} userData={userData} refreshAdsenses={refreshAdsenses} />
-        : null
-      }
 
       {/* {userData ?
         <TouchableOpacity style={{ ...styles.button, marginTop: 20 }} onPress={profileQuit}>

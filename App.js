@@ -28,6 +28,7 @@ import BalanceScreen from './screens/BalanceScreen';
 import ActionsScreen from './screens/ActionsScreen';
 import NotificationScreen from './screens/NotificationScreen';
 import TestScreen from './screens/TestScreen';
+import ProfileAdsenses from './innerCoponents/Profile_adsenses';
 
 
 
@@ -189,8 +190,10 @@ export default function App() {
             headerTitleAlign: 'center',
           }}
         >
+
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
           <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
+          <Stack.Screen name="Мои объявления" component={ProfileAdsenses} />
           <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
           <Stack.Screen
             options={{

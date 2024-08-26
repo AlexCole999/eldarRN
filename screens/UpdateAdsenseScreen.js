@@ -54,21 +54,76 @@ const UpdateAdsenseScreen = ({ route }) => {
       <View style={styles.container}>
         <SelectorCity city={city} setCity={setCity} />
         <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
-        <SelectorCategory category={category} setCategory={setCategory} />
+        <View style={{ marginTop: 12 }}>
+          <SelectorCategory category={category} setCategory={setCategory} />
+        </View>
         <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Телефон" onChangeText={setPhone} value={phone} />
-        <TextInput style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }} placeholder="Адрес" onChangeText={setAddress} value={address} />
-        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
+
+        <View style={{ flexDirection: 'row', marginTop: 4 }}>
+
+          <View style={{ elevation: 4, justifyContent: 'center', alignItems: 'center', borderTopLeftRadius: 10, color: 'black', borderBottomLeftRadius: 10, width: '10%', backgroundColor: 'white', marginBottom: 10, fontSize: 16 }} >
+            <Text style={{ color: 'grey', fontSize: 16, color: '#C4C4C4' }}>+</Text>
+          </View>
+
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, flexGrow: 1, borderTopRightRadius: 12, borderBottomRightRadius: 12, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 12, marginBottom: 10, fontSize: 14
+            }}
+            placeholder="XXX XX XXX XX XX"
+            onChangeText={setPhone}
+            value={phone} />
+
+        </View>
+
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Адрес*</Text>
+
+        <View style={{ marginTop: 4 }}>
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+            }}
+            placeholder="Укажите адрес"
+            onChangeText={setAddress}
+            value={address} />
+        </View>
+        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} horizontaldisplay={true} />
+
+        <Text style={{ textAlign: 'start', marginTop: 0, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
+          Описание
+        </Text>
         <TextInput
           style={{
-            textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
+            textAlignVertical: 'top',
+            borderRadius: 12,
+            height: 140,
+            backgroundColor: 'white',
+            paddingHorizontal: 8,
+            paddingVertical: 10,
+            marginBottom: 10,
+            fontSize: 14,
+            fontFamily: 'Manrope_500Medium',
+            color: '#1C4C4C',
+            elevation: 4,
           }}
-          multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
+          multiline={true}
+          placeholder="Введите описание вашей услуги"
+          placeholderTextColor="#C4C4C4"
+          onChangeText={setDescription}
+          value={description}
+        />
       </View>
 
-      <TouchableOpacity style={styles.sendButton} onPress={updateAdsense}>
-        <Text style={styles.sendButtonText}>Обновить объявление</Text>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity
+          style={{ backgroundColor: 'rgb(0, 148, 255)', borderRadius: 12, alignItems: 'center', height: 36, alignItems: 'center', justifyContent: 'center', marginHorizontal: 24, marginBottom: 40 }}
+          onPress={updateAdsense}
+        >
+          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold', letterSpacing: 0.5 }}>Обновить объявление</Text>
+        </TouchableOpacity>
+      </View>
 
     </ScrollView>
   );

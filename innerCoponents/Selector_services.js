@@ -1,12 +1,32 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, TouchableHighlight, Alert, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, ScrollView, Alert, TouchableHighlight, Image } from 'react-native';
+import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
 
-const SelectorServices = ({ servicesList, setServicesList }) => {
+const generateHourItems = () => {
+
+  const items = [];
+  for (let hour = 1; hour <= 10; hour++) {
+    let label;
+    if (hour === 1) {
+      label = '1 час';
+    } else if (hour >= 2 && hour <= 4) {
+      label = `${hour} часа`;
+    } else {
+      label = `${hour} часов`;
+    }
+    items.push({ label, value: hour.toString() });
+  }
+  items.push({ label: '24 часа', value: '24' });
+  return items;
+};
+
+const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) => {
   const [showInputs, setShowInputs] = useState(false);
   const [newServiceHours, setNewServiceHours] = useState(null);
   const [newServicePrice, setNewServicePrice] = useState('');
   const [newServiceFiat, setNewServiceFiat] = useState('');
+  const [hoursModalVisible, setHoursModalVisible] = useState(false);
+  const [fiatModalVisible, setFiatModalVisible] = useState(false);
 
   const addNewServiceParam = () => {
     if (newServiceHours && newServicePrice && newServiceFiat) {
@@ -40,92 +60,171 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
     );
   };
 
+  const handleHourSelection = (value) => {
+    setNewServiceHours(value);
+    setHoursModalVisible(false);
+  };
+
+  const handleFiatSelection = (value) => {
+    setNewServiceFiat(value);
+    setFiatModalVisible(false);
+  };
+
   return (
     <View style={{ width: '100%' }}>
-      {
-        servicesList.map((param, index) => (
-          <TouchableHighlight
-            key={index}
-            style={styles.serviceContainer}
-            onPress={() => removeService(index)}
-            underlayColor="#DDD"
+      {!showInputs && (
+        <View>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginBottom: 12 }}>Добавьте услуги</Text>
+          <TouchableOpacity
+            // disabled=
+            style={styles.addButton}
+            onPress={() => setShowInputs(true)}
           >
-            <View style={styles.serviceParam}>
-              <Text style={styles.serviceTextLeft}>Часов: {param.hours}</Text>
-              <Text style={styles.serviceTextRight}>Цена: {param.price} {param.fiat}</Text>
-            </View>
-          </TouchableHighlight>
-        ))
-      }
+            <Text style={styles.addButtonText}>Новая услуга</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      <ScrollView
+        style={{ marginTop: 12, maxHeight: 200, marginBottom: 0 }}
+        horizontal={horizontaldisplay}
+        showsHorizontalScrollIndicator={false}
+      >
+        {
+          servicesList.map((param, index) => (
+            <TouchableHighlight
+              key={index}
+              style={{ ...styles.serviceContainer }}
+              onPress={() => removeService(index)}
+              underlayColor="#DDD"
+            >
+              <View style={{ ...styles.serviceParam, elevation: 4, borderRadius: 12, flexDirection: 'column', paddingHorizontal: 10, paddingVertical: 8, marginLeft: 2, marginRight: 2, minWidth: horizontaldisplay ? 250 : null }}>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>Длительность</Text>
+                  <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 14, color: '#333333' }}>{param.hours} {param.hours === '1' ? 'час' : param.hours >= '2' && param.hours <= '4' ? 'часа' : 'часов'}</Text>
+                </View>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
+                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>Стоимость</Text>
+                  <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 14, color: '#333333' }}>{param.price} {param.fiat}</Text>
+                </View>
+                {/* <Text style={styles.serviceTextLeft}>Часов: {param.hours}</Text>
+                <Text style={styles.serviceTextRight}>Цена: {param.price} {param.fiat}</Text> */}
+              </View>
+            </TouchableHighlight>
+          ))
+        }
+      </ScrollView>
       {showInputs && (
         <>
-          <View style={{
-            marginBottom: 10, overflow: 'hidden', borderRadius: 10
-          }}>
-            <Picker
-              selectedValue={newServiceHours}
-              onValueChange={(value) => setNewServiceHours(value)}
-              style={pickerSelectStyles.picker}
-            >
-              <Picker.Item label="Часы новой услуги" value={null} />
-              <Picker.Item label="1 час" value={1} />
-              <Picker.Item label="2 часа" value={2} />
-              <Picker.Item label="3 часа" value={3} />
-              <Picker.Item label="4 часа" value={4} />
-              <Picker.Item label="5 часов" value={5} />
-              <Picker.Item label="6 часов" value={6} />
-              <Picker.Item label="7 часов" value={7} />
-              <Picker.Item label="8 часов" value={8} />
-              <Picker.Item label="9 часов" value={9} />
-              <Picker.Item label="10 часов" value={10} />
-              <Picker.Item label="1 день" value={24} />
-            </Picker>
-          </View>
-          <TextInput
-            style={{ borderRadius: 10, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 10, marginBottom: 10, fontSize: 16 }}
-            placeholder="Цена новой услуги"
-            onChangeText={setNewServicePrice}
-            value={newServicePrice}
-            keyboardType="numeric"
-          />
-          <View style={{
-            marginBottom: 10, overflow: 'hidden', borderRadius: 10
-          }}>
-            <Picker
-              selectedValue={newServiceFiat}
-              onValueChange={(value) => setNewServiceFiat(value)}
-              style={pickerSelectStyles.picker}
-            >
-              <Picker.Item label="Валюта" value={null} />
-              <Picker.Item label="UZS" value={"UZS"} />
-              <Picker.Item label="USD" value={"USD"} />
-            </Picker>
-          </View>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Длительность</Text>
           <TouchableOpacity
-            style={{
-              backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
-              padding: 10, // отступы
-              borderRadius: 10, // радиус закругления углов
-              alignItems: 'center', // центрирование по горизонтали
-            }}
+            style={{ ...styles.selector, marginTop: 4 }}
+            onPress={() => setHoursModalVisible(true)}
+          >
+            <Text style={{ ...styles.selectorText, color: newServiceHours ? '#333333' : '#C4C4C4' }}>
+              {newServiceHours ? `Часы: ${newServiceHours}` : 'Укажите длительность услуги'}
+            </Text>
+            <Image source={arrow_down} style={styles.arrowIcon} />
+          </TouchableOpacity>
+
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>Стоимость услуги</Text>
+
+          <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
+
+            <View style={{ marginTop: 4, flexGrow: 1 }}>
+              <TextInput
+                placeholderTextColor="#C4C4C4"
+                style={{
+                  flexGrow: 1, fontFamily: 'Manrope_400Regular', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, fontSize: 14
+                }}
+                placeholder="Цена"
+                onChangeText={setNewServicePrice}
+                value={newServicePrice}
+                keyboardType="numeric"
+              />
+            </View>
+
+            <TouchableOpacity
+              style={{ ...styles.selector, flexGrow: 1, maxWidth: 146 }}
+              onPress={() => setFiatModalVisible(true)}
+            >
+              <Text style={{ ...styles.selectorText, color: newServiceFiat ? '#333333' : '#C4C4C4' }}>
+                {newServiceFiat ? newServiceFiat : 'Валюта'}
+              </Text>
+              <Image source={arrow_down} style={styles.arrowIcon} />
+            </TouchableOpacity>
+
+          </View>
+
+          <TouchableOpacity
+            style={styles.submitButton}
             onPress={addNewServiceParam}
           >
-            <Text style={{ color: 'white', textTransform: 'uppercase' }}>Завершить добавление услуги</Text>
+            <Text style={styles.submitButtonText}>Завершить добавление услуги</Text>
           </TouchableOpacity>
+
+          {/* Модальное окно для выбора часов */}
+          <Modal
+            visible={hoursModalVisible}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setHoursModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                  {generateHourItems().map((item) => (
+                    <TouchableOpacity
+                      key={item.value}
+                      style={styles.itemButton}
+                      onPress={() => handleHourSelection(item.value)}
+                    >
+                      <Text style={styles.itemText}>{item.label}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setHoursModalVisible(false)}
+                >
+                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
+
+          {/* Модальное окно для выбора валюты */}
+          <Modal
+            visible={fiatModalVisible}
+            transparent={true}
+            animationType="slide"
+            onRequestClose={() => setFiatModalVisible(false)}
+          >
+            <View style={styles.modalContainer}>
+              <View style={styles.modalContent}>
+                <ScrollView contentContainerStyle={styles.scrollViewContent}>
+                  <TouchableOpacity
+                    style={styles.itemButton}
+                    onPress={() => handleFiatSelection("UZS")}
+                  >
+                    <Text style={styles.itemText}>UZS</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.itemButton}
+                    onPress={() => handleFiatSelection("USD")}
+                  >
+                    <Text style={styles.itemText}>USD</Text>
+                  </TouchableOpacity>
+                </ScrollView>
+                <TouchableOpacity
+                  style={styles.closeButton}
+                  onPress={() => setFiatModalVisible(false)}
+                >
+                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </Modal>
         </>
-      )}
-      {!showInputs && (
-        <TouchableOpacity
-          style={{
-            backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
-            padding: 10, // отступы
-            borderRadius: 10, // радиус закругления углов
-            alignItems: 'center', // центрирование по горизонтали
-          }}
-          onPress={() => setShowInputs(true)}
-        >
-          <Text style={{ color: 'white', textTransform: 'uppercase' }}>Новая услуга +</Text>
-        </TouchableOpacity>
       )}
     </View>
   );
@@ -133,9 +232,9 @@ const SelectorServices = ({ servicesList, setServicesList }) => {
 
 const styles = StyleSheet.create({
   serviceContainer: {
-    backgroundColor: '#F5F5F5',
     borderRadius: 5,
-    marginBottom: 10,
+    marginBottom: 5,
+    marginTop: 5,
   },
   serviceParam: {
     flexDirection: 'row',
@@ -153,25 +252,121 @@ const styles = StyleSheet.create({
     textAlign: 'right',
   },
   input: {
-    height: 40,
-    width: '100%',
-    borderColor: 'gray',
-    borderWidth: 1,
-    marginBottom: 10,
-    paddingHorizontal: 10,
-  },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  picker: {
-    height: 50,
-    width: '100%',
-    color: 'black',
-    paddingHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'gray',
-    borderRadius: 5,
+    borderRadius: 10,
     backgroundColor: 'white',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 10,
+    fontSize: 16
+  },
+  selector: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12
+  },
+  selectorText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
+  },
+  submitButton: {
+    backgroundColor: 'rgba(0, 148, 255,0.9)', // светло-голубой фон
+    padding: 10, // отступы
+    borderRadius: 12, // радиус закругления углов
+    alignItems: 'center', // центрирование по горизонтали
+    marginTop: 18
+  },
+  submitButtonText: {
+    color: 'white',
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 16,
+  },
+  addButton: {
+    backgroundColor: 'rgba(0, 148, 255,0.9)', // светло-голубой фон
+    borderRadius: 12, // радиус закругления углов
+    alignItems: 'center', // центрирование по горизонтали
+    height: 36,
+    justifyContent: 'center'
+  },
+  addButtonText: {
+    color: 'white',
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', // полупрозрачный фон
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  itemButton: {
+    padding: 15,
+  },
+  itemText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 16,
+  },
+  closeButton: {
+    backgroundColor: 'rgba(0, 148, 255,0.9)', // светло-голубой фон
+    padding: 10,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  closeButtonText: {
+    color: 'white',
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 16,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    maxHeight: '70%',
+  },
+  scrollViewContent: {
+    paddingBottom: 20,
+  },
+  itemButton: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#E0E0E0',
+  },
+  itemText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  closeButton: {
+    marginTop: 20,
+    alignSelf: 'center',
+  },
+  closeButtonText: {
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.3)',
   },
 });
 

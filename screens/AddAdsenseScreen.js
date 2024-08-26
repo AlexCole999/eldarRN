@@ -246,24 +246,32 @@ const AddAdsenseScreen = () => {
 
   if (stage == 4) {
     return (
-      <View style={styles.container}>
-        <Text style={{ textAlign: 'center', marginBottom: 20, fontSize: 20, fontWeight: 800 }}>Добавьте услуги</Text>
-        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-            onPress={() => setStage(stage => stage - 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Назад
+      <View style={{ ...styles.container }}>
+
+        <View>
+          <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, marginBottom: 24, gap: 20 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            onPress={() => setStage(stage => stage - 1)}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: !servicesList.length ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
-            disabled={!servicesList.length}
-            onPress={() => setStage(stage => stage + 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Дальше
+
+          <TouchableOpacity
+            style={{ backgroundColor: !(phone && address && workhours) ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            disabled={!(phone && address && workhours)}
+            onPress={() => setStage(stage => stage + 1)}        >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Далее
             </Text>
           </TouchableOpacity>
         </View>
+
       </View>
     )
   }
@@ -384,16 +392,54 @@ const AddAdsenseScreen = () => {
             value={address} />
         </View>
 
-        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} />
-        <SelectorImages images={images} setImages={setImages} />
-        <TouchableOpacity style={styles.sendButton} onPress={() => { submitAdsense(); console.log(city, cityDistrict) }}>
-          <Text style={styles.sendButtonText}>Добавить объявление</Text>
-        </TouchableOpacity>
+        <SelectorServices servicesList={servicesList} setServicesList={setServicesList} horizontaldisplay={true} />
+
+        <Text style={{ textAlign: 'start', marginTop: 0, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
+          Описание
+        </Text>
+
         <TextInput
           style={{
-            textAlignVertical: 'top', borderRadius: 10, height: 120, backgroundColor: 'white', paddingHorizontal: 20, paddingVertical: 20, marginTop: 10, marginBottom: 10, fontSize: 16
+            textAlignVertical: 'top',
+            borderRadius: 12,
+            height: 140,
+            backgroundColor: 'white',
+            paddingHorizontal: 8,
+            paddingVertical: 10,
+            marginBottom: 10,
+            fontSize: 14,
+            fontFamily: 'Manrope_500Medium',
+            color: '#1C4C4C',
+            elevation: 4,
           }}
-          multiline={true} placeholder="Введите описание" onChangeText={setDescription} value={description} />
+          multiline={true}
+          placeholder="Введите описание вашей услуги"
+          placeholderTextColor="#C4C4C4"
+          onChangeText={setDescription}
+          value={description}
+        />
+
+        <SelectorImages images={images} setImages={setImages} />
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, marginBottom: 24, gap: 20, marginTop: 9 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36, minWidth: 146 }}
+            onPress={() => setStage(stage => stage - 1)}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ backgroundColor: !description ? 'lightgrey' : 'rgba(0, 148, 255, 1)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36, minWidth: 146 }}
+            disabled={!description}
+            onPress={() => { submitAdsense(); console.log(city, cityDistrict) }}       >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Cохранить
+            </Text>
+          </TouchableOpacity>
+        </View>
 
         {
           newAdsenseStatusVisible ?

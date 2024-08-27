@@ -29,6 +29,8 @@ import ActionsScreen from './screens/ActionsScreen';
 import NotificationScreen from './screens/NotificationScreen';
 import TestScreen from './screens/TestScreen';
 import ProfileAdsenses from './innerCoponents/Profile_adsenses';
+import Profile_orders_my from './innerCoponents/Profile_orders_my';
+import Profile_orders_clients from './innerCoponents/Profile_orders_clients';
 
 
 
@@ -195,6 +197,8 @@ export default function App() {
           <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
           <Stack.Screen name="Мои объявления" component={ProfileAdsenses} />
           <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
+          <Stack.Screen name="Моя бронь" component={Profile_orders_my} />
+          <Stack.Screen name="Бронь клиентов" component={Profile_orders_clients} />
           <Stack.Screen
             options={{
               headerTitle: () => (

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, Alert, StyleSheet, ScrollView, LogBox } from 'react-native';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
@@ -13,7 +13,18 @@ const MyOrdersScreen = ({ route }) => {
   const { adsenses, adsensesWithUserOrders, userData, refreshAdsenses } = route.params;
   const navigation = useNavigation();
 
+  const [myOrdersCount, setMyOrdersCount] = useState(false);
+
+
+
   LogBox.ignoreLogs(['Non-serializable values were found in the navigation state.']);
+
+  const countUserOrders = (adsensesWithUserOrders, userData) => {
+    return adsensesWithUserOrders.reduce((acc, adsense) => {
+      const userOrders = adsense.orders.filter(order => (order.userPhone === userData.phone && order.status == 'Ожидает подтверждения'));
+      return acc + userOrders.length;
+    }, 0);
+  };
 
   const handleAcceptOrder = async (orderId) => {
     try {
@@ -58,150 +69,27 @@ const MyOrdersScreen = ({ route }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={{ textAlign: 'center', fontWeight: 700, fontSize: 18 }} onPress={() => { console.log(adsenses.map(x => x.orders)) }}>Бронировали другие</Text>
-      {/* {adsenses.map((adsense) => (
-        adsense.orders.length > 0 && (
-          <View key={adsense._id} style={styles.adsenseContainer}>
-            <Image
-              source={{ uri: `${localhosturl}/${adsense?.user}/${adsense?.imagesList[0]}` }}
-              style={styles.image}
-            />
-            <Text style={styles.address}>{adsense.address}</Text>
-            <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 10 }}>+{adsense.phone}</Text>
-            <View style={styles.infoContainer}>
-              {adsense.orders
-                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортировка заказов
-                .map((order) => (
-                  <View key={order._id} style={styles.orderContainer}>
-                    <Text style={styles.orderText}><Text style={styles.labelText}>Статус: </Text>
-                      <Text style={{ ...styles.valueText, color: order.status == 'Ожидает подтверждения' ? 'orange' : 'green' }}>
-                        {order.status}
-                      </Text>
-                    </Text>
-                    <Text style={styles.orderText}><Text style={styles.labelText}>Имя и телефон:</Text> <Text style={styles.valueText}>{order.userName}, {order.userPhone}</Text></Text>
-                    <Text style={styles.orderText}><Text style={styles.labelText}>Дата:</Text> <Text style={styles.valueText}>{new Date(order.date).toLocaleDateString()}{order.bookingTime ? `, ${order.bookingTime}:00` : null}</Text></Text>
-                    <Text style={styles.orderText}><Text style={styles.labelText}>Длительность:</Text> <Text style={styles.valueText}>{order.duration}:00</Text></Text>
-                    <Text style={styles.orderText}><Text style={styles.labelText}>Запрос отправлен:</Text> <Text style={styles.valueText}>{`${new Date(order.createdAt).toLocaleDateString()} ${new Date(order.createdAt).toLocaleTimeString()}`}</Text></Text>
-                    <View style={styles.buttonContainer}>
-                      <TouchableOpacity
-                        style={styles.confirmButton}
-                        onPress={() => handleAcceptOrder(order._id)}
-                      >
-                        <Text style={styles.buttonText}>Подтвердить</Text>
-                      </TouchableOpacity>
-                      <TouchableOpacity
-                        style={styles.cancelButton}
-                        onPress={() => handleDeleteOrder(order._id)}
-                      >
-                        <Text style={styles.buttonText}>Снять</Text>
-                      </TouchableOpacity>
-                    </View>
-                  </View>
-                ))}
-            </View>
-          </View>
-        )
-      ))} */}
+    <ScrollView style={{ backgroundColor: '#F5FFFF' }}>
+      <TouchableOpacity style={{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        marginTop: 24,
+        marginHorizontal: 24,
+        marginBottom: 8,
+        padding: 8,
+        borderRadius: 12,
+        elevation: 4
+      }} onPress={() => { navigation.navigate('Моя бронь', { adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses }) }}>
+        <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+          <Text style={styles.addButtonText}>Моя бронь</Text>
+        </View>
+        <View style={{ backgroundColor: 'rgb(0, 148, 255)', paddingHorizontal: 12, paddingVertical: 2, borderRadius: 6 }}>
+          <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>{countUserOrders(adsensesWithUserOrders, userData)}</Text>
+        </View>
+      </TouchableOpacity>
 
-
-      <Text style={{ textAlign: 'center', fontWeight: 700, fontSize: 18 }}>Бронировал я</Text>
-      <View style={{ marginBottom: 220 }}>
-        {adsensesWithUserOrders.map((adsense) => {
-          // Фильтруем заказы, чтобы отобразить только те, в которых userPhone совпадает с user.phone
-          const userOrders = adsense.orders.filter(order => order.userPhone === userData.phone);
-
-          // Если нет подходящих заказов, не отображаем объявление
-          if (userOrders.length === 0) {
-            return null;
-          }
-
-          return (
-            <TouchableOpacity key={adsense._id} style={{ height: 200 }} onPress={() => console.log(adsense)}>
-              <View style={styles.adContainer}>
-
-                <Image source={{ uri: `${localhosturl}/${adsense.user}/${adsense?.imagesList[0]}` }} style={styles.adImage} />
-
-                <View style={styles.infoContainer}>
-
-                  <View style={{ maxWidth: '100%' }}>
-                    <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{adsense.category}</Text>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                      <Image source={profile_adsenses_place} style={{ width: 16, height: 16 }} />
-                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>г. {adsense.city}, {adsense.address}</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                      <Image source={profile_adsenses_phone} style={{ width: 16, height: 16 }} />
-                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>+ {adsense?.phone.toString().replace(/(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4 $5')}</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
-                      <Image source={profile_adsenses_other} style={{ width: 16, height: 16 }} />
-                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_400Regular', fontSize: 14, marginTop: 6 }}>Прочее</Text>
-                    </View>
-
-                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 12 }}>
-                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы работы</Text>
-                      <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{adsense.workhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
-                    </View>
-                    {adsense.servicesList.map((service, index) => (
-                      <View key={index} style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 }}>
-                        <Text style={{ ...styles.adText, fontFamily: 'Manrope_300Light', fontSize: 16 }}>Часы {service.hours}:</Text>
-                        <Text style={{ ...styles.adText, fontFamily: 'Manrope_500Medium', fontSize: 16 }}>{service.price.toLocaleString('ru-RU')}</Text>
-                      </View>
-                    ))}
-                  </View>
-                </View>
-
-              </View>
-
-              <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, borderBottomWidth: 1, borderBottomColor: '#C4C4C4', paddingBottom: 24, gap: 20 }}>
-                <TouchableOpacity style={{ backgroundColor: 'white', borderWidth: 1, borderColor: '#D63737', borderRadius: 12, height: 36, alignItems: 'center', justifyContent: 'center', flexGrow: 1 }}
-                  onPress={() => { handleDeleteOrder(adsense.orders[0]._id) }}
-                >
-                  <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, letterSpacing: 0.5 }}>Отменить бронирование</Text>
-                </TouchableOpacity>
-              </View>
-            </TouchableOpacity>
-            // <View key={adsense._id} style={styles.adsenseContainer}>
-            //   <Image
-            //     source={{ uri: `${localhosturl}/${adsense.user}/${adsense.imagesList[0]}` }}
-            //     style={styles.image}
-            //   />
-            //   <Text style={styles.address}>{adsense.address}</Text>
-            //   <Text style={{ fontWeight: '500', textAlign: 'center', fontSize: 10 }}>+{adsense.phone}</Text>
-
-            //   <View style={styles.infoContainer}>
-            //     {userOrders
-            //       .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) // Сортировка заказов
-            //       .map((order) => (
-            //         <View key={order._id} style={styles.orderContainer}>
-            //           <Text style={styles.orderText}>
-            //             <Text style={styles.labelText}>Статус: </Text>
-            //             <Text style={{ ...styles.valueText, color: order.status == 'Ожидает подтверждения' ? 'orange' : 'green' }}>
-            //               {order.status}
-            //             </Text>
-            //           </Text>
-            //           <Text style={styles.orderText}><Text style={styles.labelText}>Имя и телефон:</Text> <Text style={styles.valueText}>{order.userName}, {order.userPhone}</Text></Text>
-            //           <Text style={styles.orderText}><Text style={styles.labelText}>Дата:</Text> <Text style={styles.valueText}>{new Date(order.date).toLocaleDateString()}{order.bookingTime ? `, ${order.bookingTime}:00` : null}</Text></Text>
-            //           <Text style={styles.orderText}><Text style={styles.labelText}>Длительность:</Text> <Text style={styles.valueText}>{order.duration}:00</Text></Text>
-            //           <Text style={styles.orderText}><Text style={styles.labelText}>Запрос отправлен:</Text> <Text style={styles.valueText}>{`${new Date(order.createdAt).toLocaleDateString()} ${new Date(order.createdAt).toLocaleTimeString()}`}</Text></Text>
-            //           <View style={styles.buttonContainer}>
-            //             <TouchableOpacity
-            //               style={styles.cancelButton}
-            //               onPress={() => handleDeleteOrder(order._id)}
-            //             >
-            //               <Text style={styles.buttonText}>Отменить бронирование</Text>
-            //             </TouchableOpacity>
-            //           </View>
-            //         </View>
-            //       ))}
-            //   </View>
-            // </View>
-          );
-        })}
-      </View>
     </ScrollView>
   );
 };
@@ -210,7 +98,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    paddingHorizontal: 20,
     paddingTop: 10
   },
   adsenseContainer: {

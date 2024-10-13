@@ -21,6 +21,7 @@ import profile_support from '../assets/profile_support.png'
 
 const ProfileScreen = () => {
   const [userData, setUserData] = useState(null);
+  const [accType, setAccType] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
@@ -116,7 +117,7 @@ const ProfileScreen = () => {
       {userData
         ?
         (
-          <View style={styles.userContainer}>
+          <TouchableOpacity style={styles.userContainer} onPress={profileQuit}>
             <View style={{ flexDirection: 'row', gap: 8 }}>
               <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
               <View>
@@ -127,10 +128,10 @@ const ProfileScreen = () => {
             <View style={{ paddingBottom: 20 }}>
               <Image source={profile_pencil} style={{ width: 24, height: 24 }} />
             </View>
-          </View>
+          </TouchableOpacity>
         )
         :
-        <ProfileRegistration name={name} setName={setName} phone={phone} setPhone={setPhone} password={password} setPassword={setPassword} userData={userData} setUserData={setUserData} refreshAdsenses={refreshAdsenses} />
+        <ProfileRegistration accType={accType} setAccType={setAccType} name={name} setName={setName} phone={phone} setPhone={setPhone} password={password} setPassword={setPassword} userData={userData} setUserData={setUserData} refreshAdsenses={refreshAdsenses} />
       }
 
       {userData ?

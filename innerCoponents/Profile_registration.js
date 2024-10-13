@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native';
+import { FlatList, Image, ImageBackground, Text, TextInput, View, Button, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, Alert, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from '../localhoststring';
@@ -7,12 +7,13 @@ import { ScrollView } from 'react-native-gesture-handler';
 import StarRating from './StarRating';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
 
-
-axios
-const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPassword, userData, setUserData, refreshAdsenses }) => {
+const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPhone, password, setPassword, userData, setUserData, refreshAdsenses }) => {
 
   const navigation = useNavigation();
+
+  const [accTypeModalVisible, setAccTypeModalVisible] = useState(false)
 
   const validatedName = (name) => {
     return name.length >= 4
@@ -46,6 +47,7 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
     const newUserRegistration = async () => {
       try {
         let response = await axios.post(`${localhosturl}/registrationNewUser`, {
+          accType,
           name,
           phone,
           password
@@ -106,7 +108,7 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
 
   return (
     <View>
-      <Text style={styles.title}>Регистрация и вход</Text>
+      {/* <Text style={styles.title}>Регистрация и вход</Text>
       <TextInput
         style={{
           borderRadius: 10,
@@ -121,9 +123,69 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
         placeholder="Имя"
         onChangeText={(name) => { validatedName(name); setName(name); }}
         value={name}
-      />
+      /> */}
+      <Modal
+        transparent={true}
+        visible={accTypeModalVisible}
+        onRequestClose={() => setAccTypeModalVisible(false)}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <ScrollView>
+              {[
+                { label: "Коворкинг", value: 'Коворкинг' },
+                { label: "Мастер", value: "Мастер" },
+                { label: "Клиент", value: "Клиент" },
 
-      <TextInput
+              ].map((item) => (
+                <TouchableOpacity
+                  key={item.value}
+                  style={styles.modalItem}
+                  onPress={() => {
+                    setAccType(item.value)
+                    setAccTypeModalVisible(false);
+                  }}
+                >
+                  <Text>{item.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </ScrollView>
+          </View>
+        </View>
+      </Modal>
+
+      <View>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Тип аккаунта*</Text>
+        <TouchableOpacity
+          style={{ ...styles.openButton, marginTop: 4 }}
+          onPress={() => setAccTypeModalVisible(true)}
+        >
+          <Text style={{
+            ...styles.openButtonText,
+            color: accType ? '#333333' : '#C4C4C4'
+          }}>
+            {accType || 'Выберите категорию'}
+          </Text>
+          <Image source={arrow_down} style={styles.arrowIcon} />
+        </TouchableOpacity>
+      </View>
+
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>Имя*</Text>
+
+      <View style={{ marginTop: 4 }}>
+        <TextInput
+          placeholderTextColor="#C4C4C4"
+          style={{
+            borderWidth: name ? (validatedName(name) ? 1 : 1) : 0,
+            borderColor: name ? (validatedName(name) ? 'green' : 'red') : 'grey',
+            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 12, fontSize: 16
+          }}
+          placeholder="Имя"
+          onChangeText={(name) => { validatedName(name); setName(name); }}
+          value={name} />
+      </View>
+
+      {/* <TextInput
         style={{
           borderRadius: 10,
           backgroundColor: 'white',
@@ -137,8 +199,25 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
         value={phone}
         onChangeText={(phone) => { validatedPhone(phone); setPhone(phone); }}
         placeholder="Телефон"
-      />
-      <TextInput
+      /> */}
+
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Телефон*</Text>
+
+      <View style={{ marginTop: 4 }}>
+        <TextInput
+          placeholderTextColor="#C4C4C4"
+          style={{
+            borderWidth: phone ? (validatedPhone(phone) ? 1 : 1) : 0,
+            borderColor: phone ? (validatedPhone(phone) ? 'green' : 'red') : 'grey',
+            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+          }}
+          value={phone}
+          onChangeText={(phone) => { validatedPhone(phone); setPhone(phone); }}
+          placeholder="Телефон"
+        />
+      </View>
+
+      {/* <TextInput
         style={{
           borderRadius: 10,
           backgroundColor: 'white',
@@ -153,7 +232,26 @@ const ProfileRegistration = ({ name, setName, phone, setPhone, password, setPass
         onChangeText={(password) => { validatedPassword(password); setPassword(password) }}
         placeholder="Пароль"
         secureTextEntry={false}
-      />
+      /> */}
+
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Пароль*</Text>
+
+      <View style={{ marginTop: 4 }}>
+        <TextInput
+          placeholderTextColor="#C4C4C4"
+          style={{
+            borderWidth: password ? (validatedPassword(password) ? 1 : 1) : 0,
+            borderColor: password ? (validatedPassword(password) ? 'green' : 'red') : 'grey',
+            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+          }}
+          value={password}
+          onChangeText={(password) => { validatedPassword(password); setPassword(password) }}
+          placeholder="Пароль"
+          secureTextEntry={false}
+        />
+      </View>
+
+
       {name || phone || password ?
         <View>
           {validatedName(name) ? <Text style={{ color: 'green' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
@@ -181,6 +279,32 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 20,
+  },
+  label: {
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 16,
+    color: '#333333',
+  },
+  openButtonText: {
+    fontFamily: 'Manrope_500Medium',
+    fontSize: 14,
+    color: '#C4C4C4',
+  },
+  openButton: {
+    height: 42,
+    backgroundColor: 'white',
+    elevation: 4,
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    marginTop: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 12,
+  },
+  arrowIcon: {
+    width: 16,
+    height: 16,
   },
   input: {
     height: 40,
@@ -304,6 +428,23 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     gap: 10,
   },
+  modalContent: {
+    width: '80%',
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+  },
+  modalItem: {
+    paddingVertical: 10,
+    borderBottomColor: '#ececec',
+    borderBottomWidth: 1,
+  },
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  }
 });
 
 export default ProfileRegistration

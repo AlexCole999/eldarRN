@@ -117,22 +117,49 @@ const CategoriesInnerComponent = () => {
 
     return (
       <>
-        {itemsToShow.map((item, index) => (
-          <TouchableOpacity
-            key={index}
-            style={{ borderRadius: 12, padding: 8, backgroundColor: 'white', elevation: 4 }}
-            onPress={() => { dispatch(filterSlice.actions.filterCategory(item.name)); navigation.navigate('Каталог') }}
-          >
-            <Image
-              source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
-              style={{ width: 136, height: 100, borderRadius: 12 }}
-              resizeMode='stretch'
-            />
-            <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
-              <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{item.name}</Text>
-            </View>
-          </TouchableOpacity>
-        ))}
+        {
+          itemsToShow.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={{ borderRadius: 12, padding: 8, backgroundColor: 'white', elevation: 4, flexGrow: 0, width: (screenWidth - 56) / 2 }}
+              onPress={() => { dispatch(filterSlice.actions.filterCategory(item.name)); navigation.navigate('Каталог') }}
+            >
+              <Image
+                source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
+                style={{ width: '100%', height: 100, borderRadius: 12 }}
+                resizeMode='cover'
+              />
+              <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
+                <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        }
+
+
+
+        {/* { !!!Предыдущий вариант
+          itemsToShow.map((item, index) => (
+            <TouchableOpacity
+              key={index}
+              style={{ borderRadius: 12, padding: 8, backgroundColor: 'white', elevation: 4 }}
+              onPress={() => { dispatch(filterSlice.actions.filterCategory(item.name)); navigation.navigate('Каталог') }}
+            >
+              <Image
+                source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
+                style={{ width: 136, height: 100, borderRadius: 12 }}
+                resizeMode='stretch'
+              />
+              <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
+                <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{item.name}</Text>
+              </View>
+            </TouchableOpacity>
+          ))
+        } */}
+
+
+
+
       </>
     );
   };

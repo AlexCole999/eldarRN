@@ -380,7 +380,8 @@ const styles = StyleSheet.create({
   addButtonText: {
     fontWeight: '500',
     fontSize: 16,
-  }, modalContainer: {
+  },
+  modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',

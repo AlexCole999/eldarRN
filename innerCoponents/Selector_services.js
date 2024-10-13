@@ -85,7 +85,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
         </View>
       )}
       <ScrollView
-        style={{ marginTop: 12, maxHeight: 200, marginBottom: 0 }}
+        style={{ maxHeight: 200, marginBottom: 0 }}
         horizontal={horizontaldisplay}
         showsHorizontalScrollIndicator={false}
       >

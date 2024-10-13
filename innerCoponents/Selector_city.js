@@ -16,7 +16,7 @@ const SelectorCity = ({ city, setCity }) => {
   };
 
   return (
-    <View style={{ marginTop: 12 }}>
+    <View>
       <Text style={styles.label}>Город</Text>
 
       <TouchableOpacity

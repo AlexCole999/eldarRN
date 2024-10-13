@@ -3,12 +3,15 @@ import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpaci
 import { useNavigation } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
 import Catalog_star from '../assets/Catalog_star.png';
+import favorites_null from '../assets/favorites_null.png';
+import favorites_fill from '../assets/favorites_fill.png';
 import { useSelector } from 'react-redux';
 import SearchComponent from './../innerCoponents/SearchComponent';
 
 const AdsensesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
   const flatListRef = useRef(null);
+  const [clicked, setClicked] = useState(false);
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
@@ -38,6 +41,7 @@ const AdsensesScreen = () => {
         const objects = data.map((item) => ({
           user: item.user,
           id: item._id,
+          title: item.title,
           category: item.category,
           city: item.city,
           district: item?.district,
@@ -195,18 +199,27 @@ const AdsensesScreen = () => {
                 style={{ ...styles.itemContainer, elevation: 4 }}
                 key={item.id}
                 onPress={() => navigation.navigate('Детали объявления', {
-                  adId: item.id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+                  adId: item.id, adUser: item.user, adTitle: item.title, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
                 })}
               >
                 <View>
                   <Image
-                    style={styles.image}
+                    style={{ ...styles.image, position: 'relative' }}
                     source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
                   />
+                  <TouchableOpacity
+                    style={{ width: 20, height: 19, position: 'absolute', top: 10, right: 10 }}
+                    onPress={() => { setClicked(!clicked) }}
+                  >
+                    <Image
+                      style={{ width: 20, height: 19 }}
+                      source={clicked ? favorites_null : favorites_fill}
+                    />
+                  </TouchableOpacity>
                   <View style={styles.textContainer}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', minWidth: 36 }}>
-                      <Text style={{ ...styles.category, minHeight: 34, maxWidth: '70%' }}>{item.category}</Text>
+                      <Text style={{ ...styles.category, minHeight: 34, maxWidth: '70%' }}>{item?.title ? item?.title : item?.category}</Text>
                       <View style={{ flexDirection: 'row', alignItems: 'start', gap: 4 }}>
                         <Image
                           style={{ width: 12, height: 12, marginTop: 2 }}

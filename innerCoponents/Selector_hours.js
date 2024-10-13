@@ -31,7 +31,7 @@ const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWor
   };
 
   return (
-    <View style={{ marginTop: 12 }}>
+    <View>
 
       <Text style={styles.label}>Информация о работе</Text>
       <View style={styles.container}>

@@ -16,7 +16,7 @@ import user from '../assets/user.png'
 
 const AdDetailsScreen = ({ route }) => {
 
-  const { adId, adUser, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
+  const { adId, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
   console.log(route.params)
@@ -54,7 +54,7 @@ const AdDetailsScreen = ({ route }) => {
           <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16 }}>{adCategory}</Text>
         </View>
 
-        <View style={{ flexDirection: 'row', marginTop: 12, gap: 4, alignItems: 'center' }}>
+        <View style={{ flexDirection: 'row', marginTop: 12, gap: 4, alignItems: 'center', maxWidth: '95%' }}>
           <Image source={profile_adsenses_place} style={{ width: 16, height: 16, fontFamily: 'Manrope_400Regular', fontSize: 14 }} />
           <Text style={{ fontFamily: 'Manrope_500Medium', fontSize: 14 }}>{adCity}, {adAddress}</Text>
         </View>

@@ -20,8 +20,9 @@ const AddAdsenseScreen = () => {
 
   const navigation = useNavigation();
 
-  const [stage, setStage] = useState(1);
+  const [stage, setStage] = useState(0);
   const [user, setUser] = useState('default');
+  const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [city, setCity] = useState('');
   const [cityDistrict, setCityDistrict] = useState('');
@@ -56,8 +57,8 @@ const AddAdsenseScreen = () => {
       throw new Error('Вы не зарегистрированы, пройдите регистрацию');
     }
 
-    if (!phone || !city || !address || !workhours || images.length === 0) {
-      Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: телефон, город, адрес, часы работы и минимум одну фотографию');
+    if (!title || !phone || !city || !address || !workhours || images.length === 0) {
+      Alert.alert('Некорректные данные', 'Пожалуйста, заполните все поля: название, телефон, город, адрес, часы работы и минимум одну фотографию');
       return;
     }
 
@@ -93,9 +94,9 @@ const AddAdsenseScreen = () => {
         console.log(user)
         console.log(cityDistrict)
         let district = city == 'Ташкент' ? cityDistrict : null
-        console.log(user, category, city, district, phone, address, workhours, servicesList, imagesList, description)
+        console.log(user, title, category, city, district, phone, address, workhours, servicesList, imagesList, description)
         axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
-          user, category, city, district, phone, address, workhours, servicesList, imagesList, description
+          user, title, category, city, district, phone, address, workhours, servicesList, imagesList, description
         })
           .then((response) => {
 
@@ -113,6 +114,50 @@ const AddAdsenseScreen = () => {
 
   };
 
+
+
+  if (stage == 0) {
+    return (
+      <View style={{ ...styles.container, paddingHorizontal: 24 }}>
+
+        <View>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Название</Text>
+
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginTop: 4, fontSize: 14
+            }}
+            placeholder="Введите название"
+            onChangeText={setTitle}
+            value={title} />
+        </View>
+
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 24, gap: 20 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            onPress={() => setStage(stage => stage - 1)}
+            disabled={true}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{ backgroundColor: !title ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            disabled={!title}
+            onPress={() => setStage(stage => stage + 1)}        >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Далее
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+      </View>
+    )
+  }
+
   if (stage == 1) {
     return (
       <View style={{ ...styles.container, paddingHorizontal: 24 }}>
@@ -123,7 +168,7 @@ const AddAdsenseScreen = () => {
           <TouchableOpacity
             style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             onPress={() => setStage(stage => stage - 1)}
-            disabled={true}
+            disabled={false}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
               Отмена
@@ -211,7 +256,7 @@ const AddAdsenseScreen = () => {
             <TextInput
               placeholderTextColor="#C4C4C4"
               style={{
-                fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+                fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
               placeholder="Укажите адрес"
               onChangeText={setAddress}
@@ -356,10 +401,34 @@ const AddAdsenseScreen = () => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <SelectorCategory category={category} setCategory={setCategory} />
-        <SelectorCity city={city} setCity={setCity} />
+
+        <View>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Название</Text>
+
+          <TextInput
+            placeholderTextColor="#C4C4C4"
+            style={{
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginTop: 4, fontSize: 14
+            }}
+            placeholder="Введите название"
+            onChangeText={setTitle}
+            value={title} />
+        </View>
+
+        <View style={{ marginTop: 12 }}>
+          <SelectorCategory category={category} setCategory={setCategory} />
+        </View>
+
+        <View style={{ marginTop: 12 }}>
+          <SelectorCity city={city} setCity={setCity} />
+        </View>
+
         <SelectorDistrict city={city} cityDistrict={cityDistrict} setCityDistrict={setCityDistrict} />
-        <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
+
+        <View style={{ marginTop: 12 }}>
+          <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
+        </View>
+
         <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
 
         <View style={{ flexDirection: 'row', marginTop: 4 }}>
@@ -385,7 +454,7 @@ const AddAdsenseScreen = () => {
           <TextInput
             placeholderTextColor="#C4C4C4"
             style={{
-              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+              fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
             }}
             placeholder="Укажите адрес"
             onChangeText={setAddress}
@@ -394,7 +463,7 @@ const AddAdsenseScreen = () => {
 
         <SelectorServices servicesList={servicesList} setServicesList={setServicesList} horizontaldisplay={true} />
 
-        <Text style={{ textAlign: 'start', marginTop: 0, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
+        <Text style={{ textAlign: 'start', marginTop: 12, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
           Описание
         </Text>
 

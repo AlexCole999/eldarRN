@@ -12,11 +12,17 @@ import time from '../assets/time.png'
 import profile_adsenses_place from '../assets/profile_adsenses_place.png'
 import user from '../assets/user.png'
 
+import inst_icon from '../assets/inst_icon.png'
+import teleg_icon from '../assets/teleg_icon.png'
+import wa_icon from '../assets/wa_icon.png'
+import map_icon from '../assets/map_icon.png'
+import Catalog_star from '../assets/Catalog_star.png'
+
 
 
 const AdDetailsScreen = ({ route }) => {
 
-  const { adId, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adTestimonials } = route.params;
+  const { adId, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adInstagram, adTelegram, adWhatsapp, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
   console.log(route.params)
@@ -50,8 +56,22 @@ const AdDetailsScreen = ({ route }) => {
 
       <View style={{ marginHorizontal: 24, marginTop: 16, backgroundColor: 'white', padding: 8, borderRadius: 12, elevation: 4 }}>
 
-        <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16 }}>{adCategory}</Text>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16 }}>{adTitle}</Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center', gap: 3 }}>
+            <Image source={Catalog_star} style={{ width: 14, height: 14 }} />
+            <Text style={{ fontFamily: 'Montserrat_600SemiBold', color: '#D3B331', fontSize: 16 }}>
+              {
+                adTestimonials.length ?
+                  (adTestimonials.reduce((accumulator, review) => { return accumulator + review.rating; }, 0) / adTestimonials.length).toFixed(1)
+                  : '0.0'
+              }
+            </Text>
+          </View>
+        </View>
+
+        <View style={{ flexDirection: 'row', marginTop: 12 }}>
+          <Text style={{ fontFamily: 'Manrope_500Medium', fontSize: 14 }}>{adCategory}</Text>
         </View>
 
         <View style={{ flexDirection: 'row', marginTop: 12, gap: 4, alignItems: 'center', maxWidth: '95%' }}>
@@ -63,6 +83,15 @@ const AdDetailsScreen = ({ route }) => {
           <Image source={time} style={{ width: 16, height: 16 }} />
           <Text style={{ fontFamily: 'Manrope_500Medium', fontSize: 14 }}>{adWorkhours.replace(/:/g, '.').replace('-', ' - ')}</Text>
         </View>
+
+        <TouchableOpacity
+          style={{ flexDirection: 'row', gap: 4, marginTop: 12, backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 33 }}
+        >
+          <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 14, textAlign: 'center', fontFamily: 'Manrope_500Medium' }}>
+            Показать на карте
+          </Text>
+          <Image source={map_icon} style={{ width: 19, height: 19, fontFamily: 'Manrope_400Regular', fontSize: 14 }} />
+        </TouchableOpacity>
 
       </View>
 
@@ -92,6 +121,30 @@ const AdDetailsScreen = ({ route }) => {
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold' }}>Забронировать</Text>
         </TouchableOpacity>
 
+      </View>
+
+      <View style={{ marginTop: 24, marginLeft: 24, flexDirection: 'row', gap: 24 }}>
+        <TouchableOpacity onPress={() => { adInstagram ? Linking.openURL(adInstagram) : null; }}>
+          <Image
+            source={inst_icon}
+            style={{ width: 31, height: 32 }}
+
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { adTelegram ? Linking.openURL(`https://t.me/${adTelegram.replace('@', '')}`) : null; }}>
+          <Image
+            source={teleg_icon}
+            style={{ width: 32, height: 32 }}
+
+          />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => { Linking.openURL(`whatsapp://send?phone=${adWhatsapp}`) }}>
+          <Image
+            source={wa_icon}
+            style={{ width: 31, height: 32 }}
+
+          />
+        </TouchableOpacity>
       </View>
 
       <View style={{ marginHorizontal: 24, marginTop: 24, gap: 8 }}>

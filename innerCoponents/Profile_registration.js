@@ -54,7 +54,7 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
         });
         console.log(response.data.registrationResult)
         await setUserData({ name, phone });
-        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone }));
+        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone, accType }));
         Alert.alert('Регистрация успешна', 'Вы успешно зарегистрировали новый профиль');
         refreshAdsenses()
       } catch (error) {

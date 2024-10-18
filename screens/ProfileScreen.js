@@ -37,6 +37,7 @@ const ProfileScreen = () => {
     setRefreshing(true);
 
     let user = await AsyncStorage.getItem('userData');
+    console.log(user)
 
     const countNewOrders = (adsenses) => {
       const pendingCount = adsenses.reduce((count, adsense) => {

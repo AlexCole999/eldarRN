@@ -51,6 +51,9 @@ const AdsensesScreen = () => {
           servicesList: item.servicesList,
           imagesList: item.imagesList,
           description: item.description,
+          instagram: item.instagram,
+          telegram: item.telegram,
+          whatsapp: item.whatsapp,
           testimonials: item.testimonials,
           orders: item.orders
         }));
@@ -199,7 +202,22 @@ const AdsensesScreen = () => {
                 style={{ ...styles.itemContainer, elevation: 4 }}
                 key={item.id}
                 onPress={() => navigation.navigate('Детали объявления', {
-                  adId: item.id, adUser: item.user, adTitle: item.title, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+                  adId: item.id,
+                  adUser: item.user,
+                  adTitle: item.title,
+                  adCity: item.city,
+                  adDistrict: item.district,
+                  adCategory: item.category,
+                  adPhone: item.phone,
+                  adAddress: item.address,
+                  adInstagram: item.instagram,
+                  adTelegram: item.telegram,
+                  adWhatsapp: item.whatsapp,
+                  adWorkhours: item.workhours,
+                  adServiceParams: item.servicesList,
+                  adImagesList: item.imagesList,
+                  adDescription: item.description,
+                  adTestimonials: item.testimonials
                 })}
               >
                 <View>

@@ -60,6 +60,10 @@ const Tabs = () => {
             iconPath = focused
               ? require('./assets/Profile.png')
               : require('./assets/Profile.png');
+          } else if (route.name === 'Записи') {
+            iconPath = focused
+              ? require('./assets/orders.png')
+              : require('./assets/orders.png');
           }
 
           return (
@@ -79,19 +83,20 @@ const Tabs = () => {
         tabBarInactiveTintColor: 'rgba(255,255,255,0.5)',
         tabBarLabelStyle: {
           paddingTop: 0,  // Добавляет расстояние между иконкой и текстом
-          fontSize: 14,
-          fontWeight: 500
+          fontSize: 10,
+          fontFamily: 'Manrope_600SemiBold',
+          letterSpacing: 0.8
         },
         tabBarStyle: {
           backgroundColor: 'rgba(0, 148, 255,1);', // Задний фон
           opacity: 0.9,
-          paddingTop: 20,             // padding сверху
+          paddingTop: 8,             // padding сверху
           paddingLeft: 20,            // padding слева
           paddingRight: 20,           // padding справа
-          paddingBottom: 40,           // padding снизу
+          paddingBottom: 8,           // padding снизу
           borderTopLeftRadius: 16,    // Радиус слева вверху
           borderTopRightRadius: 16,   // Радиус справа вверху
-          height: 110,
+          height: 62,
 
         }
       })}
@@ -99,6 +104,14 @@ const Tabs = () => {
       <Tab.Screen
         name="Главная"
         component={MainScreen}
+        options={{
+          headerShown: false, // Отключает отображение заголовка
+        }}
+      />
+      <Tab.Screen
+        name="Записи"
+        component={AdsensesScreen}
+        // }}
         options={{
           headerShown: false, // Отключает отображение заголовка
         }}

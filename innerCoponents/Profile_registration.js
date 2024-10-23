@@ -293,10 +293,10 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
         <Text style={styles.buttonText}>Зарегистрироваться или войти</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => { setPersonalDataAllowed(!personalDataAllowed) }}>
+      <TouchableOpacity style={{ marginHorizontal: '2%' }} onPress={() => { setPersonalDataAllowed(!personalDataAllowed) }}>
         <View style={{ flexDirection: 'row', marginTop: 4, gap: 10, width: '100%', justifyContent: 'center' }}>
-          <Image source={personalDataAllowed ? check_fill : check_null} style={{ height: 15, width: 15 }} />
-          <Text style={{ lineHeight: 15, maxWidth: '75%', fontFamily: 'Manrope_500Medium', textAlign: 'center', color: '#7B7B7B', fontSize: 14, letterSpacing: 0.5 }}>Нажимая на кнопку, вы даёте согласие на обработку персональных данных</Text>
+          <Image source={personalDataAllowed ? check_fill : check_null} style={{ height: 16, width: 16 }} />
+          <Text style={{ lineHeight: 15, fontFamily: 'Manrope_500Medium', textAlign: 'center', color: '#7B7B7B', fontSize: 12, letterSpacing: 0.5 }}>Нажимая на кнопку, вы даёте согласие на обработку персональных данных</Text>
         </View>
       </TouchableOpacity>
 
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
   },
   button: {
     flexGrow: 1,
-    marginTop: 24,
+    marginTop: 14,
     backgroundColor: '#0094FF', // светло-голубой фон
     padding: 10, // отступы
     borderRadius: 12, // радиус закругления углов

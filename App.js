@@ -91,8 +91,8 @@ const Tabs = () => {
           backgroundColor: 'rgba(0, 148, 255,1);', // Задний фон
           opacity: 0.9,
           paddingTop: 8,             // padding сверху
-          paddingLeft: 20,            // padding слева
-          paddingRight: 20,           // padding справа
+          paddingLeft: 10,            // padding слева
+          paddingRight: 10,           // padding справа
           paddingBottom: 8,           // padding снизу
           borderTopLeftRadius: 16,    // Радиус слева вверху
           borderTopRightRadius: 16,   // Радиус справа вверху

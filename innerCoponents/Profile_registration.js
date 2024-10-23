@@ -8,12 +8,17 @@ import StarRating from './StarRating';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+import showPass_icon from '../assets/showPass_icon.png'; // Убедитесь, что у вас есть это изображение
+import check_null from '../assets/check_null.png'; // Убедитесь, что у вас есть это изображение
+import check_fill from '../assets/check_fill.png'; // Убедитесь, что у вас есть это изображение
 
 const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPhone, password, setPassword, userData, setUserData, refreshAdsenses }) => {
 
   const navigation = useNavigation();
 
   const [accTypeModalVisible, setAccTypeModalVisible] = useState(false)
+  const [personalDataAllowed, setPersonalDataAllowed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   const validatedName = (name) => {
     return name.length >= 4
@@ -31,6 +36,14 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
 
   const handleRegistration = async () => {
 
+    if (!personalDataAllowed) {
+      alert('Поставьте галочку для согалсия на обработку персональных данных');
+      return;
+    }
+    if (!accType) {
+      alert('Выберите тип аккаунта');
+      return;
+    }
     if (!validatedName(name)) {
       alert('Некорректное имя. Имя должно содержать только буквы и быть длиной не менее 2 символов.');
       return;
@@ -164,7 +177,7 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
             ...styles.openButtonText,
             color: accType ? '#333333' : '#C4C4C4'
           }}>
-            {accType || 'Выберите категорию'}
+            {accType || 'Выберите тип аккаунта'}
           </Text>
           <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>
@@ -178,7 +191,7 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
           style={{
             borderWidth: name ? (validatedName(name) ? 1 : 1) : 0,
             borderColor: name ? (validatedName(name) ? 'green' : 'red') : 'grey',
-            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 12, fontSize: 16
+            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 12
           }}
           placeholder="Имя"
           onChangeText={(name) => { validatedName(name); setName(name); }}
@@ -209,11 +222,11 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
           style={{
             borderWidth: phone ? (validatedPhone(phone) ? 1 : 1) : 0,
             borderColor: phone ? (validatedPhone(phone) ? 'green' : 'red') : 'grey',
-            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10
           }}
           value={phone}
           onChangeText={(phone) => { validatedPhone(phone); setPhone(phone); }}
-          placeholder="Телефон"
+          placeholder="Телефон, цифрами, без +"
         />
       </View>
 
@@ -236,34 +249,66 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
 
       <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Пароль*</Text>
 
-      <View style={{ marginTop: 4 }}>
+      <View style={{ marginTop: 4, position: 'relative' }}>
         <TextInput
           placeholderTextColor="#C4C4C4"
           style={{
             borderWidth: password ? (validatedPassword(password) ? 1 : 1) : 0,
             borderColor: password ? (validatedPassword(password) ? 'green' : 'red') : 'grey',
-            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 16
+            fontFamily: 'Manrope_500Medium',
+            fontSize: 14,
+            height: 42,
+            elevation: 4,
+            borderRadius: 12,
+            backgroundColor: 'white',
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            marginBottom: 10,
+            paddingRight: 40 // пространство для кнопки
           }}
           value={password}
           onChangeText={(password) => { validatedPassword(password); setPassword(password) }}
           placeholder="Пароль"
-          secureTextEntry={false}
+          secureTextEntry={!showPassword} // изменяем видимость текста
         />
+
+        {/* Кнопка для показа/скрытия пароля */}
+        <TouchableOpacity
+          onPress={() => setShowPassword(!showPassword)}
+          style={{
+            position: 'absolute',
+            right: 10,
+            top: 10,
+            height: 22,
+            width: 22,
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Text>{'👁️'}</Text>
+        </TouchableOpacity>
       </View>
 
+      <TouchableOpacity style={{ ...styles.button, opacity: (!accType || !name || !phone || !password || !personalDataAllowed) ? 0.5 : 1 }} onPress={handleRegistration}>
+        <Text style={styles.buttonText}>Зарегистрироваться или войти</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => { setPersonalDataAllowed(!personalDataAllowed) }}>
+        <View style={{ flexDirection: 'row', marginTop: 4, gap: 10, width: '100%', justifyContent: 'center' }}>
+          <Image source={personalDataAllowed ? check_fill : check_null} style={{ height: 15, width: 15 }} />
+          <Text style={{ lineHeight: 15, maxWidth: '75%', fontFamily: 'Manrope_500Medium', textAlign: 'center', color: '#7B7B7B', fontSize: 14, letterSpacing: 0.5 }}>Нажимая на кнопку, вы даёте согласие на обработку персональных данных</Text>
+        </View>
+      </TouchableOpacity>
 
       {name || phone || password ?
-        <View>
-          {validatedName(name) ? <Text style={{ color: 'green' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
-          {validatedPhone(phone) ? <Text style={{ color: 'green' }}>Телефон введен корректно</Text> : <Text style={{ color: 'red' }}>Телефон должен содержать ровно 12 символов и состоять из цифр</Text>}
-          {validatedPassword(password) ? <Text style={{ color: 'green' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Длина пароля минимум 10 символов, латиницей, минимум 2 цифры</Text>}
+        <View style={{ marginTop: 30, alignItems: 'center' }}>
+          {validatedName(name) ? <Text style={{ color: '#0094FF' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
+          {validatedPhone(phone) ? <Text style={{ color: '#0094FF' }}>Телефон введен корректно</Text> : <Text style={{ color: 'red' }}>Телефон должен содержать ровно 12 символов и состоять из цифр</Text>}
+          {validatedPassword(password) ? <Text style={{ color: '#0094FF' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Длина пароля минимум 10 символов, латиницей, минимум 2 цифры</Text>}
         </View>
         : null}
 
-      <TouchableOpacity style={styles.button} onPress={handleRegistration}>
-        <Text style={styles.buttonText}>Зарегистрироваться или войти</Text>
-      </TouchableOpacity>
-    </View>
+    </View >
   )
 };
 
@@ -316,10 +361,10 @@ const styles = StyleSheet.create({
   },
   button: {
     flexGrow: 1,
-    marginVertical: 10,
-    backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
+    marginTop: 24,
+    backgroundColor: '#0094FF', // светло-голубой фон
     padding: 10, // отступы
-    borderRadius: 10, // радиус закругления углов
+    borderRadius: 12, // радиус закругления углов
     alignItems: 'center', // центрирование по горизонтали
   },
   deleteButton: {
@@ -333,7 +378,8 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'Manrope_600SemiBold',
+    fontSize: 16
   },
   addButton: {
     backgroundColor: 'white',

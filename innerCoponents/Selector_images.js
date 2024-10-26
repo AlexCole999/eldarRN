@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Dimensions }
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
 
 import upload_icon from '../assets/upload_icon.png'
+import trash_icon from '../assets/trash_icon.png'
 
 const { width } = Dimensions.get('window'); // Получаем ширину экрана для адаптации ширины изображения
 
@@ -52,18 +53,14 @@ const SelectorImages = ({ images, setImages }) => {
               </View>
             </TouchableOpacity>
           ) : (
-
-            // <TouchableOpacity style={{ paddingRight: 7, borderRadius: 12, backgroundColor: '#DCF1FF', width: 138, elevation: 4, minHeight: 73 }}>
-            //   <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 138, height: 73, borderRadius: 12 }} />
-            // </TouchableOpacity>
-
             <TouchableOpacity style={{ ...styles.imageContainer, marginTop: 2 }}
               onPress={() => removeImage(index - 1)}
             >
               <Image source={{ uri: item }} style={styles.imageContainer} />
-              {/* <TouchableOpacity onPress={() => removeImage(index - 1)} style={styles.removeImageButton}>
-                <Text style={styles.removeImageButtonText}>Удалить</Text>
-              </TouchableOpacity> */}
+              <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', marginTop: 2, gap: 4 }}>
+                <Image source={trash_icon} style={{ width: 12, height: 12 }} />
+                <Text style={{ textAlign: 'center', fontSize: 12, fontFamily: 'Manrope_400Regular', color: 'grey' }}>Удалить</Text>
+              </View>
             </TouchableOpacity>
           )
         )}
@@ -78,7 +75,7 @@ const styles = StyleSheet.create({
   },
   flatlist: {
     paddingTop: 12,
-    height: 100
+    height: 120
   },
   addButton: {
     width: width * 0.38, // Ширина 38% от ширины экрана

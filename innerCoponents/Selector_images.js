@@ -1,6 +1,10 @@
 import React from 'react';
-import { StyleSheet, Button, View, Text, TouchableOpacity, Image, FlatList } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, FlatList, Dimensions } from 'react-native';
 import * as ImagePicker from 'expo-image-picker'; // Import ImagePicker
+
+import upload_icon from '../assets/upload_icon.png'
+
+const { width } = Dimensions.get('window'); // Получаем ширину экрана для адаптации ширины изображения
 
 const SelectorImages = ({ images, setImages }) => {
 
@@ -29,53 +33,81 @@ const SelectorImages = ({ images, setImages }) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        style={{
-          backgroundColor: 'rgb(0, 191, 255)', // светло-голубой фон
-          padding: 10, // отступы
-          borderRadius: 10, // радиус закругления углов
-          alignItems: 'center', // центрирование по горизонтали
-        }}
-        onPress={selectImage}
-      >
-        <Text style={{ color: 'white', textTransform: 'uppercase' }}>Добавить фотографию</Text>
-      </TouchableOpacity>
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Фото услуги</Text>
+
       <FlatList
         horizontal
         showsHorizontalScrollIndicator={false}
         style={styles.flatlist}
-        data={images}
+        data={[{ addButton: true }, ...images]} // Вставляем "кнопку" в начало массива данных
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.imageContainer}>
-            <Image source={{ uri: item }} style={styles.image} />
-            <TouchableOpacity onPress={() => removeImage(index)} style={styles.removeImageButton}>
-              <Text style={styles.removeImageButtonText}>Удалить</Text>
+          item.addButton ? (
+            <TouchableOpacity
+              style={{ ...styles.addButton, marginLeft: 2, marginTop: 2, position: 'relative' }}
+              onPress={selectImage}
+            >
+              <View style={{ position: 'absolute', width: '100%', height: '100%', top: 0, left: 0, borderRadius: 12, justifyContent: 'center', alignItems: 'center' }}>
+                <Image source={upload_icon} style={{ width: 24, height: 24 }} />
+              </View>
             </TouchableOpacity>
-          </View>
+          ) : (
+
+            // <TouchableOpacity style={{ paddingRight: 7, borderRadius: 12, backgroundColor: '#DCF1FF', width: 138, elevation: 4, minHeight: 73 }}>
+            //   <Image source={{ uri: `${localhosturl}/${adUser}/${item}` }} style={{ width: 138, height: 73, borderRadius: 12 }} />
+            // </TouchableOpacity>
+
+            <TouchableOpacity style={{ ...styles.imageContainer, marginTop: 2 }}
+              onPress={() => removeImage(index - 1)}
+            >
+              <Image source={{ uri: item }} style={styles.imageContainer} />
+              {/* <TouchableOpacity onPress={() => removeImage(index - 1)} style={styles.removeImageButton}>
+                <Text style={styles.removeImageButtonText}>Удалить</Text>
+              </TouchableOpacity> */}
+            </TouchableOpacity>
+          )
         )}
       />
-
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 10
+    paddingTop: 0
   },
   flatlist: {
-    paddingTop: 10
+    paddingTop: 12,
+    height: 100
+  },
+  addButton: {
+    width: width * 0.38, // Ширина 38% от ширины экрана
+    height: 73, // Высота кнопки
+    backgroundColor: 'white', // светло-голубой фон
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 8, // Отступ между кнопкой и следующей фотографией
+    elevation: 4
+  },
+  addButtonText: {
+    color: 'white',
+    fontSize: 12,
+    textTransform: 'uppercase',
   },
   imageContainer: {
-    margin: 5,
+    width: width * 0.38, // Ширина 38% от ширины экрана
+    height: 73, // Высота изображения
+    marginRight: 8, // Отступ между фотографиями
     position: 'relative',
+    elevation: 4,
+    borderRadius: 12
   },
   image: {
-    width: 125,
-    height: 125,
+    width: '100%',
+    height: '100%',
     resizeMode: 'cover',
-    borderRadius: 5,
+    borderRadius: 12,
   },
   removeImageButton: {
     position: 'absolute',

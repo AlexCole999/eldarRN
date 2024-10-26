@@ -21,7 +21,7 @@ const AddAdsenseScreen = () => {
 
   const navigation = useNavigation();
 
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(5);
   const [user, setUser] = useState('default');
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
@@ -331,18 +331,22 @@ const AddAdsenseScreen = () => {
     return (
       <View style={styles.container}>
         <SelectorImages images={images} setImages={setImages} />
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', paddingTop: 10 }}>
-          <TouchableOpacity style={{ backgroundColor: 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, backgroundColor: 'rgb(0, 191, 255)', paddingVertical: 10, paddingHorizontal: 20, }}
-            onPress={() => setStage(stage => stage - 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Назад
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginHorizontal: 0, marginBottom: 24, gap: 20 }}>
+          <TouchableOpacity
+            style={{ backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
+            onPress={() => setStage(stage => stage - 1)}
+          >
+            <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Отмена
             </Text>
           </TouchableOpacity>
-          <TouchableOpacity style={{ backgroundColor: !images.length ? 'lightgrey' : 'rgb(0, 191, 255)', padding: 10, borderRadius: 10, paddingVertical: 10, paddingHorizontal: 20, }}
+
+          <TouchableOpacity
+            style={{ backgroundColor: !images.length ? 'lightgrey' : 'rgba(0, 148, 255, 0.5)', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 36 }}
             disabled={!images.length}
-            onPress={() => setStage(stage => stage + 1)}>
-            <Text style={{ color: 'white', fontSize: 16, fontWeight: 'bold', textAlign: 'center', textTransform: 'uppercase', }}>
-              Дальше
+            onPress={() => setStage(stage => stage + 1)}        >
+            <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
+              Далее
             </Text>
           </TouchableOpacity>
         </View>

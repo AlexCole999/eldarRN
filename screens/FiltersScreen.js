@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+import check_fill from '../assets/check_fill.png'; // Убедитесь, что у вас есть это изображение
+import check_null from '../assets/check_null.png'; // Убедитесь, что у вас есть это изображение
 
 
 const FiltersScreen = () => {
@@ -168,6 +170,18 @@ const FiltersScreen = () => {
         </View>
       )}
 
+      <View style={{ marginHorizontal: 24, marginTop: 12 }}>
+        <Text style={styles.label}>Название</Text>
+        <TextInput
+          placeholderTextColor="#C4C4C4"
+          style={{
+            fontFamily: 'Manrope_500Medium', marginTop: 4, fontSize: 14, height: 42, elevation: 4, flexGrow: 1, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 13
+          }}
+          placeholder="Введите название"
+          onChangeText={text => setLocalPriceFrom(text)}
+          value={localPriceFrom} />
+      </View>
+
       <Modal
         transparent={true}
         visible={isCategoryModalVisible}
@@ -212,7 +226,9 @@ const FiltersScreen = () => {
       </Modal>
 
       <View style={{ marginHorizontal: 24, marginTop: 12 }}>
+
         <Text style={styles.label}>Категория</Text>
+
         <TouchableOpacity
           style={{ ...styles.openButton }}
           onPress={() => setCategoryModalVisible(true)}
@@ -222,6 +238,19 @@ const FiltersScreen = () => {
           </Text>
           <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ ...styles.openButton, marginTop: 12 }}
+          onPress={() => setCategoryModalVisible(true)}
+        >
+          <Text style={{ ...styles.openButtonText, color: '#333333', fontSize: 16 }}>
+            Коворкинг
+          </Text>
+          <Image source={check_null} style={styles.arrowIcon} />
+        </TouchableOpacity>
+
+
+
       </View>
 
       <Modal

@@ -15,71 +15,56 @@ import { isNewBackTitleImplementation } from 'react-native-screens';
 
 import { useTranslation } from 'react-i18next';
 
+const iconMapping = {
+  'categories_cosmetology.jpg': require('../assets/categoryPhotos/categories_cosmetology.jpg'),
+  'categories_parmmakeup.jpg': require('../assets/categoryPhotos/categories_parmmakeup.jpg'),
+  'categories_lashmaker.jpg': require('../assets/categoryPhotos/categories_lashmaker.jpg'),
+  'categories_stylist.jpg': require('../assets/categoryPhotos/categories_stylist.jpg'),
+  'categories_parikmaher.jpg': require('../assets/categoryPhotos/categories_parikmaher.jpg'),
+  'categories_visage.jpg': require('../assets/categoryPhotos/categories_visage.jpg'),
+  'categories_barber.jpg': require('../assets/categoryPhotos/categories_barber.jpg'),
+  'categories_nails.jpg': require('../assets/categoryPhotos/categories_nails.jpg'),
+  'categories_massageAndSpa.jpg': require('../assets/categoryPhotos/categories_massageAndSpa.jpg'),
+  'categories_tattooAndPiercing.jpg': require('../assets/categoryPhotos/categories_tattooAndPiercing.jpg'),
+  'categories_coworking.jpg': require('../assets/categoryPhotos/categories_coworking.jpg'),
+  'categories_photostudy.jpg': require('../assets/categoryPhotos/categories_photostudy.jpg'),
+  'categories_bankets.jpg': require('../assets/categoryPhotos/categories_bankets.jpg')
+};
+
 const categoriesList1 = [
-  {
-    name: 'Все',
-    icon: 'categories_cosmetology.jpg'
-  },
-  {
-    name: 'Косметология',
-    icon: 'categories_cosmetology.jpg'
-  },
-  {
-    name: 'Лашмейкеры и Бровисты',
-    icon: 'categories_lashmaker.jpg'
-  },
-  {
-    name: 'Стилисты',
-    icon: 'categories_stylist.jpg'
-  },
-  {
-    name: 'Ногтевой сервис',
-    icon: 'categories_nails.jpg'
-  },
-  {
-    name: 'Массаж и Спа',
-    icon: 'categories_massageAndSpa.jpg'
-  },
-  {
-    name: 'Тату и Пирсинг',
-    icon: 'categories_tattooAndPiercing.jpg'
-  },
-  {
-    name: 'Коворкинг и Конферент залы',
-    icon: 'categories_coworking.jpg'
-  },
-  {
-    name: 'Фотостудия',
-    icon: 'categories_photostudy.jpg'
-  },
-  {
-    name: 'Рестораны и Банкетные Залы',
-    icon: 'categories_bankets.jpg'
-  }
+  { name: 'Все', icon: 'categories_cosmetology.jpg' },
+  { name: 'Косметология', icon: 'categories_cosmetology.jpg' },
+  { name: 'Лашмейкеры и Бровисты', icon: 'categories_lashmaker.jpg' },
+  { name: 'Стилисты', icon: 'categories_stylist.jpg' },
+  { name: 'Ногтевой сервис', icon: 'categories_nails.jpg' },
+  { name: 'Массаж и Спа', icon: 'categories_massageAndSpa.jpg' },
+  { name: 'Тату и Пирсинг', icon: 'categories_tattooAndPiercing.jpg' },
+  { name: 'Коворкинг и Конферент залы', icon: 'categories_coworking.jpg' },
+  { name: 'Фотостудия', icon: 'categories_photostudy.jpg' },
+  { name: 'Рестораны и Банкетные Залы', icon: 'categories_bankets.jpg' },
+  { name: 'Прочее', icon: 'categories_cosmetology.jpg' }
 ];
 
 const categories = [
   {
-    name: 'Косметология',
-    icon: 'categories_cosmetology.jpg',
+    name: 'Косметология', icon: 'categories_cosmetology.jpg',
     subcategories: [
       { name: 'Эстетическая косметология', icon: 'categories_cosmetology.jpg' },
       { name: 'Аппаратная косметология', icon: 'categories_cosmetology.jpg' },
       { name: 'Инъекционная косметология', icon: 'categories_cosmetology.jpg' },
       { name: 'Депиляция, шугаринг', icon: 'categories_cosmetology.jpg' },
-      { name: 'Перманентный макияж', icon: 'categories_cosmetology.jpg' }
+      { name: 'Перманентный макияж', icon: 'categories_parmmakeup.jpg' }
+    ]
+  },
+  {
+    name: 'Стилисты', icon: 'categories_stylist.jpg',
+    subcategories: [
+      { name: 'Стилисты по волосам', icon: 'categories_parikmaher.jpg' },
+      { name: 'Визаж', icon: 'categories_visage.jpg' },
+      { name: 'Барбершоп', icon: 'categories_barber.jpg' }
     ]
   },
   { name: 'Лашмейкеры и Бровисты', icon: 'categories_lashmaker.jpg' },
-  {
-    name: 'Стилисты',
-    icon: 'categories_stylist.jpg',
-    subcategories: [
-      { name: 'Стилисты по волосам', icon: 'categories_stylist.jpg' },
-      { name: 'Визаж', icon: 'categories_stylist.jpg' },
-      { name: 'Барбершоп', icon: 'categories_stylist.jpg' }
-    ]
-  },
   { name: 'Ногтевой сервис', icon: 'categories_nails.jpg' },
   { name: 'Массаж и Спа', icon: 'categories_massageAndSpa.jpg' },
   { name: 'Тату и Пирсинг', icon: 'categories_tattooAndPiercing.jpg' },
@@ -129,7 +114,7 @@ const CategoriesInnerComponent = () => {
               onPress={() => { dispatch(filterSlice.actions.filterCategory(item.name)); navigation.navigate('Каталог') }}
             >
               <Image
-                source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
+                source={iconMapping[item.icon]}
                 style={{ width: '100%', height: 100, borderRadius: 12 }}
                 resizeMode='cover'
               />
@@ -139,31 +124,6 @@ const CategoriesInnerComponent = () => {
             </TouchableOpacity>
           ))
         }
-
-
-
-        {/* { !!!Предыдущий вариант
-          itemsToShow.map((item, index) => (
-            <TouchableOpacity
-              key={index}
-              style={{ borderRadius: 12, padding: 8, backgroundColor: 'white', elevation: 4 }}
-              onPress={() => { dispatch(filterSlice.actions.filterCategory(item.name)); navigation.navigate('Каталог') }}
-            >
-              <Image
-                source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
-                style={{ width: 136, height: 100, borderRadius: 12 }}
-                resizeMode='stretch'
-              />
-              <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
-                <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{item.name}</Text>
-              </View>
-            </TouchableOpacity>
-          ))
-        } */}
-
-
-
-
       </>
     );
   };
@@ -212,7 +172,7 @@ const CategoriesInnerComponent = () => {
               >
                 <View style={{ height: 32, width: 32, borderRadius: 6 }}>
                   <Image
-                    source={{ uri: `${localhosturl}/categoryPhotos/${item.icon}` }}
+                    source={iconMapping[item.icon]}
                     style={{ width: '100%', height: '100%', borderRadius: 6 }}
                     resizeMode="cover"
                   />

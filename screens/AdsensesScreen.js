@@ -8,6 +8,9 @@ import favorites_fill from '../assets/favorites_fill.png';
 import { useSelector } from 'react-redux';
 import SearchComponent from './../innerCoponents/SearchComponent';
 
+import { useTranslation } from 'react-i18next';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
+
 const AdsensesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
   const flatListRef = useRef(null);
@@ -17,6 +20,8 @@ const AdsensesScreen = () => {
   const [numColumns, setNumColumns] = useState(2);
   const [refreshing, setRefreshing] = useState(false);
   const navigation = useNavigation();
+
+  const { t, i18n } = useTranslation();
 
   const handleScrollToTop = () => {
     if (flatListRef.current && data.length > 0) {
@@ -86,7 +91,7 @@ const AdsensesScreen = () => {
           disabled={count < 2}
           onPress={() => { setCount(count - 1); handleScrollToTop(); }}        >
           <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-            Назад
+            {t("Отмена")}
           </Text>
         </TouchableOpacity>
 
@@ -97,7 +102,7 @@ const AdsensesScreen = () => {
           // disabled={}
           onPress={() => { setCount(count + 1); handleScrollToTop() }}        >
           <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-            Далее
+            {t("Далее")}
           </Text>
         </TouchableOpacity>
 
@@ -227,7 +232,7 @@ const AdsensesScreen = () => {
                   />
                   <TouchableOpacity
                     style={{ width: 20, height: 19, position: 'absolute', top: 10, right: 10 }}
-                    onPress={() => { setClicked(!clicked) }}
+                    onPress={() => { setClicked(!clicked); console.log(item.id) }}
                   >
                     <Image
                       style={{ width: 20, height: 19 }}

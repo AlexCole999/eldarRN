@@ -13,6 +13,8 @@ import Logo from '../assets/Logo.png'
 import main_notifications from '../assets/main_notifications.png'
 import { isNewBackTitleImplementation } from 'react-native-screens';
 
+import { useTranslation } from 'react-i18next';
+
 const categoriesList1 = [
   {
     name: 'Все',
@@ -89,6 +91,8 @@ const categories = [
 
 const CategoriesInnerComponent = () => {
 
+  const { t, i18n } = useTranslation();
+
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const screenWidth = Dimensions.get('window').width;
@@ -130,7 +134,7 @@ const CategoriesInnerComponent = () => {
                 resizeMode='cover'
               />
               <View style={{ display: 'flex', flex: 1, flexDirection: 'row', alignItems: 'start', justifyContent: 'start', borderRadius: 5 }}>
-                <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{item.name}</Text>
+                <Text style={{ color: '#333333', textAlign: 'left', paddingTop: 6, fontFamily: 'Manrope_500Medium', fontSize: 14, maxWidth: 130 }}>{t(item.name)}</Text>
               </View>
             </TouchableOpacity>
           ))
@@ -173,19 +177,7 @@ const CategoriesInnerComponent = () => {
         <View style={{ paddingTop: 20, paddingHorizontal: 24, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
 
           <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center', paddingTop: 25 }}>
-            <TouchableOpacity
-              style={{ height: 32, width: 32 }}
-            >
-              <Image
-                source={Logo}
-                style={{ width: '100%', height: '100%' }}
-                resizeMode="stretch"  // Растягивает изображение до заданных размеров
-              />
-
-            </TouchableOpacity>
-
-            <Text style={{ fontFamily: 'Manrope_600SemiBold', color: 'white', fontSize: 24, textAlign: 'left' }}>Arenda Go</Text>
-
+            <Text style={{ fontFamily: 'Manrope_700Bold', color: 'white', fontSize: 24, textAlign: 'left' }}>Loca</Text>
           </View>
 
           <View style={{ paddingTop: 25 }}>
@@ -204,7 +196,7 @@ const CategoriesInnerComponent = () => {
         </View>
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 24, paddingTop: 31 }}>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', color: 'white', fontSize: 24, textAlign: 'left' }}>Категории</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', color: 'white', fontSize: 24, textAlign: 'left' }}>{t('Категории')}</Text>
         </View>
 
         <FlatList
@@ -225,7 +217,7 @@ const CategoriesInnerComponent = () => {
                     resizeMode="cover"
                   />
                 </View>
-                <Text style={{ fontFamily: 'Manrope_500Medium', color: '#333333', fontSize: 16 }}>{item.name}</Text>
+                <Text style={{ fontFamily: 'Manrope_500Medium', color: '#333333', fontSize: 16 }}>{t(item.name)}</Text>
               </TouchableOpacity>
             )
           }}
@@ -263,7 +255,7 @@ const CategoriesInnerComponent = () => {
             onPress={() => setShowAll(true)}
           >
             <Text style={{ color: '#333333', fontFamily: 'Manrope_500Medium', fontSize: 16, paddingBottom: 2 }}>
-              Показать больше
+              {t('Показать больше')}
             </Text>
           </TouchableOpacity>
         </View>

@@ -4,8 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
 const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
+
+  const { t, i18n } = useTranslation();
 
   const screenWidth = Dimensions.get('window').width;
 
@@ -17,7 +20,22 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
         style={{ gap: 6, flexDirection: 'column', backgroundColor: 'white', padding: 8, paddingBottom: 8, borderRadius: 12, width: screenWidth * 0.36, elevation: 4, minHeight: 124 }}
         // onPress={() => { console.log(item) }}
         onPress={() => navigation.navigate('Детали объявления', {
-          adId: item._id, adUser: item.user, adCity: item.city, adDistrict: item.district, adCategory: item.category, adPhone: item.phone, adAddress: item.address, adWorkhours: item.workhours, adServiceParams: item.servicesList, adImagesList: item.imagesList, adDescription: item.description, adTestimonials: item.testimonials
+          adId: item.id,
+          adUser: item.user,
+          adTitle: item.title,
+          adCity: item.city,
+          adDistrict: item.district,
+          adCategory: item.category,
+          adPhone: item.phone,
+          adAddress: item.address,
+          adInstagram: item.instagram,
+          adTelegram: item.telegram,
+          adWhatsapp: item.whatsapp,
+          adWorkhours: item.workhours,
+          adServiceParams: item.servicesList,
+          adImagesList: item.imagesList,
+          adDescription: item.description,
+          adTestimonials: item.testimonials
         })}
       >
         <Image
@@ -27,7 +45,7 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
         >
         </Image>
         <View style={{ display: 'flex', flex: 1, flexDirection: 'column', alignItems: 'start', justifyContent: 'start', borderRadius: 5, gap: 10 }}>
-          <Text style={{ color: 'black', fontWeight: 600, fontSize: 14, fontFamily: 'Roboto_500Medium', letterSpacing: 0.2 }}>{item?.category}</Text>
+          <Text style={{ color: 'black', fontWeight: 600, fontSize: 14, fontFamily: 'Roboto_500Medium', letterSpacing: 0.2 }}>{t(item?.category)}</Text>
         </View>
       </TouchableOpacity >
 
@@ -36,7 +54,7 @@ const NewAdsensesInnerComponent = ({ newestAdsenses }) => {
 
   return (
     <View style={{ marginLeft: 18 }}>
-      <Text style={{ fontSize: 24, fontFamily: 'Manrope_700Bold', color: '#333333', marginLeft: 6 }}>Недавно добавлены</Text>
+      <Text style={{ fontSize: 24, fontFamily: 'Manrope_700Bold', color: '#333333', marginLeft: 6 }}>{t('Недавно добавлены')}</Text>
       <FlatList
         data={newestAdsenses}
         renderItem={renderItem}

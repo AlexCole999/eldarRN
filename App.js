@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, View, StyleSheet, Text, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { useFonts, Manrope_300Light, Manrope_400Regular, Manrope_500Medium, Manrope_600SemiBold, Manrope_700Bold } from '@expo-google-fonts/manrope';
@@ -31,36 +31,42 @@ import TestScreen from './screens/TestScreen';
 import ProfileAdsenses from './innerCoponents/Profile_adsenses';
 import Profile_orders_my from './innerCoponents/Profile_orders_my';
 import Profile_orders_clients from './innerCoponents/Profile_orders_clients';
+import { useTranslation } from 'react-i18next';
 
-
+import './i18n'
+import LanguagesScreen from './screens/LanguagesScreen';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
+
+  const { t, i18n } = useTranslation();
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, size }) => {
           let iconPath;
 
-          if (route.name === 'Главная') {
+          if (route.name === t('Главная')) {
             iconPath = focused
               ? require('./assets/Home.png')
               : require('./assets/Home.png');
-          } else if (route.name === 'Каталог') {
+          } else if (route.name === t('Каталог')) {
             iconPath = focused
               ? require('./assets/Catalog.png')
               : require('./assets/Catalog.png');
-          } else if (route.name === 'Чат') {
+          } else if (route.name === t('Чат')) {
             iconPath = focused
               ? require('./assets/Chat.png')
               : require('./assets/Chat.png');
-          } else if (route.name === 'Профиль') {
+          } else if (route.name === t('Профиль')) {
             iconPath = focused
               ? require('./assets/Profile.png')
               : require('./assets/Profile.png');
-          } else if (route.name === 'Записи') {
+          } else if (route.name === t('Записи')) {
             iconPath = focused
               ? require('./assets/orders.png')
               : require('./assets/orders.png');
@@ -102,14 +108,14 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen
-        name="Главная"
+        name={t("Главная")}
         component={MainScreen}
         options={{
           headerShown: false, // Отключает отображение заголовка
         }}
       />
       <Tab.Screen
-        name="Записи"
+        name={t("Записи")}
         component={AdsensesScreen}
         // }}
         options={{
@@ -117,7 +123,7 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Каталог"
+        name={t("Каталог")}
         component={AdsensesScreen}
         // }}
         options={{
@@ -125,14 +131,14 @@ const Tabs = () => {
         }}
       />
       <Tab.Screen
-        name="Чат"
+        name={t("Чат")}
         component={TestScreen}
         options={{
           headerShown: false, // Отключает отображение заголовка
         }}
       />
       <Tab.Screen
-        name="Профиль"
+        name={t("Профиль")}
         component={ProfileScreen}
         options={{
           headerStyle: {
@@ -154,7 +160,7 @@ const Tabs = () => {
 };
 
 export default function App() {
-
+  const [languageInitialized, setLanguageInitialized] = useState(false);
   const [fontsLoaded] = useFonts({
     Manrope_300Light,
     Manrope_400Regular,
@@ -166,46 +172,57 @@ export default function App() {
     Montserrat_600SemiBold,
     Inter_400Regular,
     Inter_700Bold,
-    Roboto_500Medium
+    Roboto_500Medium,
   });
 
-  if (!fontsLoaded) {
+  const { t, i18n } = useTranslation(); // Вызываем useTranslation вне условий, чтобы избежать нарушений правил хуков
+
+  useEffect(() => {
+    const initializeLanguage = async () => {
+      try {
+        const storedLanguage = await AsyncStorage.getItem('language') || 'ru';
+        if (storedLanguage) {
+          await i18n.changeLanguage(storedLanguage);
+        }
+      } catch (error) {
+        console.error("Ошибка при установке языка из AsyncStorage:", error);
+      } finally {
+        setLanguageInitialized(true); // Устанавливаем флаг, чтобы показать, что язык инициализирован
+      }
+    };
+
+    initializeLanguage();
+  }, []);
+
+  if (!languageInitialized || !fontsLoaded) {
     return (
-      <View style={{
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
         <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
 
   return (
-
     <Provider store={store}>
-
       <StatusBar barStyle="light-content" backgroundColor="rgba(0, 155, 255,1)" />
-
-      <NavigationContainer style={{ backgroundColor: 'white' }}>
+      <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
             headerStyle: {
               backgroundColor: 'rgba(0, 148, 255, 0.9)',
               height: 100,
               borderBottomLeftRadius: 24,
-              borderBottomRightRadius: 24
+              borderBottomRightRadius: 24,
             },
             headerTintColor: 'white',
             headerTitleStyle: {
               fontFamily: 'Manrope_600SemiBold',
               fontSize: 22,
-              letterSpacing: 1.5
+              letterSpacing: 1.5,
             },
             headerTitleAlign: 'center',
           }}
         >
-
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
           <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
           <Stack.Screen name="Мои объявления" component={ProfileAdsenses} />
@@ -216,46 +233,42 @@ export default function App() {
             options={{
               headerTitle: () => (
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Text style={{ textAlign: 'center', fontSize: 22, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold', letterSpacing: 1 }}>
-                    Детали{'\n'}объявления
+                  <Text
+                    style={{
+                      textAlign: 'center',
+                      fontSize: 22,
+                      fontWeight: '600',
+                      color: 'white',
+                      fontFamily: 'Manrope_700Bold',
+                      letterSpacing: 1,
+                    }}
+                  >
+                    {t("Детали объявления")}
                   </Text>
                 </View>
               ),
               headerStyle: {
-                backgroundColor: 'rgba(0, 148, 255, 0.9)', // Цвет фона заголовкаб
-                height: 112
+                backgroundColor: 'rgba(0, 148, 255, 0.9)',
+                height: 112,
               },
-              headerTintColor: 'white', // Цвет текста и иконок заголовка
-              headerTitleAlign: 'center', // Выравнивание заголовка по центру
-              headerShadowVisible: false
+              headerTintColor: 'white',
+              headerTitleAlign: 'center',
+              headerShadowVisible: false,
             }}
-            name="Детали объявления" component={AdDetailsScreen} />
-          <Stack.Screen name="Оставить отзыв" component={TestimonialScreen}
-          // options={{
-          //   headerTitle: () => (
-          //     <Text style={{ textAlign: 'center', fontSize: 24, fontWeight: '600', color: 'white', fontFamily: 'Manrope_700Bold' }}>
-          //       Оставить отзыв
-          //     </Text>
-          //   ),
-          //   headerStyle: {
-          //     backgroundColor: 'rgba(0, 148, 255, 1)', // Цвет фона заголовка
-          //     height: 132,
-          //   },
-          //   headerTintColor: 'white', // Цвет текста и иконок заголовка
-          //   headerTitleAlign: 'center', // Выравнивание заголовка по центру
-          // }}
+            name="Детали объявления"
+            component={AdDetailsScreen}
           />
-          <Stack.Screen name="Забронировать" component={OrderScreen} />
-          <Stack.Screen name="Бронь" component={MyOrdersScreen} />
-          <Stack.Screen name="Фильтр" component={FiltersScreen} />
-          <Stack.Screen name="Бонусы" component={BonusesScreen} />
-          <Stack.Screen name="Баланс" component={BalanceScreen} />
-          <Stack.Screen name="Скидки" component={ActionsScreen} />
-          <Stack.Screen name="Уведомления" component={NotificationScreen} />
+          <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
+          <Stack.Screen options={{ headerTitle: t('Забронировать') }} name="Забронировать" component={OrderScreen} />
+          <Stack.Screen options={{ headerTitle: t('Бронь') }} name="Бронь" component={MyOrdersScreen} />
+          <Stack.Screen options={{ headerTitle: t('Фильтр') }} name="Фильтр" component={FiltersScreen} />
+          <Stack.Screen options={{ headerTitle: t('Бонусы') }} name="Бонусы" component={BonusesScreen} />
+          <Stack.Screen options={{ headerTitle: t('Баланс') }} name="Баланс" component={BalanceScreen} />
+          <Stack.Screen options={{ headerTitle: t('Скидки') }} name="Скидки" component={ActionsScreen} />
+          <Stack.Screen options={{ headerTitle: t('Уведомления') }} name="Уведомления" component={NotificationScreen} />
+          <Stack.Screen options={{ headerTitle: t('Язык приложения') }} name="Язык приложения" component={LanguagesScreen} />
         </Stack.Navigator>
       </NavigationContainer>
-
-
-    </Provider >
+    </Provider>
   );
 }

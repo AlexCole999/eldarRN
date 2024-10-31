@@ -18,13 +18,14 @@ import wa_icon from '../assets/wa_icon.png'
 import map_icon from '../assets/map_icon.png'
 import Catalog_star from '../assets/Catalog_star.png'
 
-
+import { useTranslation } from 'react-i18next';
 
 const AdDetailsScreen = ({ route }) => {
 
   const { adId, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adInstagram, adTelegram, adWhatsapp, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
+  const { t, i18n } = useTranslation();
   console.log(route.params)
 
   const handleCall = () => {
@@ -118,7 +119,7 @@ const AdDetailsScreen = ({ route }) => {
           style={{ backgroundColor: '#0094FF', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
           onPress={() => { navigation.navigate('Забронировать', { adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours }) }}
         >
-          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold' }}>Забронировать</Text>
+          <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold' }}>{t('Забронировать')}</Text>
         </TouchableOpacity>
 
       </View>
@@ -148,7 +149,7 @@ const AdDetailsScreen = ({ route }) => {
       </View>
 
       <View style={{ marginHorizontal: 24, marginTop: 24, gap: 8 }}>
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Описание</Text>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>{t("Описание")}</Text>
         <View style={{ backgroundColor: 'white', borderRadius: 12, elevation: 4, minHeight: 92 }}>
           <Text style={{ color: '#C4C4C4', paddingVertical: 10, paddingHorizontal: 8 }}>{adDescription}</Text>
         </View>
@@ -156,7 +157,7 @@ const AdDetailsScreen = ({ route }) => {
 
       <View style={{ marginHorizontal: 24, marginTop: 24, gap: 12 }}>
         <View style={{ flexDirection: 'row' }}>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Услуги</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>{t("Услуги")}</Text>
           <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 16, color: 'rgb(123, 126, 127)', paddingTop: 2 }}> ({adServiceParams.length})</Text>
         </View>
 
@@ -186,7 +187,7 @@ const AdDetailsScreen = ({ route }) => {
       </View>
 
       <View style={{ marginLeft: 20, marginTop: 24 }}>
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)', marginLeft: 4 }}>Фотографии</Text>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)', marginLeft: 4 }}>{t("Фотографии")}</Text>
         <FlatList
           style={{ paddingBottom: 0, borderRadius: 12, width: '100%' }}
           data={adImagesList}
@@ -209,11 +210,11 @@ const AdDetailsScreen = ({ route }) => {
 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
 
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>Отзывы</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 24, color: 'rgb(51, 51, 51)' }}>{t("Отзывы")}</Text>
 
           <View style={{ alignItems: 'center', gap: 4 }}>
             <View style={{ flexDirection: 'row' }}>
-              <Text style={{ color: '#333333', fontSize: 14, fontFamily: 'Montserrat_400Regular' }}>Рейтинг </Text>
+              <Text style={{ color: '#333333', fontSize: 14, fontFamily: 'Montserrat_400Regular' }}>{t("Рейтинг")} </Text>
               <Text style={{ color: '#F3CB2B', fontSize: 14, fontFamily: 'Montserrat_600SemiBold' }}>{averageRating.toFixed(1).toString()}</Text>
             </View>
             <StarRating rating={averageRating} size={12} />
@@ -239,7 +240,7 @@ const AdDetailsScreen = ({ route }) => {
                       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
                         <View style={{ flexDirection: 'row', alignItems: 'center', gap: 4 }}>
                           <Image source={user} style={{ width: 32, height: 32 }} />
-                          <Text style={{ color: '#333333', fontFamily: 'Manrope_300Light', fontSize: 8 }}>Пользователь</Text>
+                          <Text style={{ color: '#333333', fontFamily: 'Manrope_300Light', fontSize: 8 }}>{t("Пользователь")}</Text>
                         </View>
 
                         <StarRating rating={item.rating} size={12} />
@@ -258,7 +259,7 @@ const AdDetailsScreen = ({ route }) => {
         <TouchableOpacity
           onPress={() => { navigation.navigate('Оставить отзыв', { adId: adId }) }}
           style={{ marginTop: 10, marginBottom: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(0, 148, 255,0.9)', padding: 8, borderRadius: 12 }}>
-          <Text style={{ color: 'rgba(0, 148, 255,0.9)', fontFamily: 'Manrope_700Bold', fontSize: 16 }}>Оставить отзыв</Text>
+          <Text style={{ color: 'rgba(0, 148, 255,0.9)', fontFamily: 'Manrope_700Bold', fontSize: 16 }}>{t("Оставить отзыв")}</Text>
         </TouchableOpacity>
 
       </View>

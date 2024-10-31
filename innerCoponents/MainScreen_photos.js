@@ -4,8 +4,11 @@ import { useNavigation } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import localhosturl from './../localhoststring';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useTranslation } from 'react-i18next';
 
 const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
+
+  const { t, i18n } = useTranslation();
 
   let [data, setData] = useState([])
 
@@ -47,7 +50,7 @@ const PhotosAdsensesInnerComponent = ({ newestAdsenses }) => {
 
   return (
     <View style={{ paddingLeft: 24, paddingRight: 15, paddingTop: 40 }}>
-      <Text style={{ fontSize: 24, paddingBottom: 10, fontFamily: 'Manrope_700Bold', color: '#333333' }}>Примеры интерьеров</Text>
+      <Text style={{ fontSize: 24, paddingBottom: 10, fontFamily: 'Manrope_700Bold', color: '#333333' }}>{t('Примеры интерьеров')}</Text>
 
       <View style={{ gap: 8 }}>
 

@@ -21,7 +21,7 @@ const AddAdsenseScreen = () => {
 
   const navigation = useNavigation();
 
-  const [stage, setStage] = useState(5);
+  const [stage, setStage] = useState(0);
   const [user, setUser] = useState('default');
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');

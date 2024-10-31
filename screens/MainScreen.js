@@ -6,6 +6,7 @@ import MainScreenNews from './../innerCoponents/MainScreen_news';
 import MainScreenPhotos from './../innerCoponents/MainScreen_photos';
 import axios from 'axios';
 import localhosturl from './../localhoststring';
+import { AsyncStorage } from '@react-native-async-storage/async-storage';
 
 const MainScreen = () => {
   const [newestAdsenses, setNewestAdsenses] = useState([]);

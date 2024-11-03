@@ -21,15 +21,17 @@ const FiltersScreen = () => {
 
   const dispatch = useDispatch();
 
-  const { city, district, category, subcategory, priceFrom, priceTo, currency } = useSelector(state => state.filters);
+  const { title, city, district, category, subcategory, coworking, priceFrom, priceTo, currency } = useSelector(state => state.filters);
 
   const navigation = useNavigation();
 
   // Локальные состояния для хранения выбранных значений
+  const [localTitle, setLocalTitle] = useState(title);
   const [localCity, setLocalCity] = useState(city);
   const [localDistrict, setLocalDistrict] = useState(district);
   const [localCategory, setLocalCategory] = useState(category);
   const [localSubcategory, setLocalSubcategory] = useState(subcategory);
+  const [localCoworking, setLocalCoworking] = useState(coworking);
   const [localPriceFrom, setLocalPriceFrom] = useState(priceFrom);
   const [localPriceTo, setLocalPriceTo] = useState(priceTo);
   const [localCurrency, setLocalCurrency] = useState(currency);
@@ -42,20 +44,25 @@ const FiltersScreen = () => {
 
   // Обработчик для применения фильтров
   const applyFilters = () => {
+    dispatch(filterSlice.actions.filterTitle(localTitle));
     dispatch(filterSlice.actions.filterCity(localCity));
     dispatch(filterSlice.actions.filterDistrict(localCity == "Ташкент" ? localDistrict : ''));
     dispatch(filterSlice.actions.filterCategory(localCategory));
     dispatch(filterSlice.actions.filterSubcategory(localSubcategory));
+    dispatch(filterSlice.actions.filterCoworking(localCoworking));
     dispatch(filterSlice.actions.filterPriceFrom(localPriceFrom));
     dispatch(filterSlice.actions.filterPriceTo(localPriceTo));
     dispatch(filterSlice.actions.filterCurrency(localCurrency));
+    console.log(title, city, district, category, subcategory, coworking, priceFrom, priceTo, currency)
   };
 
   const resetFilters = () => {
+    setLocalTitle('');
     setLocalCity('');
     setLocalDistrict('');
     setLocalCategory('');
     setLocalSubcategory('');
+    setLocalCoworking('');
     setLocalPriceFrom('');
     setLocalPriceTo('');
     setLocalCurrency('');
@@ -181,8 +188,8 @@ const FiltersScreen = () => {
             fontFamily: 'Manrope_500Medium', marginTop: 4, fontSize: 14, height: 42, elevation: 4, flexGrow: 1, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 8, paddingVertical: 13
           }}
           placeholder="Введите название"
-          onChangeText={text => setLocalPriceFrom(text)}
-          value={localPriceFrom} />
+          onChangeText={text => setLocalTitle(text)}
+          value={localTitle} />
       </View>
 
       <Modal
@@ -244,12 +251,12 @@ const FiltersScreen = () => {
 
         <TouchableOpacity
           style={{ ...styles.openButton, marginTop: 12 }}
-          onPress={() => setCategoryModalVisible(true)}
+          onPress={() => setLocalCoworking(!localCoworking)}
         >
           <Text style={{ ...styles.openButtonText, color: '#333333', fontSize: 16 }}>
             Коворкинг
           </Text>
-          <Image source={check_null} style={styles.arrowIcon} />
+          <Image source={localCoworking ? check_fill : check_null} style={styles.arrowIcon} />
         </TouchableOpacity>
 
 

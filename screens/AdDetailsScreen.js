@@ -22,7 +22,7 @@ import { useTranslation } from 'react-i18next';
 
 const AdDetailsScreen = ({ route }) => {
 
-  const { adId, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adInstagram, adTelegram, adWhatsapp, adTestimonials } = route.params;
+  const { adId, adAccType, adUser, adTitle, adCity, adDistrict, adCategory, adPhone, adAddress, adWorkhours, adServiceParams, adImagesList, adDescription, adInstagram, adTelegram, adWhatsapp, adTestimonials } = route.params;
   let averageRating = adTestimonials.length ? adTestimonials.reduce((acc, obj) => acc + obj.rating, 0) / adTestimonials.length : 0
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();

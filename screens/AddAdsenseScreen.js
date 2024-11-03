@@ -68,8 +68,6 @@ const AddAdsenseScreen = () => {
       return;
     }
 
-
-
     setNewAdsenseStatusVisible(true); // Показываем статус отправок
 
     const formData = new FormData(); // Создаем форму
@@ -94,15 +92,16 @@ const AddAdsenseScreen = () => {
         Alert.alert('Успешно', 'Изображения успешно загружены');
         setNewAdsenseStages(prevState => ({ ...prevState, imagesUploaded: true }));// показываем статус добавления фотографий
         let imagesList = response.data.paths;
-        let user = await AsyncStorage.getItem('userData');
-        user = JSON.parse(user)
-        user = user.phone
-        console.log(user)
-        console.log(cityDistrict)
+
+        let userData = await AsyncStorage.getItem('userData');
+        userData = JSON.parse(userData)
+        let user = userData.phone
+        let accType = userData.accType
         let district = city == 'Ташкент' ? cityDistrict : null
-        console.log(user, title, category, city, district, phone, address, workhours, servicesList, imagesList, description, instagram, telegram, whatsapp)
+
+        console.log(user, accType, title, category, city, district, phone, address, workhours, servicesList, imagesList, description, instagram, telegram, whatsapp)
         axios.post(`${localhosturl}/newAdsense`, { // Создаем новое объявление
-          user, title, category, city, district, phone, address, workhours, servicesList, imagesList, description, instagram, telegram, whatsapp
+          user, accType, title, category, city, district, phone, address, workhours, servicesList, imagesList, description, instagram, telegram, whatsapp
         })
           .then((response) => {
 

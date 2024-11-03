@@ -3,15 +3,20 @@ import { createSlice } from '@reduxjs/toolkit';
 const filterSlice = createSlice({
   name: 'filters',
   initialState: {
+    title: '',
     city: '',
     district: '',
     category: '',
     subcategory: '',
+    coworking: false,
     priceFrom: '',
     priceTo: '',
     currency: ''
   },
   reducers: {
+    filterTitle: (state, action) => {
+      state.title = action.payload;
+    },
     filterCity: (state, action) => {
       state.city = action.payload;
     },
@@ -24,6 +29,9 @@ const filterSlice = createSlice({
     filterSubcategory: (state, action) => {
       state.subcategory = action.payload;
     },
+    filterCoworking: (state, action) => {
+      state.coworking = action.payload;
+    },
     filterPriceFrom: (state, action) => {
       state.priceFrom = action.payload;
     },
@@ -34,10 +42,12 @@ const filterSlice = createSlice({
       state.currency = action.payload;
     },
     deleteFilters: (state) => {
+      state.title = '';
       state.city = '';
       state.district = '';
       state.category = '';
       state.subcategory = '';
+      state.coworking = false
       state.priceFrom = '';
       state.priceTo = '';
       state.currency = '';
@@ -46,10 +56,12 @@ const filterSlice = createSlice({
 });
 
 export const {
+  filterTitle,
   filterCity,
   filterDistrict,
   filterCategory,
   filterSubcategory,
+  filterCoworking,
   filterPriceFrom,
   filterPriceTo,
   filterCurrency,

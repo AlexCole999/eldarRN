@@ -29,22 +29,23 @@ const AdsensesScreen = () => {
     }
   };
 
+  const title = useSelector(state => state.filters.title);
   const city = useSelector(state => state.filters.city);
   const district = useSelector(state => state.filters.district);
   const category = useSelector(state => state.filters.category);
   const subcategory = useSelector(state => state.filters.subcategory);
+  const coworking = useSelector(state => state.filters.coworking);
   const priceFrom = useSelector(state => state.filters.priceFrom);
   const priceTo = useSelector(state => state.filters.priceTo);
   const currency = useSelector(state => state.filters.currency);
 
-  console.log(category, city)
-
   const fetchData = () => {
-    fetch(`${localhosturl}/adsenses?page=${count}&city=${city}&district=${district}&category=${category}&subcategory=${subcategory}&priceFrom=${priceFrom}&priceTo=${priceTo}&currency=${currency}`)
+    fetch(`${localhosturl}/adsenses?page=${count}&title=${title}&city=${city}&district=${district}&category=${category}&subcategory=${subcategory}&coworking=${coworking}&priceFrom=${priceFrom}&priceTo=${priceTo}&currency=${currency}`)
       .then((response) => response.json())
       .then((data) => {
         const objects = data.map((item) => ({
           user: item.user,
+          accType: item.accType,
           id: item._id,
           title: item.title,
           category: item.category,
@@ -70,7 +71,7 @@ const AdsensesScreen = () => {
   useEffect(() => {
     if (count !== 1) { setCount(1) }
     fetchData();
-  }, [city, district, category, subcategory, priceFrom, priceTo, currency]);
+  }, [title, city, district, category, subcategory, coworking, priceFrom, priceTo, currency]);
 
   useEffect(() => {
     fetchData();
@@ -208,6 +209,7 @@ const AdsensesScreen = () => {
                 key={item.id}
                 onPress={() => navigation.navigate('Детали объявления', {
                   adId: item.id,
+                  adAccType: item.accType,
                   adUser: item.user,
                   adTitle: item.title,
                   adCity: item.city,

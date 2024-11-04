@@ -16,6 +16,7 @@ import profile_pencil from '../assets/profile_pencil.png'
 import profile_percent from '../assets/profile_percent.png'
 import profile_plus from '../assets/profile_plus.png'
 import profile_ring from '../assets/profile_ring.png'
+import profile_favs from '../assets/profile_favs.png'
 import profile_sendapp from '../assets/profile_sendapp.png'
 import profile_support from '../assets/profile_support.png'
 
@@ -32,6 +33,7 @@ const ProfileScreen = () => {
   const [adsensesWithUserOrders, setAdsensesWithUserOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [newOrdersCount, setNewOrdersCount] = useState(false);
+  const [favoritesCount, setFavoritesCount] = useState(0);
 
   const navigation = useNavigation();
 
@@ -40,6 +42,9 @@ const ProfileScreen = () => {
     setRefreshing(true);
 
     let user = await AsyncStorage.getItem('userData');
+    let dataForFavorites = JSON.parse(user)
+    let phoneForFavorites = dataForFavorites.phone
+
     console.log(user)
 
     const countNewOrders = (adsenses) => {
@@ -64,7 +69,8 @@ const ProfileScreen = () => {
       try {
         let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
         let adsensesWithUserOrders = await axios.post(`${localhosturl}/getUserAdsensesWithHisOrders`, { user });
-
+        let favorites = await axios.post(`${localhosturl}/getFavoriteAdsenses`, { phone: phoneForFavorites });
+        setFavoritesCount(favorites.data.adsenses.length)
         setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
         setAdsensesWithUserOrders(adsensesWithUserOrders.data.adsenses); // Устанавливаем полученные объявления в состояние
         setNewOrdersCount(countNewOrders(response.data.adsenses) + countUserOrders(adsensesWithUserOrders.data.adsenses, user))
@@ -153,7 +159,14 @@ const ProfileScreen = () => {
             <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>{adsenses.length}</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }}
+            onPress={async () => {
+              let userData = await AsyncStorage.getItem('userData');
+              userData = JSON.parse(userData)
+              let accType = userData.accType
+              if (accType !== "Клиент") { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }
+              if (accType == "Клиент") { Alert.alert('Неверный тип аккаунта', 'Клиенты не могут размещать объявления', [{ text: 'Понятно', style: 'cancel', },], { cancelable: true }) }
+            }}>
             <Text style={styles.addButtonText}>{t('Добавить объявление')}</Text>
             <Image source={profile_plus} style={{ width: 18, height: 18 }} />
           </TouchableOpacity>
@@ -203,6 +216,14 @@ const ProfileScreen = () => {
               <Text style={styles.addButtonText}>{t('Уведомления')}</Text>
             </View>
             <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>0</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Избранное') }}>
+            <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
+              <Image source={profile_favs} style={{ width: 18, height: 18 }} />
+              <Text style={styles.addButtonText}>{t('Избранное')}</Text>
+            </View>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>{favoritesCount}</Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} >

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { FlatList, Image, Text, View, RefreshControl, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import localhosturl from './../localhoststring';
 import Catalog_star from '../assets/Catalog_star.png';
@@ -9,16 +9,20 @@ import { useSelector } from 'react-redux';
 import SearchComponent from './../innerCoponents/SearchComponent';
 
 import { useTranslation } from 'react-i18next';
-import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 const AdsensesScreen = () => {
   const screenWidth = Dimensions.get('window').width;
+
   const flatListRef = useRef(null);
   const [clicked, setClicked] = useState(false);
   const [count, setCount] = useState(1);
   const [data, setData] = useState([]);
   const [numColumns, setNumColumns] = useState(2);
   const [refreshing, setRefreshing] = useState(false);
+  const [favoriteAdsenses, setFavoriteAdsenses] = useState([]);
+
   const navigation = useNavigation();
 
   const { t, i18n } = useTranslation();
@@ -27,6 +31,10 @@ const AdsensesScreen = () => {
     if (flatListRef.current && data.length > 0) {
       flatListRef.current.scrollToIndex({ animated: true, index: 0, duration: 200 });
     }
+  };
+
+  const isAdInFavorites = (favoriteAdsenses, adId) => {
+    return favoriteAdsenses.some(favAd => favAd.id === adId);
   };
 
   const title = useSelector(state => state.filters.title);
@@ -39,7 +47,81 @@ const AdsensesScreen = () => {
   const priceTo = useSelector(state => state.filters.priceTo);
   const currency = useSelector(state => state.filters.currency);
 
-  const fetchData = () => {
+  const fetchUserData = async () => {
+    try {
+
+      let userData = await AsyncStorage.getItem('userData');
+      userData = JSON.parse(userData)
+      let phone = userData.phone
+
+      await axios.post(`${localhosturl}/getFavoriteAdsenses`, {
+        phone: phone
+      })
+        .then((data) => data.data)
+        .then(data => {
+          const favads = data.adsenses.map((item) => ({
+            user: item.user,
+            accType: item.accType,
+            id: item._id,
+            title: item.title,
+            category: item.category,
+            city: item.city,
+            district: item?.district,
+            phone: item.phone,
+            address: item.address,
+            workhours: item.workhours,
+            servicesList: item.servicesList,
+            imagesList: item.imagesList,
+            description: item.description,
+            instagram: item.instagram,
+            telegram: item.telegram,
+            whatsapp: item.whatsapp,
+            testimonials: item.testimonials,
+            orders: item.orders
+          }));
+          setFavoriteAdsenses(favads);
+          console.log(favoriteAdsenses)
+        })
+
+    } catch (error) {
+      console.error("Ошибка при получении данных пользователя:", error);
+    }
+  };
+
+  const addAdToFavorites = async (adId) => {
+    try {
+      let user = await AsyncStorage.getItem('userData');
+      let phone = JSON.parse(user).phone;
+
+      const response = await axios.post(`${localhosturl}/addAdsenseToFavorite`, { id: adId, phone });
+      Alert.alert('Добавлено', response.data.message);
+
+      // Обновляем список избранного после добавления
+      await fetchUserData();
+    } catch (error) {
+      console.error("Ошибка при добавлении в избранное:", error);
+    }
+  };
+
+  const removeAdFromFavorites = async (adId) => {
+    try {
+      let user = await AsyncStorage.getItem('userData');
+      let phone = JSON.parse(user).phone;
+
+      const response = await axios.post(`${localhosturl}/removeAdsenseFromFavorite`, { id: adId, phone });
+      Alert.alert('Удалено', response.data.message);
+
+      // Обновляем список избранного после удаления
+      await fetchUserData();
+    } catch (error) {
+      console.error("Ошибка при удалении из избранного:", error);
+    }
+  };
+
+  const fetchAdsenses = async () => {
+
+    await fetchUserData()
+
     fetch(`${localhosturl}/adsenses?page=${count}&title=${title}&city=${city}&district=${district}&category=${category}&subcategory=${subcategory}&coworking=${coworking}&priceFrom=${priceFrom}&priceTo=${priceTo}&currency=${currency}`)
       .then((response) => response.json())
       .then((data) => {
@@ -70,16 +152,16 @@ const AdsensesScreen = () => {
 
   useEffect(() => {
     if (count !== 1) { setCount(1) }
-    fetchData();
+    fetchAdsenses();
   }, [title, city, district, category, subcategory, coworking, priceFrom, priceTo, currency]);
 
   useEffect(() => {
-    fetchData();
+    fetchAdsenses();
   }, [count]);
 
   const onRefresh = () => {
     setRefreshing(true);
-    fetchData();
+    fetchAdsenses();
     setRefreshing(false);
   };
 
@@ -232,15 +314,24 @@ const AdsensesScreen = () => {
                     style={{ ...styles.image, position: 'relative' }}
                     source={{ uri: `${localhosturl}/${item.user}/${item.imagesList[0]}` }}
                   />
+
                   <TouchableOpacity
                     style={{ width: 20, height: 19, position: 'absolute', top: 10, right: 10 }}
-                    onPress={() => { setClicked(!clicked); console.log(item.id) }}
+                    onPress={async () => {
+                      if (isAdInFavorites(favoriteAdsenses, item.id)) {
+                        await removeAdFromFavorites(item.id);
+                      } else {
+                        await addAdToFavorites(item.id);
+                      }
+                    }}
                   >
                     <Image
                       style={{ width: 20, height: 19 }}
-                      source={clicked ? favorites_null : favorites_fill}
+                      source={isAdInFavorites(favoriteAdsenses, item.id) ? favorites_fill : favorites_null}
                     />
                   </TouchableOpacity>
+
+
                   <View style={styles.textContainer}>
 
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', minWidth: 36 }}>

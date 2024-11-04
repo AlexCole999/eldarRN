@@ -36,6 +36,7 @@ import { useTranslation } from 'react-i18next';
 import './i18n'
 import LanguagesScreen from './screens/LanguagesScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import FavoritesScreen from './screens/FavoritesScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -266,6 +267,7 @@ export default function App() {
           <Stack.Screen options={{ headerTitle: t('Баланс') }} name="Баланс" component={BalanceScreen} />
           <Stack.Screen options={{ headerTitle: t('Скидки') }} name="Скидки" component={ActionsScreen} />
           <Stack.Screen options={{ headerTitle: t('Уведомления') }} name="Уведомления" component={NotificationScreen} />
+          <Stack.Screen options={{ headerTitle: t('Избранное') }} name="Избранное" component={FavoritesScreen} />
           <Stack.Screen options={{ headerTitle: t('Язык приложения') }} name="Язык приложения" component={LanguagesScreen} />
         </Stack.Navigator>
       </NavigationContainer>

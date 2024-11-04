@@ -108,8 +108,8 @@ const ProfileRegistration = ({ accType, setAccType, name, setName, phone, setPho
       }
 
       if (response.data.correctPassword) {
-        await setUserData({ name, phone });
-        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone }));
+        await setUserData({ name, phone, accType });
+        await AsyncStorage.setItem('userData', JSON.stringify({ name, phone, accType }));
         Alert.alert('Вход', 'Вы успешно вошли в свой профиль');
         refreshAdsenses()
       }

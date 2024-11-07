@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Modal, ScrollView, Alert, TouchableHighlight, Image } from 'react-native';
 import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+import { useTranslation } from 'react-i18next';
 
 const generateHourItems = () => {
 
@@ -21,6 +22,9 @@ const generateHourItems = () => {
 };
 
 const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) => {
+
+  const { t, i18n } = useTranslation();
+
   const [showInputs, setShowInputs] = useState(false);
   const [newServiceHours, setNewServiceHours] = useState(null);
   const [newServicePrice, setNewServicePrice] = useState('');
@@ -74,13 +78,13 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
     <View style={{ width: '100%' }}>
       {!showInputs && (
         <View>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginBottom: 12 }}>Добавьте услуги</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginBottom: 12 }}>{t('Добавьте услуги')}</Text>
           <TouchableOpacity
             // disabled=
             style={styles.addButton}
             onPress={() => setShowInputs(true)}
           >
-            <Text style={styles.addButtonText}>Новая услуга</Text>
+            <Text style={styles.addButtonText}>{t('Новая услуга')}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -99,11 +103,11 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
             >
               <View style={{ ...styles.serviceParam, elevation: 4, borderRadius: 12, flexDirection: 'column', paddingHorizontal: 10, paddingVertical: 8, marginLeft: 2, marginRight: 2, minWidth: horizontaldisplay ? 250 : null }}>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>Длительность</Text>
+                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>{t('Длительность')}</Text>
                   <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 14, color: '#333333' }}>{param.hours} {param.hours === '1' ? 'час' : param.hours >= '2' && param.hours <= '4' ? 'часа' : 'часов'}</Text>
                 </View>
                 <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 4 }}>
-                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>Стоимость</Text>
+                  <Text style={{ fontFamily: 'Manrope_400Regular', fontSize: 14, color: '#333333' }}>{t('Стоимость')}</Text>
                   <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 14, color: '#333333' }}>{param.price} {param.fiat}</Text>
                 </View>
                 {/* <Text style={styles.serviceTextLeft}>Часов: {param.hours}</Text>
@@ -115,18 +119,18 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
       </ScrollView>
       {showInputs && (
         <>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Длительность</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Длительность')}</Text>
           <TouchableOpacity
             style={{ ...styles.selector, marginTop: 4 }}
             onPress={() => setHoursModalVisible(true)}
           >
             <Text style={{ ...styles.selectorText, color: newServiceHours ? '#333333' : '#C4C4C4' }}>
-              {newServiceHours ? `Часы: ${newServiceHours}` : 'Укажите длительность услуги'}
+              {newServiceHours ? `Часы: ${newServiceHours}` : t('Укажите длительность услуги')}
             </Text>
             <Image source={arrow_down} style={styles.arrowIcon} />
           </TouchableOpacity>
 
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>Стоимость услуги</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>{t('Стоимость услуги')}</Text>
 
           <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 20 }}>
 
@@ -136,7 +140,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
                 style={{
                   flexGrow: 1, fontFamily: 'Manrope_400Regular', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, fontSize: 14
                 }}
-                placeholder="Цена"
+                placeholder={t("Цена")}
                 onChangeText={setNewServicePrice}
                 value={newServicePrice}
                 keyboardType="numeric"
@@ -148,7 +152,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
               onPress={() => setFiatModalVisible(true)}
             >
               <Text style={{ ...styles.selectorText, color: newServiceFiat ? '#333333' : '#C4C4C4' }}>
-                {newServiceFiat ? newServiceFiat : 'Валюта'}
+                {newServiceFiat ? newServiceFiat : t('Валюта')}
               </Text>
               <Image source={arrow_down} style={styles.arrowIcon} />
             </TouchableOpacity>
@@ -159,7 +163,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
             style={styles.submitButton}
             onPress={addNewServiceParam}
           >
-            <Text style={styles.submitButtonText}>Завершить добавление услуги</Text>
+            <Text style={styles.submitButtonText}>{t('Завершить добавление услуги')}</Text>
           </TouchableOpacity>
 
           {/* Модальное окно для выбора часов */}
@@ -186,7 +190,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
                   style={styles.closeButton}
                   onPress={() => setHoursModalVisible(false)}
                 >
-                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                  <Text style={styles.closeButtonText}>{t('Закрыть')}</Text>
                 </TouchableOpacity>
               </View>
             </View>
@@ -219,7 +223,7 @@ const SelectorServices = ({ servicesList, setServicesList, horizontaldisplay }) 
                   style={styles.closeButton}
                   onPress={() => setFiatModalVisible(false)}
                 >
-                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                  <Text style={styles.closeButtonText}>{t('Закрыть')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

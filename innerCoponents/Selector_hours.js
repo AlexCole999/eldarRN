@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, Image } from 'react-native';
 import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+import { useTranslation } from 'react-i18next';
 
 const generateTimeItems = () => {
   let items = [];
@@ -15,6 +16,9 @@ const generateTimeItems = () => {
 };
 
 const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWorkhoursEnd, workhours, setWorkhours }) => {
+
+  const { t, i18n } = useTranslation();
+
   const [startModalVisible, setStartModalVisible] = useState(false);
   const [endModalVisible, setEndModalVisible] = useState(false);
 
@@ -33,14 +37,14 @@ const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWor
   return (
     <View>
 
-      <Text style={styles.label}>Информация о работе</Text>
+      <Text style={styles.label}>{t('Информация о работе')}</Text>
       <View style={styles.container}>
         <TouchableOpacity
           style={styles.selector}
           onPress={() => setStartModalVisible(true)}
         >
           <Text style={{ ...styles.selectorText, color: workhoursStart ? '#333333' : '#C4C4C4' }}>
-            {workhoursStart || 'Начало\nрабочего дня'}
+            {workhoursStart || t('Начало дня')}
           </Text>
           <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>
@@ -50,7 +54,7 @@ const SelectorHours = ({ workhoursStart, setWorkhoursStart, workhoursEnd, setWor
           onPress={() => setEndModalVisible(true)}
         >
           <Text style={{ ...styles.selectorText, color: workhoursEnd ? '#333333' : '#C4C4C4' }}>
-            {workhoursEnd || 'Конец\nрабочего дня'}
+            {workhoursEnd || t('Конец дня')}
           </Text>
           <Image source={arrow_down} style={styles.arrowIcon} />
         </TouchableOpacity>

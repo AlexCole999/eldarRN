@@ -1,8 +1,12 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, ScrollView, Image } from 'react-native';
 import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что у вас есть это изображение
+import { useTranslation } from 'react-i18next';
 
 const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
+
+  const { t, i18n } = useTranslation();
+
   const [modalVisible, setModalVisible] = useState(false);
 
   const districts = [
@@ -20,14 +24,14 @@ const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
     <View>
       {city === 'Ташкент' && (
         <>
-          <Text style={styles.label}>Район</Text>
+          <Text style={styles.label}>{t('Район')}</Text>
 
           <TouchableOpacity
             style={styles.openButton}
             onPress={() => setModalVisible(true)}
           >
             <Text style={{ ...styles.openButtonText, color: cityDistrict ? '#333333' : '#C4C4C4' }}>
-              {cityDistrict || 'Выберите район'}
+              {t(cityDistrict) || t('Выберите район')}
             </Text>
             <Image source={arrow_down} style={styles.arrowIcon} />
           </TouchableOpacity>
@@ -55,7 +59,7 @@ const SelectorDistrict = ({ city, cityDistrict, setCityDistrict }) => {
                   style={styles.closeButton}
                   onPress={() => setModalVisible(false)}
                 >
-                  <Text style={styles.closeButtonText}>Закрыть</Text>
+                  <Text style={styles.closeButtonText}>{t('Закрыть')}</Text>
                 </TouchableOpacity>
               </View>
             </View>

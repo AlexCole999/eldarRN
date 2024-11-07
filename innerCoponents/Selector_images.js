@@ -7,7 +7,11 @@ import trash_icon from '../assets/trash_icon.png'
 
 const { width } = Dimensions.get('window'); // Получаем ширину экрана для адаптации ширины изображения
 
+import { useTranslation } from 'react-i18next';
+
 const SelectorImages = ({ images, setImages }) => {
+
+  const { t, i18n } = useTranslation();
 
   const selectImage = async () => {
     try {
@@ -34,7 +38,7 @@ const SelectorImages = ({ images, setImages }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Фото услуги</Text>
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Фотографии')}</Text>
 
       <FlatList
         horizontal

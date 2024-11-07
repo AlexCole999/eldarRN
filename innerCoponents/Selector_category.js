@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Modal, StyleSheet, Image, ScrollView } from 'react-native';
+import { useTranslation } from 'react-i18next';
 
 import arrow_down from '../assets/arrow_down.png';
 
 const SelectorCategory = ({ category, setCategory }) => {
+
+  const { t, i18n } = useTranslation();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [subModalVisible, setSubModalVisible] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -88,27 +92,27 @@ const SelectorCategory = ({ category, setCategory }) => {
 
   return (
     <View >
-      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Специализация</Text>
+      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>{t('Специализация')}</Text>
 
       <TouchableOpacity
         style={styles.openButton}
         onPress={() => setModalVisible(true)}
       >
         <Text style={{ ...styles.openButtonText, color: category ? '#333333' : '#C4C4C4' }}>
-          {selectedCategory ? selectedCategory.name : category || 'Выберите специализацию'}
+          {selectedCategory ? t(selectedCategory.name) : category || t('Выберите специализацию')}
         </Text>
         <Image source={arrow_down} style={styles.arrowIcon} />
       </TouchableOpacity>
 
       {selectedCategory && (
         <View>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, paddingTop: 12, color: '#333333' }}>Вид деятельности</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, paddingTop: 12, color: '#333333' }}>'{t('Вид деятельности')}'</Text>
           <TouchableOpacity
             style={styles.openButton}
             onPress={() => setSubModalVisible(true)}
           >
             <Text style={{ ...styles.openButtonText, color: category ? '#333333' : '#C4C4C4' }}>
-              {selectedSubcategory || 'Выберите вид деятельности'}
+              {t(selectedSubcategory) || t("Выберите вид деятельности")}
             </Text>
             <Image source={arrow_down} style={styles.arrowIcon} />
           </TouchableOpacity>
@@ -130,7 +134,7 @@ const SelectorCategory = ({ category, setCategory }) => {
                   style={styles.categoryButton}
                   onPress={() => handleCategorySelection(item)}
                 >
-                  <Text style={styles.categoryText}>{item.name}</Text>
+                  <Text style={styles.categoryText}>{t(item.name)}</Text>
                 </TouchableOpacity>
               ))}
             </ScrollView>
@@ -138,7 +142,7 @@ const SelectorCategory = ({ category, setCategory }) => {
               style={styles.closeButton}
               onPress={() => setModalVisible(false)}
             >
-              <Text style={styles.closeButtonText}>Закрыть</Text>
+              <Text style={styles.closeButtonText}>{t('Закрыть')}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -160,7 +164,7 @@ const SelectorCategory = ({ category, setCategory }) => {
                     style={styles.categoryButton}
                     onPress={() => handleSubcategorySelection(subItem)}
                   >
-                    <Text style={styles.categoryText}>{subItem.name}</Text>
+                    <Text style={styles.categoryText}>{t(subItem.name)}</Text>
                   </TouchableOpacity>
                 ))}
               </ScrollView>
@@ -168,7 +172,7 @@ const SelectorCategory = ({ category, setCategory }) => {
                 style={styles.closeButton}
                 onPress={() => setSubModalVisible(false)}
               >
-                <Text style={styles.closeButtonText}>Закрыть</Text>
+                <Text style={styles.closeButtonText}>{t('Закрыть')}</Text>
               </TouchableOpacity>
             </View>
           </View>

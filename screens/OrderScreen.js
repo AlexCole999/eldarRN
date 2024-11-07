@@ -65,7 +65,7 @@ const OrderScreen = ({ route }) => {
 
             let response = await axios.post(`${localhosturl}/newOrder`, { userPhone });
           }}
-        ><Text>test</Text></TouchableOpacity>
+        ></TouchableOpacity>
         <Calendar
           style={{
             paddingVertical: 12,

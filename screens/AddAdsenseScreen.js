@@ -16,10 +16,15 @@ import Screen3 from '../innerCoponents/Selector_categoriesVisual';
 import { Picker } from '@react-native-picker/picker';
 import plus from '../assets/plus.png'
 
+import { useTranslation } from 'react-i18next';
+
 
 const AddAdsenseScreen = () => {
 
   const navigation = useNavigation();
+
+  const { t, i18n } = useTranslation();
+
 
   const [stage, setStage] = useState(0);
   const [user, setUser] = useState('default');
@@ -126,14 +131,14 @@ const AddAdsenseScreen = () => {
       <View style={{ ...styles.container, paddingHorizontal: 24 }}>
 
         <View>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Название</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Название')}</Text>
 
           <TextInput
             placeholderTextColor="#C4C4C4"
             style={{
               fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginTop: 4, fontSize: 14
             }}
-            placeholder="Введите название"
+            placeholder={t("Введите название")}
             onChangeText={setTitle}
             value={title} />
         </View>
@@ -145,7 +150,7 @@ const AddAdsenseScreen = () => {
             disabled={true}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -154,7 +159,7 @@ const AddAdsenseScreen = () => {
             disabled={!title}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -176,7 +181,7 @@ const AddAdsenseScreen = () => {
             disabled={false}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -185,7 +190,7 @@ const AddAdsenseScreen = () => {
             disabled={!category}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -209,7 +214,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -218,7 +223,7 @@ const AddAdsenseScreen = () => {
             disabled={!(city && (city !== 'Ташкент' || cityDistrict))}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -236,7 +241,7 @@ const AddAdsenseScreen = () => {
 
           <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
 
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Телефон')}*</Text>
 
           <View style={{ flexDirection: 'row', marginTop: 4 }}>
 
@@ -255,7 +260,7 @@ const AddAdsenseScreen = () => {
 
           </View>
 
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Адрес*</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Адрес')}*</Text>
 
           <View style={{ marginTop: 4 }}>
             <TextInput
@@ -263,7 +268,7 @@ const AddAdsenseScreen = () => {
               style={{
                 fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
-              placeholder="Укажите адрес"
+              placeholder={t("Укажите адрес")}
               onChangeText={setAddress}
               value={address} />
           </View>
@@ -276,7 +281,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -285,7 +290,7 @@ const AddAdsenseScreen = () => {
             disabled={!(phone && address && workhours)}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -308,7 +313,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -317,7 +322,7 @@ const AddAdsenseScreen = () => {
             disabled={!(phone && address && workhours)}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -336,7 +341,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -345,7 +350,7 @@ const AddAdsenseScreen = () => {
             disabled={!images.length}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -413,7 +418,7 @@ const AddAdsenseScreen = () => {
                 position: 'relative',
                 fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
-              placeholder=" Номер формата + XXX XX XXX XX XX"
+              placeholder="+ XXX XX XXX XX XX"
               onChangeText={setWhatsapp}
               value={whatsapp} />
             <TouchableOpacity style={{ width: 18, height: 18, position: 'absolute', top: 12, right: 10 }}
@@ -434,7 +439,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -443,7 +448,7 @@ const AddAdsenseScreen = () => {
             disabled={null}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -457,7 +462,7 @@ const AddAdsenseScreen = () => {
       <View style={{ ...styles.container, paddingHorizontal: 24 }}>
         <View>
           <Text style={{ textAlign: 'start', marginBottom: 24, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
-            Описание
+            {t('Описание')}
           </Text>
 
           <TextInput
@@ -475,7 +480,7 @@ const AddAdsenseScreen = () => {
               elevation: 4,
             }}
             multiline={true}
-            placeholder="Введите описание вашей услуги"
+            placeholder={t("Введите описание вашей услуги")}
             placeholderTextColor="#C4C4C4"
             onChangeText={setDescription}
             value={description}
@@ -488,7 +493,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -497,7 +502,7 @@ const AddAdsenseScreen = () => {
             disabled={!description}
             onPress={() => setStage(stage => stage + 1)}        >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Далее
+              {t('Далее')}
             </Text>
           </TouchableOpacity>
         </View>
@@ -511,14 +516,14 @@ const AddAdsenseScreen = () => {
       <View style={styles.container}>
 
         <View>
-          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Название</Text>
+          <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Название')}</Text>
 
           <TextInput
             placeholderTextColor="#C4C4C4"
             style={{
               fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginTop: 4, fontSize: 14
             }}
-            placeholder="Введите название"
+            placeholder={t("Введите название")}
             onChangeText={setTitle}
             value={title} />
         </View>
@@ -537,7 +542,7 @@ const AddAdsenseScreen = () => {
           <SelectorHours workhoursStart={workhoursStart} setWorkhoursStart={setWorkhoursStart} workhoursEnd={workhoursEnd} setWorkhoursEnd={setWorkhoursEnd} workhours={workhours} setWorkhours={setWorkhours} />
         </View>
 
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Телефон*</Text>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Телефон')}*</Text>
 
         <View style={{ flexDirection: 'row', marginTop: 4 }}>
 
@@ -556,7 +561,7 @@ const AddAdsenseScreen = () => {
 
         </View>
 
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>Адрес*</Text>
+        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', }}>{t('Адрес')}*</Text>
 
         <View style={{ marginTop: 4 }}>
           <TextInput
@@ -564,7 +569,7 @@ const AddAdsenseScreen = () => {
             style={{
               fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
             }}
-            placeholder="Укажите адрес"
+            placeholder={t("Укажите адрес")}
             onChangeText={setAddress}
             value={address} />
         </View>
@@ -582,7 +587,7 @@ const AddAdsenseScreen = () => {
                 position: 'relative',
                 fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
-              placeholder="Вставьте ссылку"
+              placeholder={t("Вставьте ссылку")}
               onChangeText={setInstagram}
               value={instagram} />
             <TouchableOpacity style={{ width: 18, height: 18, position: 'absolute', top: 12, right: 10 }}
@@ -605,7 +610,7 @@ const AddAdsenseScreen = () => {
                 position: 'relative',
                 fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
-              placeholder="Вставьте ссылку"
+              placeholder={t("Вставьте ссылку")}
               onChangeText={setTelegram}
               value={telegram} />
             <TouchableOpacity style={{ width: 18, height: 18, position: 'absolute', top: 12, right: 10 }}
@@ -627,7 +632,7 @@ const AddAdsenseScreen = () => {
                 position: 'relative',
                 fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 4, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 10, fontSize: 14
               }}
-              placeholder="Вставьте ссылку"
+              placeholder={t("Вставьте ссылку")}
               onChangeText={setWhatsapp}
               value={whatsapp} />
             <TouchableOpacity style={{ width: 18, height: 18, position: 'absolute', top: 12, right: 10 }}
@@ -643,7 +648,7 @@ const AddAdsenseScreen = () => {
         </View>
 
         <Text style={{ textAlign: 'start', marginTop: 12, marginBottom: 4, fontSize: 16, fontFamily: 'Manrope_600SemiBold', color: '#333333' }}>
-          Описание
+          {t('Описание')}
         </Text>
 
         <TextInput
@@ -661,7 +666,7 @@ const AddAdsenseScreen = () => {
             elevation: 4,
           }}
           multiline={true}
-          placeholder="Введите описание вашей услуги"
+          placeholder={t("Введите описание вашей услуги")}
           placeholderTextColor="#C4C4C4"
           onChangeText={setDescription}
           value={description}
@@ -675,7 +680,7 @@ const AddAdsenseScreen = () => {
             onPress={() => setStage(stage => stage - 1)}
           >
             <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 16, fontWeight: '600', textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Отмена
+              {t('Отмена')}
             </Text>
           </TouchableOpacity>
 
@@ -684,7 +689,7 @@ const AddAdsenseScreen = () => {
             disabled={!description}
             onPress={() => { submitAdsense(); console.log(city, cityDistrict) }}       >
             <Text style={{ color: 'white', fontSize: 16, textAlign: 'center', fontFamily: 'Manrope_600SemiBold' }}>
-              Cохранить
+              {t('Сохранить')}
             </Text>
           </TouchableOpacity>
         </View>

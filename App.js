@@ -57,23 +57,23 @@ const Tabs = () => {
         tabBarIcon: ({ focused, size }) => {
           let iconPath;
 
-          if (route.name === t('Главная')) {
+          if (route.name === 'Главная') {
             iconPath = focused
               ? require('./assets/Home.png')
               : require('./assets/Home.png');
-          } else if (route.name === t('Каталог')) {
+          } else if (route.name === 'Каталог') {
             iconPath = focused
               ? require('./assets/Catalog.png')
               : require('./assets/Catalog.png');
-          } else if (route.name === t('Чат')) {
+          } else if (route.name === 'Чат') {
             iconPath = focused
               ? require('./assets/Chat.png')
               : require('./assets/Chat.png');
-          } else if (route.name === t('Профиль')) {
+          } else if (route.name === 'Профиль') {
             iconPath = focused
               ? require('./assets/Profile.png')
               : require('./assets/Profile.png');
-          } else if (route.name === t('Записи')) {
+          } else if (route.name === 'Записи') {
             iconPath = focused
               ? require('./assets/orders.png')
               : require('./assets/orders.png');
@@ -115,14 +115,15 @@ const Tabs = () => {
       })}
     >
       <Tab.Screen
-        name={t("Главная")}
+        name="Главная"
         component={MainScreen}
         options={{
           headerShown: false, // Отключает отображение заголовка
+          tabBarLabel: t("Главная")
         }}
       />
       <Tab.Screen
-        name={t("Записи")}
+        name="Записи"
         component={RegistersScreen}
         // }}
         options={{
@@ -137,26 +138,29 @@ const Tabs = () => {
             fontFamily: 'Manrope_600SemiBold',
             fontSize: 24
           },
-          headerTitleAlign: 'center'
+          headerTitleAlign: 'center',
+          tabBarLabel: t("Записи")
         }}
       />
       <Tab.Screen
-        name={t("Каталог")}
+        name="Каталог"
         component={AdsensesScreen}
         // }}
         options={{
           headerShown: false, // Отключает отображение заголовка
+          tabBarLabel: t("Каталог"), // Динамически меняем текст вкладки в зависимости от перевода
         }}
       />
       <Tab.Screen
-        name={t("Чат")}
+        name="Чат" // Используем одно и то же имя, чтобы сохранить идентичность маршрута
         component={ChatsScreen}
         options={{
           headerShown: false, // Отключает отображение заголовка
+          tabBarLabel: t("Чат"), // Динамически меняем текст вкладки в зависимости от перевода
         }}
       />
       <Tab.Screen
-        name={t("Профиль")}
+        name="Профиль"
         component={ProfileScreen}
         options={{
           headerStyle: {
@@ -170,6 +174,7 @@ const Tabs = () => {
             fontFamily: 'Manrope_600SemiBold',
             fontSize: 24
           },
+          tabBarLabel: t("Профиль"),
           headerTitleAlign: 'center'
         }}
       />
@@ -242,7 +247,7 @@ export default function App() {
           }}
         >
           <Stack.Screen name="Tabs" component={Tabs} options={{ headerShown: false }} />
-          <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
+          <Stack.Screen name="Добавить объявление" options={{ title: t('Добавить объявление') }} component={AddAdsenseScreen} />
           <Stack.Screen name="Мои объявления" component={ProfileAdsenses} />
           <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
           <Stack.Screen name="Мои записи" component={Registers_my} />

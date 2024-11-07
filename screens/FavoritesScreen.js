@@ -93,11 +93,11 @@ const FavoritesScreen = () => {
 
           ?
 
-          <View>
+          <View key={item.id}>
 
             <TouchableOpacity
               style={{ ...styles.itemContainer, elevation: 4 }}
-              key={item.id}
+
               onPress={() => navigation.navigate('Детали объявления', {
                 adId: item.id,
                 adAccType: item.accType,

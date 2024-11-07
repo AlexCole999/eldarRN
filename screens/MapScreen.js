@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet, Text, Image, TouchableOpacity } from 'react-native';
 import MapView, { UrlTile, Marker, Callout } from 'react-native-maps';
 
-const App = () => {
+const MapScreen = () => {
   const [markers, setMarkers] = useState([]); // Массив для хранения маркеров
 
   const handleMapPress = (event) => {
@@ -91,4 +91,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default App;
+export default MapScreen;

@@ -45,8 +45,8 @@ const OrderScreen = ({ route }) => {
 
       if (response.data.message) {
         console.log(response.data)
-        Alert.alert('Бронь зарегистрирована', 'Успешно забронировано');
-        navigation.navigate('Профиль');
+        Alert.alert('Бронь зарегистрирована', `${response.data.message}`);
+        navigation.navigate('Каталог');
       }
     } catch (error) {
       console.error("Ошибка при создании заказа:", error);
@@ -58,6 +58,14 @@ const OrderScreen = ({ route }) => {
     <ScrollView contentContainerStyle={{ minHeight: screenHeight }}>
       <View style={styles.container}>
         <Text style={styles.headerText}>Выберите дату</Text>
+        <TouchableOpacity
+          onPress={async () => {
+            let user = await AsyncStorage.getItem('userData');
+            let userPhone = JSON.parse(user).phone;
+
+            let response = await axios.post(`${localhosturl}/newOrder`, { userPhone });
+          }}
+        ><Text>test</Text></TouchableOpacity>
         <Calendar
           style={{
             paddingVertical: 12,

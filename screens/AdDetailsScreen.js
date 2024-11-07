@@ -19,6 +19,7 @@ import map_icon from '../assets/map_icon.png'
 import Catalog_star from '../assets/Catalog_star.png'
 
 import { useTranslation } from 'react-i18next';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AdDetailsScreen = ({ route }) => {
 
@@ -87,6 +88,7 @@ const AdDetailsScreen = ({ route }) => {
 
         <TouchableOpacity
           style={{ flexDirection: 'row', gap: 4, marginTop: 12, backgroundColor: 'white', borderRadius: 12, borderWidth: 1, borderColor: 'rgba(0, 148, 255, 0.9)', flexGrow: 1, justifyContent: 'center', alignItems: 'center', height: 33 }}
+          onPress={() => { navigation.navigate('Карта') }}
         >
           <Text style={{ color: 'rgba(0, 148, 255, 0.9)', fontSize: 14, textAlign: 'center', fontFamily: 'Manrope_500Medium' }}>
             Показать на карте
@@ -117,7 +119,15 @@ const AdDetailsScreen = ({ route }) => {
 
         <TouchableOpacity
           style={{ backgroundColor: '#0094FF', borderRadius: 12, flexGrow: 1, justifyContent: 'center', alignItems: 'center' }}
-          onPress={() => { navigation.navigate('Забронировать', { adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours }) }}
+          onPress={async () => {
+            let userData = await AsyncStorage.getItem('userData');
+            if (!userData) { Alert.alert('Требуется регистрация', 'Вы не зарегистрированы'); return }
+
+            let accType = JSON.parse(userData).accType;
+            if (accType == 'Клиент') { navigation.navigate('Забронировать', { adId: adId, adServiceParams: adServiceParams, adWorkhours: adWorkhours }) }
+            if (accType == 'Мастер') { Alert.alert('Неправильный тип аккаунта', 'Только клиенты могут бронировать заказы'); return }
+            if (accType == 'Коворкинг') { Alert.alert('Неправильный тип аккаунта', 'Только клиенты могут бронировать заказы'); return }
+          }}
         >
           <Text style={{ color: 'white', fontSize: 16, fontFamily: 'Manrope_600SemiBold' }}>{t('Забронировать')}</Text>
         </TouchableOpacity>
@@ -257,7 +267,16 @@ const AdDetailsScreen = ({ route }) => {
         </View>
 
         <TouchableOpacity
-          onPress={() => { navigation.navigate('Оставить отзыв', { adId: adId }) }}
+          onPress={async () => {
+            let userData = await AsyncStorage.getItem('userData');
+            if (!userData) { Alert.alert('Требуется регистрация', 'Вы не зарегистрированы'); return }
+
+            let accType = JSON.parse(userData).accType;
+            if (accType == 'Клиент') { navigation.navigate('Оставить отзыв', { adId: adId }) }
+            if (accType == 'Мастер') { Alert.alert('Неправильный тип аккаунта', 'Только клиенты могут оставлять отзывы'); return }
+            if (accType == 'Коворкинг') { Alert.alert('Неправильный тип аккаунта', 'Только клиенты могут оставлять отзывы'); return }
+
+          }}
           style={{ marginTop: 10, marginBottom: 20, justifyContent: 'center', alignItems: 'center', borderWidth: 1, borderColor: 'rgba(0, 148, 255,0.9)', padding: 8, borderRadius: 12 }}>
           <Text style={{ color: 'rgba(0, 148, 255,0.9)', fontFamily: 'Manrope_700Bold', fontSize: 16 }}>{t("Оставить отзыв")}</Text>
         </TouchableOpacity>

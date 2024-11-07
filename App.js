@@ -19,7 +19,7 @@ import TestimonialScreen from './screens/TestimonialScreen';
 import OrderScreen from './screens/OrderScreen';
 import Icon from 'react-native-vector-icons/Ionicons';
 import UpdateAdsenseScreen from './screens/UpdateAdsenseScreen';
-import MyOrdersScreen from './screens/MyOrdersScreen';
+import MyOrdersScreen from './screens/RegistersScreen';
 import { Provider } from 'react-redux';
 import store from './storage/store'
 import FiltersScreen from './screens/FiltersScreen';
@@ -27,16 +27,22 @@ import BonusesScreen from './screens/BonusesScreen';
 import BalanceScreen from './screens/BalanceScreen';
 import ActionsScreen from './screens/ActionsScreen';
 import NotificationScreen from './screens/NotificationScreen';
-import TestScreen from './screens/TestScreen';
+import TestScreen from './screens/MapScreen';
 import ProfileAdsenses from './innerCoponents/Profile_adsenses';
-import Profile_orders_my from './innerCoponents/Profile_orders_my';
-import Profile_orders_clients from './innerCoponents/Profile_orders_clients';
+import Profile_orders_my from './innerCoponents/Registers_my';
+import Profile_orders_clients from './innerCoponents/Registers_clients';
 import { useTranslation } from 'react-i18next';
 
 import './i18n'
 import LanguagesScreen from './screens/LanguagesScreen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import FavoritesScreen from './screens/FavoritesScreen';
+import RegistersScreen from './screens/RegistersScreen';
+import MapScreen from './screens/MapScreen';
+import ChatsScreen from './screens/ChatsScreen';
+import Registers_clients from './innerCoponents/Registers_clients';
+import Registers_my from './innerCoponents/Registers_my';
+import Registers_archive from './innerCoponents/Registers_archive';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -117,10 +123,21 @@ const Tabs = () => {
       />
       <Tab.Screen
         name={t("Записи")}
-        component={AdsensesScreen}
+        component={RegistersScreen}
         // }}
         options={{
-          headerShown: false, // Отключает отображение заголовка
+          headerStyle: {
+            backgroundColor: 'rgba(0, 148, 255,0.9)', // Change this to your desired color
+            borderBottomEndRadius: 24,
+            borderBottomStartRadius: 24,
+            height: 102
+          },
+          headerTintColor: '#fff', // Color of the header text and icons
+          headerTitleStyle: {
+            fontFamily: 'Manrope_600SemiBold',
+            fontSize: 24
+          },
+          headerTitleAlign: 'center'
         }}
       />
       <Tab.Screen
@@ -133,7 +150,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name={t("Чат")}
-        component={TestScreen}
+        component={ChatsScreen}
         options={{
           headerShown: false, // Отключает отображение заголовка
         }}
@@ -228,8 +245,9 @@ export default function App() {
           <Stack.Screen name="Добавить объявление" component={AddAdsenseScreen} />
           <Stack.Screen name="Мои объявления" component={ProfileAdsenses} />
           <Stack.Screen name="Изменить объявление" component={UpdateAdsenseScreen} />
-          <Stack.Screen name="Моя бронь" component={Profile_orders_my} />
-          <Stack.Screen name="Бронь клиентов" component={Profile_orders_clients} />
+          <Stack.Screen name="Мои записи" component={Registers_my} />
+          <Stack.Screen name="Записи клиентов" component={Registers_clients} />
+          <Stack.Screen name="Архив записей" component={Registers_archive} />
           <Stack.Screen
             options={{
               headerTitle: () => (
@@ -261,7 +279,6 @@ export default function App() {
           />
           <Stack.Screen name="Оставить отзыв" component={TestimonialScreen} />
           <Stack.Screen options={{ headerTitle: t('Забронировать') }} name="Забронировать" component={OrderScreen} />
-          <Stack.Screen options={{ headerTitle: t('Бронь') }} name="Бронь" component={MyOrdersScreen} />
           <Stack.Screen options={{ headerTitle: t('Фильтр') }} name="Фильтр" component={FiltersScreen} />
           <Stack.Screen options={{ headerTitle: t('Бонусы') }} name="Бонусы" component={BonusesScreen} />
           <Stack.Screen options={{ headerTitle: t('Баланс') }} name="Баланс" component={BalanceScreen} />
@@ -269,6 +286,7 @@ export default function App() {
           <Stack.Screen options={{ headerTitle: t('Уведомления') }} name="Уведомления" component={NotificationScreen} />
           <Stack.Screen options={{ headerTitle: t('Избранное') }} name="Избранное" component={FavoritesScreen} />
           <Stack.Screen options={{ headerTitle: t('Язык приложения') }} name="Язык приложения" component={LanguagesScreen} />
+          <Stack.Screen options={{ headerTitle: t('Карта') }} name="Карта" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

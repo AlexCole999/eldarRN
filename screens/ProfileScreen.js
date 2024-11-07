@@ -30,10 +30,12 @@ const ProfileScreen = () => {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
   const [adsenses, setAdsenses] = useState([]);
-  const [adsensesWithUserOrders, setAdsensesWithUserOrders] = useState([]);
   const [refreshing, setRefreshing] = useState(false);
   const [newOrdersCount, setNewOrdersCount] = useState(false);
   const [favoritesCount, setFavoritesCount] = useState(0);
+
+  const [myOrdersCount, setMyOrdersCount] = useState(0)
+  const [clientsOrdersCount, setClientsOrdersCount] = useState(0)
 
   const navigation = useNavigation();
 
@@ -44,36 +46,22 @@ const ProfileScreen = () => {
     let user = await AsyncStorage.getItem('userData');
     let dataForFavorites = JSON.parse(user)
     let phoneForFavorites = dataForFavorites.phone
+    let userPhone = dataForFavorites.phone;
 
-    console.log(user)
+    const myOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsClient`, { userPhone });
+    setMyOrdersCount(myOrders.data.orders.length)
 
-    const countNewOrders = (adsenses) => {
-      const pendingCount = adsenses.reduce((count, adsense) => {
-        return count + adsense.orders.filter(order => order.status === "Ожидает подтверждения").length;
-      }, 0);
-
-      return pendingCount
-    };
+    const clientsOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsOwner`, { userPhone });
+    setClientsOrdersCount(clientsOrders.data.orders.length)
 
     console.log('refresh')
-
-    const countUserOrders = (adsensesWithUserOrders, user) => {
-      return adsensesWithUserOrders.reduce((acc, adsense) => {
-        const userOrders = adsense.orders.filter(order => (order.userPhone === JSON.parse(user).phone && order.status == 'Ожидает подтверждения'));
-        return acc + userOrders.length;
-      }, 0);
-    };
-
 
     if (user) {
       try {
         let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
-        let adsensesWithUserOrders = await axios.post(`${localhosturl}/getUserAdsensesWithHisOrders`, { user });
         let favorites = await axios.post(`${localhosturl}/getFavoriteAdsenses`, { phone: phoneForFavorites });
         setFavoritesCount(favorites.data.adsenses.length)
         setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
-        setAdsensesWithUserOrders(adsensesWithUserOrders.data.adsenses); // Устанавливаем полученные объявления в состояние
-        setNewOrdersCount(countNewOrders(response.data.adsenses) + countUserOrders(adsensesWithUserOrders.data.adsenses, user))
       } catch (error) {
         console.error("Ошибка при получении объявлений:", error);
       }
@@ -200,13 +188,13 @@ const ProfileScreen = () => {
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate("Бронь", { adsenses: adsenses, adsensesWithUserOrders: adsensesWithUserOrders, userData: userData, refreshAdsenses: refreshAdsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate("Записи") }}>
             <View style={{ flexDirection: 'row', gap: 4, alignItems: 'center' }}>
               <Image source={profile_calendar} style={{ width: 18, height: 18 }} />
-              <Text style={styles.addButtonText}>{t('Бронь')}</Text>
+              <Text style={styles.addButtonText}>{t('Записи')}</Text>
             </View>
             <View style={{ backgroundColor: 'rgb(0, 148, 255)', paddingHorizontal: 12, paddingVertical: 2, borderRadius: 6 }}>
-              <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>{newOrdersCount}</Text>
+              <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>{clientsOrdersCount + myOrdersCount}</Text>
             </View>
           </TouchableOpacity>
 

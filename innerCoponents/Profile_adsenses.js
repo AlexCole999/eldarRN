@@ -125,6 +125,7 @@ const ProfileAdsenses = () => {
                 </TouchableOpacity>
 
               </View>
+
             </TouchableOpacity>
 
           ))

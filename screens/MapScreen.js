@@ -21,6 +21,7 @@ const MapScreen = () => {
   return (
     <View style={styles.container}>
       <MapView
+        provider={MapView.PROVIDER_DEFAULT}
         style={styles.map}
         initialRegion={{
           latitude: 41.33016,  // Координаты для центра карты

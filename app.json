@@ -26,7 +26,8 @@
       "permissions": [
         "INTERNET",
         "ACCESS_NETWORK_STATE"
-      ]
+      ],
+      "newArchEnabled": true
     },
     "web": {
       "favicon": "./assets/ArendaGoIcon.png"

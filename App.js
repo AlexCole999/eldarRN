@@ -291,7 +291,7 @@ export default function App() {
           <Stack.Screen options={{ headerTitle: t('Уведомления') }} name="Уведомления" component={NotificationScreen} />
           <Stack.Screen options={{ headerTitle: t('Избранное') }} name="Избранное" component={FavoritesScreen} />
           <Stack.Screen options={{ headerTitle: t('Язык приложения') }} name="Язык приложения" component={LanguagesScreen} />
-          <Stack.Screen options={{ headerTitle: t('Карта') }} name="Карта" component={MapScreen} />
+          <Stack.Screen options={{ headerTitle: t('Карта') }} name="Карта" component={BonusesScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

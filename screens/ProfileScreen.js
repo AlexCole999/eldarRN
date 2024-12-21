@@ -22,111 +22,125 @@ import profile_support from '../assets/profile_support.png'
 
 import { useTranslation } from 'react-i18next';
 
+import { setUser } from '../storage/store.js';
+
+import { useDispatch, useSelector } from 'react-redux';
+import ProfileLogIn from '../innerCoponents/Profile_logIn.js';
 
 const ProfileScreen = () => {
-  const [userData, setUserData] = useState(null);
-  const [accType, setAccType] = useState('');
-  const [name, setName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
-  const [adsenses, setAdsenses] = useState([]);
-  const [refreshing, setRefreshing] = useState(false);
-  const [newOrdersCount, setNewOrdersCount] = useState(false);
-  const [favoritesCount, setFavoritesCount] = useState(0);
 
-  const [myOrdersCount, setMyOrdersCount] = useState(0)
-  const [clientsOrdersCount, setClientsOrdersCount] = useState(0)
+  let dispatch = useDispatch();
+
+  const userData = useSelector((state) => state?.user);
+
+  const [registration, setRegistration] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // const [userData, setUserData] = useState(null);
+  // const [adsenses, setAdsenses] = useState([]);
+  // const [newOrdersCount, setNewOrdersCount] = useState(false);
+  // const [favoritesCount, setFavoritesCount] = useState(0);
+
+  // const [myOrdersCount, setMyOrdersCount] = useState(0)
+  // const [clientsOrdersCount, setClientsOrdersCount] = useState(0)
 
   const navigation = useNavigation();
 
-  const refreshAdsenses = async () => {
+  // const refreshAdsenses = async () => {
 
+  //   setRefreshing(true);
+
+  //   let user = await AsyncStorage.getItem('userData');
+  //   let dataForFavorites = JSON.parse(user)
+  //   let phoneForFavorites = dataForFavorites.phone
+  //   let userPhone = dataForFavorites.phone;
+
+  //   dispatch(setUser(dataForFavorites))
+
+  //   const myOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsClient`, { userPhone });
+  //   setMyOrdersCount(myOrders.data.orders.length)
+
+  //   const clientsOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsOwner`, { userPhone });
+  //   setClientsOrdersCount(clientsOrders.data.orders.length)
+
+  //   console.log('refresh')
+
+  //   if (user) {
+  //     try {
+  //       let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
+  //       let favorites = await axios.post(`${localhosturl}/getFavoriteAdsenses`, { phone: phoneForFavorites });
+  //       setFavoritesCount(favorites.data.adsenses.length)
+  //       setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
+  //     } catch (error) {
+  //       console.error("Ошибка при получении объявлений:", error);
+  //     }
+  //   }
+  //   setRefreshing(false);
+
+  // }
+
+  const handleRefresh = () => {
     setRefreshing(true);
-
-    let user = await AsyncStorage.getItem('userData');
-    let dataForFavorites = JSON.parse(user)
-    let phoneForFavorites = dataForFavorites.phone
-    let userPhone = dataForFavorites.phone;
-
-    const myOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsClient`, { userPhone });
-    setMyOrdersCount(myOrders.data.orders.length)
-
-    const clientsOrders = await axios.post(`${localhosturl}/getOrdersIfUserIsOwner`, { userPhone });
-    setClientsOrdersCount(clientsOrders.data.orders.length)
-
-    console.log('refresh')
-
-    if (user) {
-      try {
-        let response = await axios.post(`${localhosturl}/getUserAdsenses`, { user });
-        let favorites = await axios.post(`${localhosturl}/getFavoriteAdsenses`, { phone: phoneForFavorites });
-        setFavoritesCount(favorites.data.adsenses.length)
-        setAdsenses(response.data.adsenses); // Устанавливаем полученные объявления в состояние
-      } catch (error) {
-        console.error("Ошибка при получении объявлений:", error);
-      }
-    }
+    checkRegistration()
     setRefreshing(false);
+  };
 
-  }
-
-  const profileQuit = () => {
-    Alert.alert(
-      'Подтверждение выхода',
-      'Вы уверены, что хотите выйти из профиля?',
-      [
-        {
-          text: 'Отмена',
-          style: 'cancel',
-        },
-        {
-          text: 'Выйти',
-          onPress: () => accountQuit(),
-          style: 'destructive',
-        },
-      ],
-      { cancelable: true }
-    );
-    async function accountQuit() {
-      await AsyncStorage.clear();
-      setUserData(null);
-      setAdsenses([]);
-      Alert.alert('Выход', 'Вы успешно вышли из своего профиля');
-    }
-  }
-
-  const loadUserData = async () => {
-    const userDataString = await AsyncStorage.getItem('userData');
-    if (userDataString) {
-      setUserData(JSON.parse(userDataString));
+  const checkRegistration = async () => {
+    try {
+      const storedData = await AsyncStorage.getItem('userData');
+      if (storedData) {
+        const parsedData = JSON.parse(storedData);
+        const phone = parsedData.phone;
+        const password = parsedData.password;
+        const response = await axios.post(`${localhosturl}/userLogIn`, {
+          phone,
+          password
+        });
+        if (response.data.logInResult == true) {
+          dispatch(setUser(response.data.user))
+          console.log(response.data.user, 'check success')
+        } else {
+          Alert.alert('Ошибка входа', response.data.message);
+        }
+      }
+    } catch (error) {
+      alert('Ошибка при входе');
+      console.log(error)
     }
   };
 
   useEffect(() => {
-    loadUserData();
-    refreshAdsenses();
+    checkRegistration();
   }, []);
 
+  const profileQuit = () => {
+    Alert.alert('Подтверждение выхода', 'Вы уверены, что хотите выйти из профиля?',
+      [{ text: 'Отмена', style: 'cancel', }, { text: 'Выйти', onPress: () => accountQuit(), style: 'destructive', },], { cancelable: true }
+    );
+    async function accountQuit() {
+      await AsyncStorage.clear();
+      dispatch(setUser({}))
+      Alert.alert('Выход', 'Вы успешно вышли из своего профиля');
+    }
+  }
 
   const { t, i18n } = useTranslation();
-
-
-
 
   return (
     <ScrollView
       contentContainerStyle={styles.container}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={refreshAdsenses} />}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
     >
-      {userData
+      {userData?.user?.name
         ?
         (
           <TouchableOpacity style={styles.userContainer} onPress={profileQuit}>
             <View style={{ flexDirection: 'row', gap: 8 }}>
               <Image source={{ uri: `${localhosturl}/userIcons/user2.png` }} style={styles.userImage} />
               <View>
-                <Text style={styles.userName}>{userData?.name}</Text>
-                <Text style={styles.userPhone}>+ {userData?.phone}</Text>
+                <Text style={styles.userName}>{userData?.user?.name}</Text>
+                <Text style={styles.userPhone}>+ {userData?.user?.phone}</Text>
+                <Text onPress={() => { console.log(userData) }} style={styles.userPhone}>reduxlog</Text>
               </View>
             </View>
             <View style={{ paddingBottom: 20 }}>
@@ -135,16 +149,20 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         )
         :
-        <ProfileRegistration accType={accType} setAccType={setAccType} name={name} setName={setName} phone={phone} setPhone={setPhone} password={password} setPassword={setPassword} userData={userData} setUserData={setUserData} refreshAdsenses={refreshAdsenses} />
+        registration ? <ProfileRegistration setRegistration={setRegistration} /> : <ProfileLogIn setRegistration={setRegistration} />
+
       }
 
-      {userData ?
+      {userData?.user?.name
+        ?
         <>
           <TouchableOpacity style={styles.addButton} onPress={() => {
-            navigation.navigate('Мои объявления', { adsenses: adsenses, userData: userData, refreshAdsenses: refreshAdsenses })
+            // navigation.navigate('Мои объявления', { adsenses: adsenses, userData: userData, refreshAdsenses: refreshAdsenses })
           }}>
             <Text style={styles.addButtonText}>{t('Мои объявления')}</Text>
-            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>{adsenses.length}</Text>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>
+              {/* {adsenses.length} */}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }}
@@ -152,14 +170,20 @@ const ProfileScreen = () => {
               let userData = await AsyncStorage.getItem('userData');
               userData = JSON.parse(userData)
               let accType = userData.accType
-              if (accType !== "Клиент") { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }
-              if (accType == "Клиент") { Alert.alert('Неверный тип аккаунта', 'Клиенты не могут размещать объявления', [{ text: 'Понятно', style: 'cancel', },], { cancelable: true }) }
+              if (accType !== "Клиент") {
+                //  navigation.navigate('Добавить объявление', { adsenses: adsenses }) 
+              }
+              if (accType == "Клиент") {
+                // Alert.alert('Неверный тип аккаунта', 'Клиенты не могут размещать объявления', [{ text: 'Понятно', style: 'cancel', },], { cancelable: true }) 
+              }
             }}>
             <Text style={styles.addButtonText}>{t('Добавить объявление')}</Text>
             <Image source={profile_plus} style={{ width: 18, height: 18 }} />
           </TouchableOpacity>
 
-          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => { navigation.navigate('Добавить объявление', { adsenses: adsenses }) }}>
+          <TouchableOpacity style={{ ...styles.addButton, marginTop: 6 }} onPress={() => {
+            // navigation.navigate('Добавить объявление', { adsenses: adsenses }) 
+          }}>
             <Text style={styles.addButtonText}>{t('Платные услуги')}</Text>
             <Image source={profile_arrow} style={{ width: 20, height: 20 }} />
           </TouchableOpacity>
@@ -194,7 +218,9 @@ const ProfileScreen = () => {
               <Text style={styles.addButtonText}>{t('Записи')}</Text>
             </View>
             <View style={{ backgroundColor: 'rgb(0, 148, 255)', paddingHorizontal: 12, paddingVertical: 2, borderRadius: 6 }}>
-              <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>{clientsOrdersCount + myOrdersCount}</Text>
+              <Text style={{ color: 'white', fontFamily: 'Manrope_500Medium', fontSize: 16, textAlign: 'center' }}>
+                {/* {clientsOrdersCount + myOrdersCount} */}
+              </Text>
             </View>
           </TouchableOpacity>
 
@@ -211,7 +237,9 @@ const ProfileScreen = () => {
               <Image source={profile_favs} style={{ width: 18, height: 18 }} />
               <Text style={styles.addButtonText}>{t('Избранное')}</Text>
             </View>
-            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>{favoritesCount}</Text>
+            <Text style={{ color: '#0094FF', fontFamily: 'Manrope_600SemiBold', fontSize: 16, }}>
+              {/* {favoritesCount} */}
+            </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={{ ...styles.addButton, marginTop: 24 }} >

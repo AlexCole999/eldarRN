@@ -11,27 +11,22 @@ import arrow_down from '../assets/arrow_down.png'; // Убедитесь, что
 import showPass_icon from '../assets/showPass_icon.png'; // Убедитесь, что у вас есть это изображение
 import check_null from '../assets/check_null.png'; // Убедитесь, что у вас есть это изображение
 import check_fill from '../assets/check_fill.png'; // Убедитесь, что у вас есть это изображение
-
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setUser } from '../storage/store';
-const ProfileRegistration = ({ setRegistration }) => {
+
+const ProfileLogIn = ({ setRegistration }) => {
 
   let dispatch = useDispatch();
 
   const navigation = useNavigation();
 
-  const [accTypeModalVisible, setAccTypeModalVisible] = useState(false)
-  const [personalDataAllowed, setPersonalDataAllowed] = useState(false)
-  const [showPassword, setShowPassword] = useState(false)
-
-  const [accType, setAccType] = useState('');
-  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
 
-  const validatedName = (name) => {
-    return name.length >= 4
-  }
+  const [personalDataAllowed, setPersonalDataAllowed] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
+
+  const userData = useSelector((state) => state?.user?.user);
 
   const validatedPhone = (phone) => {
     const regex = /^\d+$/;
@@ -43,91 +38,85 @@ const ProfileRegistration = ({ setRegistration }) => {
     return regex.test(password);
   }
 
-  const newUserRegistration = async () => {
-    try {
-      let response = await axios.post(`${localhosturl}/registrationNewUser`, {
-        accType,
-        name,
-        phone,
-        password
-      });
-      if (response.data.registrationResult == true) {
-        dispatch(setUser(response.data.user))
-        console.log(response.data)
-        Alert.alert('Регистрация успешна', 'Вы успешно зарегистрировали новый профиль');
-        await AsyncStorage.setItem('userData', JSON.stringify({ phone, password }));
-      } else {
-        Alert.alert('Ошибка регистрации', response.data.message);
-      }
-    } catch (error) {
-      alert('Ошибка при регистрации');
-      console.log(error)
-    }
-  }
+  // const handleRegistration = async () => {
 
+  //   if (!personalDataAllowed) {
+  //     alert('Поставьте галочку для согалсия на обработку персональных данных');
+  //     return;
+  //   }
+  //   if (!validatedPhone(phone)) {
+  //     alert('Некорректный телефон. Телефон должен состоять только из цифр и быть длиной 12 символов.');
+  //     return;
+  //   }
+  //   if (!validatedPassword(password)) {
+  //     alert('Некорректный пароль. Пароль должен содержать как минимум 2 цифры, только латинские буквы и цифры, длина не менее 10 символов.');
+  //     return;
+  //   }
+
+  //   const newUserRegistration = async () => {
+  //     try {
+  //       let response = await axios.post(`${localhosturl}/registrationNewUser`, {
+  //         accType,
+  //         name,
+  //         phone,
+  //         password
+  //       });
+  //       console.log(response.data.registrationResult)
+  //       await setUserData({ name, phone });
+  //       await AsyncStorage.setItem('userData', JSON.stringify({ name, phone, accType }));
+  //       Alert.alert('Регистрация успешна', 'Вы успешно зарегистрировали новый профиль');
+  //       refreshAdsenses()
+  //     } catch (error) {
+  //       alert('Ошибка при регистрации');
+  //       console.log(error)
+  //     }
+  //   }
+
+  //   try {
+  //     let response = await axios.post(`${localhosturl}/registrationCheck`, {
+  //       name,
+  //       phone,
+  //       password
+  //     });
+
+  //     if (response.data.registrationConfirmation) {
+  //       Alert.alert(
+  //         'Регистрация',
+  //         'Профиль не найден в базе. Зарегистрировать новый на введенные данные?',
+  //         [
+  //           {
+  //             text: 'Отмена',
+  //             style: 'cancel',
+  //           },
+  //           {
+  //             text: 'Регистрация',
+  //             onPress: newUserRegistration,
+  //             style: 'destructive',
+  //           },
+  //         ],
+  //         { cancelable: true }
+  //       );
+  //       return
+  //     }
+
+  //     if (!response.data.correctPassword) {
+  //       Alert.alert('Неверный пароль', 'Пользователь с таким номером телефона найден в базе, но введенный вами пароль неверный');
+  //     }
+
+  //     if (response.data.correctPassword) {
+  //       await setUserData({ name, phone, accType });
+  //       await AsyncStorage.setItem('userData', JSON.stringify({ name, phone, accType }));
+  //       Alert.alert('Вход', 'Вы успешно вошли в свой профиль');
+  //       refreshAdsenses()
+  //     }
+  //   } catch (error) {
+  //     alert('Ошибка при регистрации');
+  //     console.log(error)
+  //   }
+  // };
 
   return (
     <View>
-      <Modal
-        transparent={true}
-        visible={accTypeModalVisible}
-        onRequestClose={() => setAccTypeModalVisible(false)}
-      >
-        <View style={styles.modalContainer}>
-          <View style={styles.modalContent}>
-            <ScrollView>
-              {[
-                { label: "Коворкинг", value: 'Коворкинг' },
-                { label: "Мастер", value: "Мастер" },
-                { label: "Клиент", value: "Клиент" },
-              ]
-                .map((item) => (
-                  <TouchableOpacity
-                    key={item.value}
-                    style={styles.modalItem}
-                    onPress={() => {
-                      setAccType(item.value)
-                      setAccTypeModalVisible(false);
-                    }}
-                  >
-                    <Text>{item.label}</Text>
-                  </TouchableOpacity>
-                ))}
-            </ScrollView>
-          </View>
-        </View>
-      </Modal>
-
-      <View>
-        <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Тип аккаунта*</Text>
-        <TouchableOpacity
-          style={{ ...styles.openButton, marginTop: 4 }}
-          onPress={() => setAccTypeModalVisible(true)}
-        >
-          <Text style={{
-            ...styles.openButtonText,
-            color: accType ? '#333333' : '#C4C4C4'
-          }}>
-            {accType || 'Выберите тип аккаунта'}
-          </Text>
-          <Image source={arrow_down} style={styles.arrowIcon} />
-        </TouchableOpacity>
-      </View>
-
-      <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333', marginTop: 12 }}>Имя*</Text>
-
-      <View style={{ marginTop: 4 }}>
-        <TextInput
-          placeholderTextColor="#C4C4C4"
-          style={{
-            borderWidth: name ? (validatedName(name) ? 1 : 1) : 0,
-            borderColor: name ? (validatedName(name) ? 'green' : 'red') : 'grey',
-            fontFamily: 'Manrope_500Medium', fontSize: 14, height: 42, elevation: 8, borderRadius: 12, backgroundColor: 'white', paddingHorizontal: 12, paddingVertical: 8, marginBottom: 12
-          }}
-          placeholder="Имя"
-          onChangeText={(name) => { validatedName(name); setName(name); }}
-          value={name} />
-      </View>
 
       <Text style={{ fontFamily: 'Manrope_600SemiBold', fontSize: 16, color: '#333333' }}>Телефон*</Text>
 
@@ -187,15 +176,29 @@ const ProfileRegistration = ({ setRegistration }) => {
         </TouchableOpacity>
       </View>
 
-      <TouchableOpacity
-        style={{
-          ...styles.button,
-          backgroundColor: (!accType || !validatedName(name) || !validatedPhone(phone) || !validatedPassword(password) || !personalDataAllowed) ? 'lightgrey' : '#0094FF'
-        }}
-        onPress={newUserRegistration}
-        disabled={!accType || !validatedName(name) || !validatedPhone(phone) || !validatedPassword(password) || !personalDataAllowed}
-      >
-        <Text style={styles.buttonText}>Зарегистрироваться</Text>
+      <TouchableOpacity style={{ ...styles.button, backgroundColor: (!validatedPhone(phone) || !validatedPassword(password) || !personalDataAllowed) ? 'lightgrey' : '#0094FF' }}
+        onPress={async () => {
+          try {
+            let response = await axios.post(`${localhosturl}/userLogIn`, {
+              phone,
+              password
+            });
+            if (response.data.logInResult == true) {
+              dispatch(setUser(response.data.user))
+              console.log(response.data)
+              Alert.alert('Регистрация успешна', 'Вы успешно вошли в профиль');
+              await AsyncStorage.setItem('userData', JSON.stringify({ phone, password }));
+            } else {
+              Alert.alert('Ошибка входа', response.data.message);
+            }
+          } catch (error) {
+            alert('Ошибка при входе');
+            console.log(error)
+          }
+        }
+          // handleRegistration
+        }>
+        <Text style={styles.buttonText}>Войти</Text>
       </TouchableOpacity>
 
       <TouchableOpacity style={{ marginHorizontal: '2%' }} onPress={() => { setPersonalDataAllowed(!personalDataAllowed) }}>
@@ -205,13 +208,16 @@ const ProfileRegistration = ({ setRegistration }) => {
         </View>
       </TouchableOpacity>
 
-      <TouchableOpacity style={{ marginTop: 8, alignItems: 'flex-end' }} onPress={() => setRegistration(false)}>
-        <Text style={{ color: 'lightgrey' }}>Уже есть аккаунт</Text>
+      <TouchableOpacity style={{ marginTop: 8, alignItems: 'flex-end' }} onPress={() => setRegistration(true)}>
+        <Text style={{ color: 'lightgrey' }}>Зарегистрироваться</Text>
       </TouchableOpacity>
 
-      {name || phone || password ?
-        <View style={{ marginTop: 30, alignItems: 'center' }}>
-          {validatedName(name) ? <Text style={{ color: '#0094FF' }}>Имя введено корректно</Text> : <Text style={{ color: 'red' }}>Имя должно содержать минимум 4 символа</Text>}
+      {/* <TouchableOpacity style={{ marginTop: 8, alignItems: 'flex-end' }} onPress={() => console.log(userData)}>
+        <Text style={{ color: 'lightgrey' }}>user</Text>
+      </TouchableOpacity> */}
+
+      {phone || password ?
+        <View style={{ marginTop: 20, alignItems: 'center' }}>
           {validatedPhone(phone) ? <Text style={{ color: '#0094FF' }}>Телефон введен корректно</Text> : <Text style={{ color: 'red' }}>Телефон должен содержать ровно 12 символов и состоять из цифр</Text>}
           {validatedPassword(password) ? <Text style={{ color: '#0094FF' }}>Пароль введен корректно</Text> : <Text style={{ color: 'red' }}>Длина пароля минимум 10 символов, латиницей, минимум 2 цифры</Text>}
         </View>
@@ -247,7 +253,7 @@ const styles = StyleSheet.create({
   openButton: {
     height: 42,
     backgroundColor: 'white',
-    elevation: 1,
+    elevation: 4,
     paddingVertical: 6,
     paddingHorizontal: 12,
     marginTop: 4,
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
   button: {
     flexGrow: 1,
     marginTop: 14,
-    backgroundColor: '#0094FF', // светло-голубой фон
+    backgroundColor: 'black', // светло-голубой фон
     padding: 10, // отступы
     borderRadius: 12, // радиус закругления углов
     alignItems: 'center', // центрирование по горизонтали
@@ -285,7 +291,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    color: '#fff',
+    color: 'white',
     fontSize: 18,
     fontFamily: 'Manrope_600SemiBold',
     fontSize: 16
@@ -402,4 +408,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default ProfileRegistration
+export default ProfileLogIn
